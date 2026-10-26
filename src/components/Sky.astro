@@ -1,11 +1,13 @@
 ---
 // Full night sky behind a section: a pre-rendered Milky Way and star field that turns
 // slowly, bright stars that twinkle, and a rare shooting star. Static under reduced motion.
+const { fade = 'bottom' } = Astro.props;
 ---
-<canvas class="sky" aria-hidden="true"></canvas>
+<canvas class:list={['sky', fade]} aria-hidden="true"></canvas>
 <style>
   .sky { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
     -webkit-mask: linear-gradient(#000 70%, transparent); mask: linear-gradient(#000 70%, transparent); }
+  .sky.both { -webkit-mask: linear-gradient(transparent, #000 25%, #000 75%, transparent); mask: linear-gradient(transparent, #000 25%, #000 75%, transparent); }
 </style>
 <script is:inline>
 (() => {
@@ -58,7 +60,7 @@
     }
     // bright stars, drawn live so they twinkle
     bright = [];
-    for (let i = 0; i < 70 * area; i++) bright.push({ x: rnd() * D, y: rnd() * D, r: .7 + Math.pow(rnd(), 5) * 1.4,
+    for (let i = 0; i < 170 * area; i++) bright.push({ x: rnd() * D, y: rnd() * D, r: .7 + Math.pow(rnd(), 4) * 1.6,
       c: TEMP[(rnd() * TEMP.length) | 0], p: rnd() * 6.28, f: .6 + rnd() * 1.8 });
   }
 
@@ -72,6 +74,8 @@
       const r = s.r * 3, gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r);
       gr.addColorStop(0, `rgb(${s.c} / ${tw})`); gr.addColorStop(.18, `rgb(${s.c} / ${tw * .3})`); gr.addColorStop(1, `rgb(${s.c} / 0)`);
       ctx.fillStyle = gr; ctx.fillRect(s.x - r, s.y - r, r * 2, r * 2);
+      if (s.r > 1.5) { const L = s.r * 7 * tw; ctx.strokeStyle = `rgb(${s.c} / ${tw * .45})`; ctx.lineWidth = .6;
+        ctx.beginPath(); ctx.moveTo(s.x - L, s.y); ctx.lineTo(s.x + L, s.y); ctx.moveTo(s.x, s.y - L); ctx.lineTo(s.x, s.y + L); ctx.stroke(); }
     }
     ctx.restore();
     if (!reduce) {

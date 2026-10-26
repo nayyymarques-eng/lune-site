@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Ring from '../components/Ring.astro';
 import Sky from '../components/Sky.astro';
+import Stores from '../components/Stores.astro';
 import Wordmark from '../components/Wordmark.astro';
 import Signup from '../components/Signup.astro';
 import moon from '../data/moon.json';
@@ -36,13 +37,18 @@ const schema = [
   <section class="hero">
     <Sky />
     <div class="wrap hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
-      <Ring w={420} h={220} rx={0.46} ry={0.13} tilt={-10} n={460}>
-        <img class="hlogo" src="/brand/lune-white.svg" alt="Lune" width="300" height="135" />
+      <Ring w={620} h={360} rx={0.46} ry={0.14} tilt={-12} n={560}>
+        <canvas class="hmoon" data-light="moon" data-size="300" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
+        <script is:inline>document.currentScript.previousElementSibling.dataset.phase = (((Date.now() - 947182440000) / 2551442877) % 1).toFixed(3);</script>
       </Ring>
-      <h1 class="h-hero">A ritual for every moon</h1>
-      <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
-      <div class="hform"><Signup source="hero" /></div>
-      <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
+      <div class="glass hcard">
+        <img class="hlogo" src="/brand/lune-white.svg" alt="Lune" width="300" height="135" />
+        <h1 class="h-hero">A ritual for every moon</h1>
+        <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
+        <div class="hform"><Signup source="hero" /></div>
+        <Stores where="hero" />
+        <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
+      </div>
       <ul class="proof">
         <li><span class="spark"></span>Practices timed to every moon through 2030</li>
         <li><span class="spark"></span>Gestures kept by traditions across the world</li>
@@ -202,7 +208,7 @@ const schema = [
   </section>
 
   <section class="final">
-    <div class="bg l3" style="--bgc: 179 166 242" aria-hidden="true"></div>
+    <Sky fade="both" />
     <div class="narrow center">
       <canvas class="fmoon" data-light="moon" data-size="140" data-phase="0.5" aria-hidden="true"></canvas>
       <h2 class="h-sec">The next moon is already on its way</h2>
@@ -218,9 +224,11 @@ const schema = [
   .hero .wrap { position: relative; z-index: 1; }
   .hero::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 46% 42% at 50% 55%, rgb(0 0 0 / .6), rgb(0 0 0 / 0)); }
   @media (max-width: 720px) { .hero::before { background: radial-gradient(ellipse 90% 50% at 50% 55%, rgb(0 0 0 / .7), rgb(0 0 0 / 0)); } }
-  .hcol { display: grid; justify-items: center; text-align: center; gap: 24px; }
-  .hlogo { width: 180px; height: auto; }
-  .hcol .h-hero { margin-top: -16px; }
+  .hcol { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 24px; }
+  .hlogo { width: 112px; height: auto; opacity: .9; }
+  .hmoon { width: 300px; height: 300px; display: block; }
+  .hcard { box-sizing: border-box; max-width: 100%; min-width: 0; display: grid; justify-items: center; gap: 20px; width: min(640px, 100%); margin-top: -72px; padding: 40px 40px 32px; border-radius: 16px; position: relative; z-index: 2; }
+  .hcol .h-hero { margin: 0; }
   .hcol .lead { max-width: 520px; }
   .more { display: inline-flex; gap: 8px; margin-top: 24px; font: var(--text-body); color: var(--foreground); text-decoration: none; border-bottom: 1px solid rgb(255 255 255 / .24); padding-bottom: 2px; }
   .more:hover { border-color: var(--foreground); }
@@ -286,15 +294,18 @@ const schema = [
   .chev { flex: none; color: var(--muted-foreground); transition: transform .3s; }
   details[open] .chev { transform: rotate(180deg); }
   details p { margin: 8px 0 0; }
-  .final { overflow: hidden; }
-  .final .narrow { position: relative; display: grid; gap: 24px; }
+  .final { overflow: hidden; padding-block: 160px; }
+  .final::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 40% 45% at 50% 55%, rgb(0 0 0 / .55), rgb(0 0 0 / 0)); }
+  .final .narrow { position: relative; z-index: 1; display: grid; gap: 24px; }
   .fmoon { width: 140px; height: 140px; margin: 0 auto; }
   .fform { display: grid; justify-items: center; }
   @media (max-width: 900px) {
     .pgrid, .agrid { grid-template-columns: 1fr; }
     .wgrid { grid-template-columns: 1fr 1fr; }
     .phone { width: 240px; }
-    .hlogo { width: 140px; }
+    .hlogo { width: 96px; }
+    .hmoon { width: 220px; height: 220px; }
+    .hcard { padding: 32px 16px 24px; margin-top: -48px; }
     .steps, .prgrid { grid-template-columns: 1fr; }
     .cgrid { grid-template-columns: 1fr 1fr; }
     .plan.sel { order: -1; }

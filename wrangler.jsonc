@@ -5,7 +5,7 @@
   "compatibility_date": "2026-10-08",
   "main": "worker/index.js",
   "workers_dev": true,
-  // "routes": [{ "pattern": "DOMAIN", "custom_domain": true }, { "pattern": "www.DOMAIN", "custom_domain": true }],
+  "routes": [{ "pattern": "lunerituals.app", "custom_domain": true }, { "pattern": "www.lunerituals.app", "custom_domain": true }],
   "assets": {
     "directory": "dist",
     "binding": "ASSETS",

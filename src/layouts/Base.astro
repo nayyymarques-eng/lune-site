@@ -1,6 +1,7 @@
 ---
 import '../styles/site.css';
 import Wordmark from '../components/Wordmark.astro';
+import Stores from '../components/Stores.astro';
 import { CTA, POSTHOG_KEY, LIVE, APP_STORE_URL } from '../config';
 const { glow = true, title, description = 'A 15-minute ritual for every moon, with what you already have at home.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -43,7 +44,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
         <a href="/journal">Journal</a>
         <a href="/#pricing">Pricing</a>
       </nav>
-      <a class="btn primary sm" href="/#start" data-cta="header">{LIVE ? 'Try free' : 'Early access'}</a>
+      <Stores size="sm" where="header" />
     </div>
   </header>
   <main>{glow && <div class="bg l1 pglow" aria-hidden="true"></div>}<slot /></main>
@@ -62,7 +63,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
   <script is:inline src="/lights.js"></script>
   <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
   <script is:inline>
-    (() => { const b = document.querySelector('.sticky-cta'), f = document.querySelectorAll('form, .hcol'); if (!b || !('IntersectionObserver' in window) || !f.length) return;
+    (() => { const b = document.querySelector('.sticky-cta'), f = document.querySelectorAll('form, .hcol, .stores:not(.sm)'); if (!b || !('IntersectionObserver' in window) || !f.length) return;
       const seen = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); b.classList.toggle('hide', seen.size > 0); });
       f.forEach(x => io.observe(x)); })();
   </script>

@@ -4,6 +4,7 @@
 import moon from '../data/moon.json';
 import R from '../data/readings.json';
 import { SIGNS, SIGN_GLYPH, signAt, phaseAt, cycleAt, cap } from '../lib/moon';
+import Stores from './Stores.astro';
 const now = Date.now();
 const s = signAt(moon as any, now);
 const p = phaseAt(moon as any, now);
@@ -25,10 +26,26 @@ const cyc = cycleAt(moon as any, now);
       {SIGNS.map((g) => <button class="schip" type="button" data-sign={g} aria-pressed="false">{cap(g)}</button>)}
     </div>
     <div class="yours" data-t="yours" hidden>
-      <p class="label">In your sky</p>
+      <div class="ycard glass">
+        <div class="wheel" aria-hidden="true">
+          <svg viewBox="0 0 160 160" data-t="wheel"></svg>
+          <div class="wnum"><span data-t="hnum">9th</span><small>house</small></div>
+        </div>
+        <div class="facts">
+          <div><span class="label">Moon in</span><b data-t="fsign"></b></div>
+          <div><span class="label">Your house</span><b data-t="fhouse"></b></div>
+          <div><span class="label">Touches</span><b data-t="farea"></b></div>
+        </div>
+      </div>
       <p class="ytext" data-t="house"></p>
       <p class="small muted">Counted from your Sun sign. In the app, your birth time places it in your own houses.</p>
-      <a class="btn primary" href="#start" data-cta="tonight">Get tonight's full reading</a>
+      <div class="ptease glass">
+        <canvas data-light="flame" data-size="56" data-color="240 169 124" aria-hidden="true"></canvas>
+        <div><span class="label">Tonight's practice for you</span><b data-t="pname"></b><span class="small muted">15 minutes · a candle and a pen</span></div>
+        <svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <p class="label center">Open it in the app</p>
+      <Stores where="tonight" />
     </div>
   </div>
 </div>
@@ -51,11 +68,25 @@ const cyc = cycleAt(moon as any, now);
     color: var(--foreground); font: var(--text-label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
   .schip:hover { background: var(--glass-selected); }
   .schip[aria-pressed="true"] { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
-  .yours { display: grid; gap: 8px; }
+  .yours { display: grid; gap: 12px; }
+  .ycard { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: center; padding: 16px; border-radius: 16px; }
+  .wheel { position: relative; width: 132px; aspect-ratio: 1; }
+  .wheel svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .wnum { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+  .wnum span { font: var(--text-title); letter-spacing: -0.02em; color: var(--foreground); }
+  .wnum small { font: var(--text-label); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-foreground); }
+  .facts { display: grid; gap: 10px; }
+  .facts div { display: grid; gap: 2px; }
+  .facts b { font: var(--text-title); font-size: 18px; font-weight: 400; letter-spacing: -0.02em; color: var(--foreground); }
+  .ytext { font: 400 17px/1.5 var(--font-sans) !important; color: var(--foreground); }
+  .ptease { display: grid; grid-template-columns: 56px 1fr 20px; gap: 12px; align-items: center; padding: 12px 16px 12px 12px; border-radius: 16px; }
+  .ptease canvas { width: 56px; height: 56px; }
+  .ptease div { display: grid; gap: 2px; }
+  .ptease b { font: var(--text-title); font-size: 18px; font-weight: 400; color: var(--foreground); }
+  .lock { width: 20px; color: var(--muted-foreground); }
+  .center { text-align: center; margin-top: 4px !important; }
   .yours[hidden] { display: none; }
   .yours p { margin: 0; }
-  .ytext { font: var(--text-body); color: var(--foreground); }
-  .yours .btn { margin-top: 8px; }
 </style>
 
 <script>
@@ -71,12 +102,38 @@ const cyc = cycleAt(moon as any, now);
   $('line').textContent = `${R.phases[p.kind].reading}, with ${R.signs[s.sign].tone}`;
   $('moon').dataset.phase = cycleAt(moon as any).toFixed(3);
   if (s.until) $('until').textContent = 'until ' + new Date(s.until).toLocaleDateString('en-US', { weekday: 'short', hour: 'numeric' });
+  const AREA = ['self', 'values', 'words', 'roots', 'joy', 'days', 'bonds', 'change', 'meaning', 'work', 'people', 'rest'];
+  function drawWheel(h: number) {
+    const svg = $('wheel'); const NS = 'http://www.w3.org/2000/svg'; svg.innerHTML = '';
+    const defs = document.createElementNS(NS, 'defs');
+    defs.innerHTML = '<filter id="wglow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>';
+    svg.appendChild(defs);
+    const C = 80, R1 = 62, R2 = 74;
+    for (let i = 0; i < 12; i++) {
+      // house 1 on the left (the ascendant side), counting counter-clockwise like a chart
+      const a0 = Math.PI + i * Math.PI / 6 + .05, a1 = a0 + Math.PI / 6 - .1;
+      const pt = (r: number, a: number) => `${C + r * Math.cos(a)} ${C - r * Math.sin(a)}`;
+      const d = `M ${pt(R2, a0)} A ${R2} ${R2} 0 0 0 ${pt(R2, a1)} L ${pt(R1, a1)} A ${R1} ${R1} 0 0 1 ${pt(R1, a0)} Z`;
+      const on = i + 1 === h;
+      if (on) { const g = document.createElementNS(NS, 'path'); g.setAttribute('d', d); g.setAttribute('fill', 'rgb(179 166 242)'); g.setAttribute('filter', 'url(#wglow)'); svg.appendChild(g); }
+      const el = document.createElementNS(NS, 'path'); el.setAttribute('d', d);
+      el.setAttribute('fill', on ? 'rgb(255 255 255 / .95)' : 'rgb(255 255 255 / .08)');
+      el.setAttribute('stroke', 'rgb(255 255 255 / .18)'); el.setAttribute('stroke-width', '.5');
+      svg.appendChild(el);
+    }
+    const ring = document.createElementNS(NS, 'circle'); ring.setAttribute('cx', '80'); ring.setAttribute('cy', '80'); ring.setAttribute('r', '54');
+    ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'rgb(255 255 255 / .1)'); svg.appendChild(ring);
+  }
   const ord = (n: number) => n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
   function pick(sign: string) {
     root.querySelectorAll('.schip').forEach((c) => c.setAttribute('aria-pressed', String((c as HTMLElement).dataset.sign === sign)));
     const h = houseFrom(s.sign, sign);
     const lead = h === 1 ? `Tonight the moon is in your sign, ${cap(sign)}. ` : '';
     $('house').textContent = lead + R.houses[String(h)].replace(/^In your \d+\w\w house/, `In your ${ord(h)} house`);
+    const area = AREA[h - 1];
+    $('hnum').textContent = ord(h); $('fhouse').textContent = ord(h); $('fsign').textContent = cap(s.sign); $('farea').textContent = cap(area);
+    $('pname').textContent = `${R.phases[p.kind].name}, for ${area}`;
+    drawWheel(h);
     $('yours').hidden = false;
     try { localStorage.setItem('lune-sign', sign); } catch {}
     (window as any).posthog?.capture?.('sign_picked', { sign, moon_sign: s.sign, house: h });
