@@ -43,7 +43,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for ev
   <div class="stars" aria-hidden="true"></div>
   <header class="top">
     <div class="wrap bar">
-      <a href="/" aria-label="Lune home"><Wordmark /></a>
+      <a class="brand" href="/" aria-label="Lune home"><span class="bmark"><Wordmark /></span><svg class="bmoon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="currentColor" /></svg></a>
       <nav>
         <a href="/#how">How it works</a>
         <a href="/moon">Moon in your sign</a>
@@ -81,6 +81,12 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for ev
     addEventListener('scroll', () => { if (scrollY < 200) set(null); }, { passive: true });
   })();
   </script>
+  <script is:inline>
+    // Home: a crescent stands in for the wordmark while the hero (with its big "lune") is on screen, then the wordmark fades back (Nayara 26 Oct)
+    (() => { const h = document.querySelector('.hero'), t = document.querySelector('.top'); if (!h || !t) return;
+      const upd = () => t.classList.toggle('moon', h.getBoundingClientRect().bottom > innerHeight * 0.35);
+      upd(); addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); })();
+  </script>
   <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
   <script is:inline>
     (() => { const b = document.querySelector('.sticky-cta'), f = document.querySelectorAll('form, .hcol, .stores:not(.sm)'); if (!b || !('IntersectionObserver' in window) || !f.length) return;
@@ -91,6 +97,13 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for ev
 </html>
 <style>
   .top { position: sticky; top: 0; z-index: 10; background: rgba(0,0,0,.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+  .brand { position: relative; display: grid; align-items: center; color: #fff; }
+  .brand > * { grid-area: 1 / 1; transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1); }
+  .bmark { display: flex; }
+  .bmoon { opacity: 0; transform: rotate(-30deg) scale(.8); pointer-events: none; filter: drop-shadow(0 0 8px rgb(232 222 255 / .5)); }
+  .top.moon .bmark { opacity: 0; transform: translateY(4px); }
+  .top.moon .bmoon { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .brand > * { transition: none; } }
   .bar { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
   nav { display: flex; gap: 24px; }
   nav a { font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; color: var(--muted-foreground); text-decoration: none; }
