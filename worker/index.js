@@ -1,6 +1,7 @@
 // Lune site Worker (Cloudflare Workers, same setup as mesa-juridica): serves dist/ and one form route.
-// POST /api/waitlist {email, sign, source, page, site}: adds the email to a Resend audience
-// (RESEND_AUDIENCE_ID) and, when WAITLIST_TO is set, sends a plain note to that inbox.
+// POST /api/waitlist {email, sign, source, page, site}: always stores the email in KV (WAITLIST, key = email),
+// then, when RESEND_API_KEY is set, adds it to a Resend audience (RESEND_AUDIENCE_ID) and sends a note to WAITLIST_TO.
+// Resend is best effort: once the email is in KV the visitor sees success.
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 const SIGNS = new Set(['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']);
 const json = (status, body) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
@@ -30,14 +31,26 @@ async function waitlist(request, env) {
   if (!EMAIL.test(email)) return json(400, { ok: false, error: 'email' });
   const sign = SIGNS.has(d.sign) ? d.sign : '';
   const source = String(d.source || '').slice(0, 60);
-  if (!env.RESEND_API_KEY) return json(503, { ok: false });
-  try {
-    if (env.RESEND_AUDIENCE_ID) await resend(env, `/audiences/${env.RESEND_AUDIENCE_ID}/contacts`, { email, unsubscribed: false });
-    if (env.WAITLIST_TO) await resend(env, '/emails', {
-      from: env.EMAIL_FROM || 'Lune <onboarding@resend.dev>', to: env.WAITLIST_TO, subject: 'New Lune waitlist sign-up',
-      text: `Email: ${email}\nSign: ${sign || '-'}\nFrom: ${source || '-'} ${String(d.page || '').slice(0, 120)}`,
-    });
-  } catch { return json(502, { ok: false }); }
+  const page = String(d.page || '').slice(0, 120);
+  let saved = false;
+  if (env.WAITLIST) {
+    try {
+      const prev = await env.WAITLIST.get(email);
+      if (!prev) await env.WAITLIST.put(email, JSON.stringify({ sign, source, page, at: new Date().toISOString() }));
+      saved = true;
+    } catch {}
+  }
+  if (env.RESEND_API_KEY) {
+    try {
+      if (env.RESEND_AUDIENCE_ID) await resend(env, `/audiences/${env.RESEND_AUDIENCE_ID}/contacts`, { email, unsubscribed: false });
+      if (env.WAITLIST_TO) await resend(env, '/emails', {
+        from: env.EMAIL_FROM || 'Lune <onboarding@resend.dev>', to: env.WAITLIST_TO, subject: 'New Lune waitlist sign-up',
+        text: `Email: ${email}\nSign: ${sign || '-'}\nFrom: ${source || '-'} ${page}`,
+      });
+      saved = true;
+    } catch {}
+  }
+  if (!saved) return json(503, { ok: false });
   return json(200, { ok: true });
 }
 
