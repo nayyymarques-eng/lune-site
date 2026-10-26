@@ -1,9 +1,11 @@
 ---
-// Full night sky behind a section: a pre-rendered Milky Way and star field that turns
-// slowly, bright stars that twinkle, and a rare shooting star. Static under reduced motion.
+// Full night sky behind a section: a pre-rendered Milky Way (2D) that turns slowly, every star drawn as a
+// fairy point by the shared renderer (lune-light.js) on a WebGL layer just above it, bright ones twinkling,
+// and a rare shooting star. Static under reduced motion.
 const { fade = 'bottom' } = Astro.props;
 ---
 <canvas class:list={['sky', fade]} aria-hidden="true"></canvas>
+<canvas class:list={['sky', 'skygl', fade]} aria-hidden="true"></canvas>
 <style>
   .sky { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
     -webkit-mask: linear-gradient(#000 70%, transparent); mask: linear-gradient(#000 70%, transparent); }
@@ -11,13 +13,14 @@ const { fade = 'bottom' } = Astro.props;
 </style>
 <script is:inline>
 (() => {
-  const cv = document.currentScript.previousElementSibling.tagName === 'CANVAS' ? document.currentScript.previousElementSibling : document.querySelector('canvas.sky');
-  if (!cv) return;
+  const glc = document.currentScript.previousElementSibling, cv = glc && glc.previousElementSibling;
+  if (!cv || cv.tagName !== 'CANVAS') return;
+  let GL = null;
   const ctx = cv.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(7);
   const TEMP = ['200 215 255', '225 232 255', '255 255 255', '255 244 228', '255 226 190', '255 205 165'];
-  let W, H, D, S, layer, bright = [], shoot = null, nextShoot = 4000, vis = true;
+  let W, H, D, S, layer, stars = [], bright = [], shoot = null, nextShoot = 4000, vis = true;
 
   function build() {
     const dpr = Math.min(devicePixelRatio || 1, 1.5);
@@ -50,18 +53,36 @@ const { fade = 'bottom' } = Astro.props;
     }
     // faint stars, denser along the band
     const area = D * D / 1e6;
-    for (let i = 0; i < 2600 * area; i++) {
+    stars = [];
+    for (let i = 0; i < 1700 * area; i++) {
       let x, y;
       if (rnd() < .45) { const t = (rnd() - .5) * D, off = (rnd() + rnd() - 1) * D * .09; [x, y] = band(t, off); }
       else { x = rnd() * D; y = rnd() * D; }
       const m = Math.pow(rnd(), 3.2), r = .25 + m * .9, a = .18 + m * .7;
-      g.fillStyle = `rgb(${TEMP[(rnd() * TEMP.length) | 0]} / ${a})`;
-      g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+      stars.push({ x, y, r, a, c: TEMP[(rnd() * TEMP.length) | 0].split(' ').map(Number) });
     }
     // bright stars, drawn live so they twinkle
     bright = [];
     for (let i = 0; i < 170 * area; i++) bright.push({ x: rnd() * D, y: rnd() * D, r: .7 + Math.pow(rnd(), 4) * 1.6,
       c: TEMP[(rnd() * TEMP.length) | 0], p: rnd() * 6.28, f: .6 + rnd() * 1.8 });
+    bright.forEach((b) => (b.rgb = b.c.split(' ').map(Number)));
+  }
+
+  function points(ms, rot) {
+    if (!GL && window.LuneLight) GL = LuneLight.create(glc);
+    if (!GL) { // no WebGL: paint the stars flat
+      ctx.save(); ctx.translate(W / 2, H * .35); ctx.rotate(rot); ctx.translate(-D / 2, -D / 2);
+      for (const s of stars) { ctx.fillStyle = `rgb(${s.c.join(' ')} / ${s.a})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, 7); ctx.fill(); }
+      ctx.restore(); return;
+    }
+    const c = Math.cos(rot), sn = Math.sin(rot), ox = W / 2, oy = H * .35, h = D / 2;
+    const at = (x, y) => [ox + c * (x - h) - sn * (y - h), oy + sn * (x - h) + c * (y - h)];
+    GL.begin();
+    for (const s of stars) { const [x, y] = at(s.x, s.y); if (x < -4 || y < -4 || x > W + 4 || y > H + 4) continue; GL.dot(x, y, .35 + s.r * .55, s.c, s.a); }
+    for (const s of bright) { const [x, y] = at(s.x, s.y); if (x < -9 || y < -9 || x > W + 9 || y > H + 9) continue;
+      const tw = reduce ? .85 : .55 + .45 * Math.sin(ms / 1000 * s.f + s.p) * Math.sin(ms / 1700 * s.f + s.p * 2);
+      GL.dot(x, y, s.r * .9, s.rgb, Math.max(.15, tw)); }
+    GL.end();
   }
 
   function frame(ms) {
@@ -71,13 +92,11 @@ const { fade = 'bottom' } = Astro.props;
     ctx.drawImage(layer, 0, 0, D, D);
     for (const s of bright) {
       const tw = reduce ? .85 : .55 + .45 * Math.sin(ms / 1000 * s.f + s.p) * Math.sin(ms / 1700 * s.f + s.p * 2);
-      const r = s.r * 3, gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r);
-      gr.addColorStop(0, `rgb(${s.c} / ${tw})`); gr.addColorStop(.18, `rgb(${s.c} / ${tw * .3})`); gr.addColorStop(1, `rgb(${s.c} / 0)`);
-      ctx.fillStyle = gr; ctx.fillRect(s.x - r, s.y - r, r * 2, r * 2);
       if (s.r > 1.5) { const L = s.r * 7 * tw; ctx.strokeStyle = `rgb(${s.c} / ${tw * .45})`; ctx.lineWidth = .6;
         ctx.beginPath(); ctx.moveTo(s.x - L, s.y); ctx.lineTo(s.x + L, s.y); ctx.moveTo(s.x, s.y - L); ctx.lineTo(s.x, s.y + L); ctx.stroke(); }
     }
     ctx.restore();
+    points(ms, rot);
     if (!reduce) {
       if (!shoot && ms > nextShoot) { const a = .5 + Math.random() * .5; shoot = { x: W * (.2 + Math.random() * .6), y: H * Math.random() * .3, vx: Math.cos(a) * 900, vy: Math.sin(a) * 900, t0: ms }; }
       if (shoot) {
@@ -91,9 +110,11 @@ const { fade = 'bottom' } = Astro.props;
   }
 
   let last = 0;
-  function loop(ms) { if (vis && ms - last > 33) { frame(ms); last = ms; } requestAnimationFrame(loop); }
-  build(); frame(0);
-  addEventListener('resize', () => { build(); frame(performance.now()); });
+  function loop(ms) { if (vis && ms - last > 15) { frame(ms); last = ms; } requestAnimationFrame(loop); }
+  build(); frame(0); addEventListener('DOMContentLoaded', () => frame(performance.now()));
+  let rt = 0;
+  const rebuild = () => { clearTimeout(rt); rt = setTimeout(() => { if (Math.abs(cv.clientHeight - H) > 2 || Math.abs(cv.clientWidth - W) > 2) { build(); frame(performance.now()); } }, 120); };
+  if ('ResizeObserver' in window) new ResizeObserver(rebuild).observe(cv); else addEventListener('resize', rebuild);
   if ('IntersectionObserver' in window) new IntersectionObserver(e => { vis = e[0].isIntersecting; }).observe(cv);
   if (!reduce) requestAnimationFrame(loop);
 })();
