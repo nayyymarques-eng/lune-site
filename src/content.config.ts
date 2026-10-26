@@ -11,6 +11,7 @@ const journal = defineCollection({
     sign: z.enum(['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']).optional(),
     phase: z.string().optional(), // new_moon, full_moon, ...
     tags: z.array(z.string()).default([]),
+    keywords: z.array(z.string()).default([]),
     cover: z.string().optional(), // path under /public
     draft: z.boolean().default(false),
   }),
