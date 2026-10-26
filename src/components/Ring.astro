@@ -54,7 +54,7 @@ const { w = 560, h = 360, rx = 0.47, ry = 0.16, tilt = -12, n = 520, color = '25
     }
     if (reduce) { draw(4); return; }
     let last = 0;
-    const loop = (ms: number) => { if (visible && ms - last > 15) { last = ms; draw(ms / 1000); } requestAnimationFrame(loop); };
+    const loop = (ms: number) => { if (visible && ms - last > 32) { last = ms; draw(ms / 1000); } requestAnimationFrame(loop); };
     requestAnimationFrame(loop);
   });
 </script>
