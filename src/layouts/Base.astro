@@ -61,6 +61,11 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
   </footer>
   <script is:inline src="/lights.js"></script>
   <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
+  <script is:inline>
+    (() => { const b = document.querySelector('.sticky-cta'), f = document.querySelectorAll('form, .hcol'); if (!b || !('IntersectionObserver' in window) || !f.length) return;
+      const seen = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); b.classList.toggle('hide', seen.size > 0); });
+      f.forEach(x => io.observe(x)); })();
+  </script>
 </body>
 </html>
 <style>
@@ -82,7 +87,8 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
     nav { display: none; }
     .fgrid { grid-template-columns: 1fr 1fr; }
     .fgrid > div:first-child { grid-column: 1 / -1; }
-    .sticky-cta { display: flex; position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 20; box-shadow: 0 8px 30px #000; }
+    .sticky-cta { display: flex; position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 20; box-shadow: 0 8px 30px #000; transition: opacity .3s, transform .3s; }
+    .sticky-cta.hide { opacity: 0; transform: translateY(16px); pointer-events: none; }
     .foot { padding-bottom: 96px; }
   }
 </style>
