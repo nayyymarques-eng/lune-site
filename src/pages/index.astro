@@ -4,7 +4,8 @@ import Tonight from '../components/Tonight.astro';
 import Signup from '../components/Signup.astro';
 import moon from '../data/moon.json';
 import R from '../data/readings.json';
-import { PHASE_IMG, cap, fmtDate, utcOf } from '../lib/moon';
+import PhaseIcon from '../components/PhaseIcon.astro';
+import { cap, fmtDate, utcOf, cycleAt } from '../lib/moon';
 import { PRICE, CTA } from '../config';
 
 const now = Date.now();
@@ -29,18 +30,19 @@ const schema = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
 ];
 ---
-<Base description="Lune reads tonight's moon for your own sky, then offers a 15-minute practice with what you already have at home. Free to start." schema={schema}>
+<Base glow={false} description="Lune reads tonight's moon for your own sky, then offers a 15-minute practice with what you already have at home. Free to start." schema={schema}>
   <section class="hero">
+    <div class="bg l1" aria-hidden="true"></div>
     <div class="wrap hgrid">
       <div class="hcopy" id="start"><span id="waitlist" aria-hidden="true"></span>
         <p class="label">Lune · Moon rituals</p>
-        <h1 class="h-hero">Your moon,<br />read for you.</h1>
+        <h1 class="h-hero">Your moon,<br />read for you</h1>
         <p class="lead">Every night the moon crosses a sign and touches one part of your life. Lune reads it for your own sky, then offers a 15-minute practice to live it, with what you already have at home.</p>
         <Signup source="hero" />
         <ul class="proof">
-          <li><span class="dot"></span> Moon timed to the minute, 2026 to 2030</li>
-          <li><span class="dot"></span> Practices from traditions across the world</li>
-          <li><span class="dot"></span> Every claim sourced</li>
+          <li><span class="dot"></span>Moon timed to the minute, 2026 to 2030</li>
+          <li><span class="dot"></span>Practices from traditions across the world</li>
+          <li><span class="dot"></span>Every claim sourced</li>
         </ul>
       </div>
       <Tonight />
@@ -51,22 +53,25 @@ const schema = [
     <div class="wrap">
       <div class="sec-head">
         <p class="label">How it works</p>
-        <h2 class="h-sec">Three steps, one night at a time.</h2>
+        <h2 class="h-sec">Three steps, one night at a time</h2>
       </div>
       <ol class="steps">
-        <li class="glass">
+        <li class="tint" style="--c: 179 166 242">
+          <canvas class="slight" data-light="breath" data-size="96" data-color="179 166 242" aria-hidden="true"></canvas>
           <span class="label">01 · The moon</span>
-          <h3 class="h-card">Tonight's phase and sign, in plain, warm words.</h3>
+          <h3 class="h-card">Tonight's phase and sign, in plain, warm words</h3>
           <p class="muted">What the night is good for, and what to go easy on. No jargon without a reason.</p>
         </li>
-        <li class="glass">
+        <li class="tint" style="--c: 143 184 242">
+          <canvas class="slight" data-light="ripple" data-size="96" data-color="143 184 242" aria-hidden="true"></canvas>
           <span class="label">02 · Where it lands in your sky</span>
-          <h3 class="h-card">Your Sun, your rising sign, your houses.</h3>
+          <h3 class="h-card">Your Sun, your rising sign, your houses</h3>
           <p class="muted">The same moon falls on a different part of every life. Lune shows you where it falls on yours.</p>
         </li>
-        <li class="glass">
+        <li class="tint" style="--c: 240 169 124">
+          <canvas class="slight" data-light="flame" data-size="96" data-color="240 169 124" aria-hidden="true"></canvas>
           <span class="label">03 · A practice to live it</span>
-          <h3 class="h-card">Fifteen minutes, with a candle and a pen.</h3>
+          <h3 class="h-card">Fifteen minutes, with a candle and a pen</h3>
           <p class="muted">Open, a few gestures, close. Choose love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
         </li>
       </ol>
@@ -74,11 +79,12 @@ const schema = [
   </section>
 
   <section class="pillars">
+    <div class="bg l2" style="--bgc: 232 140 221" aria-hidden="true"></div>
     <div class="wrap pgrid">
-      <img src="/brand/moon-hero-orbit.webp" alt="The Lune moon, made of points of light" width="900" height="600" loading="lazy" />
-      <div>
+      <div class="plight"><canvas data-light="galaxy" data-size="430" data-r="0.62" data-color="232 140 221" aria-hidden="true"></canvas></div>
+      <div class="pcopy">
         <p class="label">Every practice, three ways to see it</p>
-        <h2 class="h-sec">Yours. Where it comes from. What science says.</h2>
+        <h2 class="h-sec">Yours, where it comes from, and what science says</h2>
         <dl class="three">
           <div><dt class="label">Yours</dt><dd>Why tonight, for you: the sign and house where the moon falls in your chart.</dd></div>
           <div><dt class="label">Where it comes from</dt><dd>The tradition behind the gesture, and the same gesture in another tradition, as kin.</dd></div>
@@ -92,15 +98,15 @@ const schema = [
     <div class="wrap">
       <div class="sec-head">
         <p class="label">Coming up</p>
-        <h2 class="h-sec">The next moons, planned two months ahead.</h2>
+        <h2 class="h-sec">The next moons, planned two months ahead</h2>
       </div>
       <div class="cgrid">
-        {big.map((m: any) => (
-          <a class="mcard glass" href={`/moon/${m.sign}`}>
+        {big.map((m: any, i: number) => (
+          <a class="mcard tint" style={`--c: ${['179 166 242', '232 201 140', '143 184 242', '242 184 176'][i % 4]}`} href={`/moon/${m.sign}`}>
             <div class="row"><span class="label">{fmtDate(utcOf(m.utc))}</span>{m.tag && <span class="badge">{m.tag}</span>}</div>
-            <img src={`/brand/${PHASE_IMG[m.kind]}.webp`} alt="" width="88" height="88" loading="lazy" />
+            <PhaseIcon phase={m.kind} size={32} />
             <h3 class="h-card">{m.name}</h3>
-            <p class="muted small2">{m.text}</p>
+            <p class="muted">{m.text}</p>
           </a>
         ))}
       </div>
@@ -110,35 +116,45 @@ const schema = [
   <section class="honest">
     <div class="narrow center">
       <p class="label">Honest by design</p>
-      <h2 class="h-sec">A mirror, never a prophecy.</h2>
+      <h2 class="h-sec">A mirror, never a prophecy</h2>
       <p class="lead">Astrology here is a way to reflect, never a prediction. Science is cited, with its limits said gently. Nothing is ever aimed at another person's will. And a practice is a moment of attention, not treatment.</p>
     </div>
   </section>
 
   <section id="pricing" class="pricing">
+    <div class="bg l1" aria-hidden="true"></div>
     <div class="wrap">
       <div class="sec-head center">
         <p class="label">Pricing</p>
-        <h2 class="h-sec">Free to start. Premium when you want every moon.</h2>
+        <h2 class="h-sec">Free to start, Premium for every moon</h2>
       </div>
       <div class="prgrid">
         <div class="plan glass">
           <p class="label">Free</p>
           <p class="price">$0</p>
-          <ul><li>Tonight's moon, read for your sky</li><li>This month's moons</li><li>A few practices to try</li></ul>
+          <p class="muted">Always free, no card.</p>
+          <ul class="feats">
+            <li>Tonight's moon, read for your sky</li>
+            <li>This month's moons</li>
+            <li>A few practices to try</li>
+          </ul>
+          <a class="btn secondary" href="#start" data-cta="pricing-free">{CTA}</a>
         </div>
-        <div class="plan glass best">
-          <div class="row"><p class="label">Premium · Yearly</p><span class="badge">Save 50%</span></div>
-          <p class="price">{PRICE.year}<span class="per"> / year</span></p>
-          <p class="muted">{PRICE.yearPerMonth} a month, billed yearly. {PRICE.trialDays} days free.</p>
-          <ul><li>Every practice, every night</li><li>The full calendar, eclipses and supermoons</li><li>Your altar: 163 items with history and science</li></ul>
-          <a class="btn primary" href="#start" data-cta="pricing-year">{CTA}</a>
-        </div>
-        <div class="plan glass">
-          <p class="label">Premium · Monthly</p>
-          <p class="price">{PRICE.month}<span class="per"> / month</span></p>
-          <p class="muted">{PRICE.trialDays} days free. Cancel any time.</p>
-          <a class="btn secondary" href="#start" data-cta="pricing-month">{CTA}</a>
+        <div class="plan glass sel" data-plan>
+          <div class="row"><p class="label">Premium</p>
+            <div class="seg" role="tablist" aria-label="Billing">
+              <button type="button" role="tab" data-p="month" aria-selected="false">Monthly</button>
+              <button type="button" role="tab" data-p="year" class="on" aria-selected="true">Yearly</button>
+            </div>
+          </div>
+          <p class="price"><span data-v="year">{PRICE.year}</span><span data-v="month" hidden>{PRICE.month}</span><span class="per"><span data-v="year"> / year</span><span data-v="month" hidden> / month</span></span></p>
+          <p class="muted"><span data-v="year">{PRICE.yearPerMonth} a month, half the monthly price. </span>{PRICE.trialDays} days free, cancel any time.</p>
+          <ul class="feats">
+            <li>Every practice, every night</li>
+            <li>The full calendar, eclipses and supermoons</li>
+            <li>Your altar: 163 items with history and science</li>
+          </ul>
+          <a class="btn primary" href="#start" data-cta="pricing-premium">{CTA}</a>
         </div>
       </div>
     </div>
@@ -146,15 +162,21 @@ const schema = [
 
   <section id="faq" class="faq">
     <div class="narrow">
-      <div class="sec-head"><p class="label">Questions</p><h2 class="h-sec">Before you begin.</h2></div>
-      {faq.map(([q, a]) => (<details><summary>{q}</summary><p>{a}</p></details>))}
+      <div class="sec-head"><p class="label">Questions</p><h2 class="h-sec">Before you begin</h2></div>
+      {faq.map(([q, a]) => (
+        <details>
+          <summary>{q}<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
+          <p class="muted">{a}</p>
+        </details>
+      ))}
     </div>
   </section>
 
   <section class="final">
+    <div class="bg l3" style="--bgc: 179 166 242" aria-hidden="true"></div>
     <div class="narrow center">
-      <img src="/brand/moon-full.webp" alt="" width="140" height="140" class="fmoon" loading="lazy" />
-      <h2 class="h-sec">The next moon is already on its way.</h2>
+      <canvas class="fmoon" data-light="moon" data-size="140" data-phase="0.5" aria-hidden="true"></canvas>
+      <h2 class="h-sec">The next moon is already on its way</h2>
       <p class="lead">Be there when it arrives.</p>
       <div class="fform"><Signup source="final" /></div>
     </div>
@@ -162,48 +184,72 @@ const schema = [
 </Base>
 
 <style>
-  .hero { padding-top: clamp(48px, 8vw, 96px); }
-  .hgrid { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  section { position: relative; }
+  .hero { padding-top: 64px; overflow: hidden; }
+  .hgrid { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
+  .hgrid > * { min-width: 0; }
   .hcopy { display: grid; gap: 24px; align-content: center; }
-  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; font-size: 14px; color: var(--muted-foreground); }
+  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; font: var(--text-body); color: var(--muted-foreground); }
+  .proof li { display: flex; align-items: center; gap: 8px; }
   .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .steps li { padding: 28px; display: grid; gap: 16px; align-content: start; }
+  .steps li { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .steps p { margin: 0; }
-  .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-  .pgrid img { width: 100%; height: auto; border-radius: var(--radius-card); }
-  .pgrid > div { display: grid; gap: 20px; }
-  .three { display: grid; gap: 20px; margin: 12px 0 0; }
-  .three div { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
-  .three dd { margin: 0; font-family: var(--font-serif); font-size: 19px; line-height: 1.45; letter-spacing: -0.02em; }
+  .slight { width: 96px; height: 96px; margin: -8px 0 0 -8px; }
+  .tint { border-radius: var(--radius-card); border: 1px solid rgb(var(--c) / .18); background: radial-gradient(130% 90% at 50% 0%, rgb(var(--c) / .12), transparent 62%), var(--glass-fill);
+    box-shadow: var(--glass-highlight); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
+  .pillars { overflow: hidden; }
+  .pgrid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .plight { display: grid; place-items: center; }
+  .plight canvas { width: 430px; height: 430px; max-width: 100%; }
+  .pcopy { display: grid; gap: 24px; }
+  .three { display: grid; gap: 16px; margin: 0; }
+  .three div { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 8px; }
+  .three dd { margin: 0; font: var(--text-body); color: var(--foreground); }
   .cgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .mcard { padding: 20px; display: grid; gap: 12px; text-decoration: none; align-content: start; transition: background .2s; }
-  .mcard:hover { background: var(--glass-selected); }
-  .mcard img { width: 88px; height: 88px; }
-  .small2 { margin: 0; font-size: 14px; line-height: 1.5; }
+  .mcard { padding: 24px; display: grid; gap: 16px; text-decoration: none; align-content: start; }
+  .mcard p { margin: 0; font: var(--text-body); }
   .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  .badge { font: var(--text-label); text-transform: uppercase; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--glass-edge); font-size: 10px; }
+  .badge { font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--glass-fill); color: var(--foreground); }
   .center { text-align: center; margin-inline: auto; justify-items: center; }
-  .honest .lead { margin-top: 24px; }
-  .prgrid { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 16px; align-items: stretch; }
-  .plan { padding: 28px; display: grid; gap: 12px; align-content: start; }
-  .plan ul { margin: 4px 0 8px; padding-left: 18px; display: grid; gap: 6px; color: rgba(255,255,255,.82); font-size: 15px; }
-  .plan.best { border-color: rgba(255,255,255,.4); background: var(--glass-selected); }
+  .honest .narrow { display: grid; gap: 24px; }
+  .prgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 840px; margin: 0 auto; }
+  .plan { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .plan p { margin: 0; }
-  .price { font-family: var(--font-serif); font-size: 48px; letter-spacing: -0.035em; line-height: 1; }
-  .per { font-size: 18px; color: var(--muted-foreground); }
-  details { border-top: 1px solid var(--line); padding: 20px 0; }
+  .plan.sel { background: var(--glass-selected); border-color: rgba(255,255,255,.24); }
+  .plan .btn { margin-top: 8px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; padding: var(--space-xs); border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge); }
+  .seg button { min-height: 32px; padding: 0 16px; border: 0; border-radius: 8px; background: none; color: var(--muted-foreground); font: var(--text-label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+  .seg button.on { background: var(--glass-selected); color: var(--foreground); }
+  .price { font-family: var(--font-serif); font-size: 40px; letter-spacing: -0.035em; line-height: 1.04; color: var(--foreground); }
+  .per { font: var(--text-body); letter-spacing: 0; color: var(--muted-foreground); }
+  .feats { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .feats li { padding-left: 16px; position: relative; color: var(--foreground); }
+  .feats li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+  details { border-top: 1px solid var(--line); padding: 16px 0; }
   details:last-child { border-bottom: 1px solid var(--line); }
-  summary { cursor: pointer; font-family: var(--font-serif); font-size: 22px; letter-spacing: -0.02em; list-style: none; }
-  summary::after { content: '+'; float: right; color: var(--muted-foreground); }
-  details[open] summary::after { content: '–'; }
-  details p { color: var(--muted-foreground); margin: 12px 0 0; }
-  .final .narrow { display: grid; gap: 20px; }
-  .fmoon { margin: 0 auto; filter: drop-shadow(0 0 60px rgba(232,201,140,.2)); }
+  summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; font: var(--text-body); font-size: 18px; color: var(--foreground); }
+  summary::-webkit-details-marker { display: none; }
+  .chev { flex: none; color: var(--muted-foreground); transition: transform .3s; }
+  details[open] .chev { transform: rotate(180deg); }
+  details p { margin: 8px 0 0; }
+  .final { overflow: hidden; }
+  .final .narrow { position: relative; display: grid; gap: 24px; }
+  .fmoon { width: 140px; height: 140px; margin: 0 auto; }
   .fform { display: grid; justify-items: center; }
   @media (max-width: 900px) {
     .hgrid, .pgrid { grid-template-columns: 1fr; }
     .steps, .prgrid { grid-template-columns: 1fr; }
     .cgrid { grid-template-columns: 1fr 1fr; }
-    .best { order: -1; }
+    .plan.sel { order: -1; }
   }
+  @media (max-width: 560px) { .cgrid { grid-template-columns: 1fr; } }
 </style>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-plan]').forEach((card) => {
+    card.querySelectorAll<HTMLButtonElement>('.seg button').forEach((b) => b.addEventListener('click', () => {
+      const p = b.dataset.p!;
+      card.querySelectorAll('.seg button').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', String(x === b)); });
+      card.querySelectorAll<HTMLElement>('[data-v]').forEach((el) => (el.hidden = el.dataset.v !== p));
+    }));
+  });
+</script>

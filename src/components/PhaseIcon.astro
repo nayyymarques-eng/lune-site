@@ -1,0 +1,14 @@
+---
+// DS PhaseIcon: lit side white 90%, dark side 14%, new moon as an outline (same paths as the app).
+const { phase, size = 24 } = Astro.props;
+const P: Record<string, string> = {
+  first_quarter: 'M10 1A9 9 0 0 1 10 19Z', last_quarter: 'M10 1A9 9 0 0 0 10 19Z',
+  waxing_crescent: 'M10 1A9 9 0 0 1 10 19A5 9 0 0 0 10 1Z', waxing_gibbous: 'M10 1A9 9 0 0 1 10 19A5 9 0 0 1 10 1Z',
+  waning_gibbous: 'M10 1A9 9 0 0 0 10 19A5 9 0 0 0 10 1Z', waning_crescent: 'M10 1A9 9 0 0 0 10 19A5 9 0 0 1 10 1Z',
+};
+---
+<svg width={size} height={size} viewBox="0 0 20 20" aria-hidden="true">
+  {phase === 'new_moon' ? <circle cx="10" cy="10" r="9" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1" />
+   : phase === 'full_moon' ? <circle cx="10" cy="10" r="9" fill="rgba(255,255,255,.9)" />
+   : <><circle cx="10" cy="10" r="9" fill="rgba(255,255,255,.14)" /><path d={P[phase]} fill="rgba(255,255,255,.9)" /></>}
+</svg>

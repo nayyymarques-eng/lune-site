@@ -2,7 +2,7 @@
 import '../styles/site.css';
 import Wordmark from '../components/Wordmark.astro';
 import { CTA, POSTHOG_KEY, LIVE, APP_STORE_URL } from '../config';
-const { title, description = 'Your moon, read for you, and a 15-minute practice to live it.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
+const { glow = true, title, description = 'Your moon, read for you, and a 15-minute practice to live it.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · Your moon, read for you';
 ---
@@ -46,7 +46,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · Your moon, read
       <a class="btn primary sm" href="/#start" data-cta="header">{LIVE ? 'Try free' : 'Early access'}</a>
     </div>
   </header>
-  <main><slot /></main>
+  <main>{glow && <div class="bg l1 pglow" aria-hidden="true"></div>}<slot /></main>
   <footer class="foot">
     <div class="wrap fgrid">
       <div>
@@ -59,21 +59,24 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · Your moon, read
     </div>
     <div class="wrap small muted copy">© {new Date().getFullYear()} Lune. Not medical, psychological or financial advice. In crisis in the US, call or text 988.</div>
   </footer>
+  <script is:inline src="/lights.js"></script>
   <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
 </body>
 </html>
 <style>
   .top { position: sticky; top: 0; z-index: 10; background: rgba(0,0,0,.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
   .bar { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
-  nav { display: flex; gap: 28px; }
+  nav { display: flex; gap: 24px; }
   nav a { font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; color: var(--muted-foreground); text-decoration: none; }
   nav a:hover { color: #fff; }
   .foot { border-top: 1px solid var(--line); padding: 64px 0 32px; margin-top: 40px; }
   .fgrid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
-  .fcol { display: grid; gap: 10px; align-content: start; }
-  .fcol a { color: var(--muted-foreground); text-decoration: none; font-size: 14px; }
+  .fcol { display: grid; gap: 8px; align-content: start; }
+  .fcol a { color: var(--muted-foreground); text-decoration: none; font: var(--text-body); }
   .fcol a:hover { color: #fff; }
-  .copy { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 12px; }
+  .copy { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); font: var(--text-small); }
+  main { position: relative; }
+  .pglow { height: 700px; -webkit-mask-image: none; mask-image: none; }
   .sticky-cta { display: none; }
   @media (max-width: 820px) {
     nav { display: none; }

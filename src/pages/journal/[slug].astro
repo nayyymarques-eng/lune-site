@@ -18,7 +18,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'Article', headline:
     {p.data.cover && <img src={p.data.cover} alt="" class="cover" />}
     <div class="prose"><Content /></div>
     <div class="cta glass">
-      <h2 class="h-card">{p.data.sign ? `Is ${cap(p.data.sign)} your sign? Get the moon read for your sky.` : 'Get the moon read for your own sky.'}</h2>
+      <h2 class="h-card">{p.data.sign ? `Is ${cap(p.data.sign)} your sign? Get the moon read for your sky` : 'Get the moon read for your own sky'}</h2>
       <Signup source={`post-${p.id}`} />
     </div>
   </article>
@@ -28,5 +28,5 @@ const schema = { '@context': 'https://schema.org', '@type': 'Article', headline:
   .art .label a { text-decoration: none; }
   .lead { margin: 0; }
   .cover { border-radius: var(--radius-card); }
-  .cta { padding: 28px; display: grid; gap: 16px; margin-top: 40px; }
+  .cta { padding: 24px; display: grid; gap: 16px; margin-top: 40px; }
 </style>

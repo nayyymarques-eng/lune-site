@@ -50,3 +50,11 @@ export const lunationsIn = (d: MoonData, sign: string, from = Date.now()) =>
 
 export const fmtDate = (ms: number) => new Date(ms).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 export const utcOf = t;
+
+// Share of the synodic month since the last new moon (0 new, .5 full), for the light renderer's data-phase.
+export function cycleAt(d: MoonData, now = Date.now()) {
+  const nm = d.phases.filter((p) => p.kind === 'new_moon').map((p) => t(p.utc));
+  const i = nm.findIndex((x) => x > now);
+  if (i <= 0) return 0;
+  return (now - nm[i - 1]) / (nm[i] - nm[i - 1]);
+}

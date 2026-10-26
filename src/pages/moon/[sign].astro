@@ -54,7 +54,7 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
     </dl>
 
     <div class="cta glass">
-      <h2>Get the moon read for your own sky.</h2>
+      <h2>Get the moon read for your own sky</h2>
       <p class="muted">Your rising sign, your houses, and a 15-minute practice for tonight.</p>
       <Signup source={`sign-${sign}`} />
     </div>
@@ -67,22 +67,22 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
 </Base>
 <style>
   .page { padding-block: 64px; display: grid; gap: 20px; }
-  .page h2 { font-size: 28px; line-height: 1.15; margin-top: 32px; }
+  .page h2 { font: var(--text-title); letter-spacing: -0.035em; margin-top: 32px; }
   .page p { margin: 0; }
   .label a { text-decoration: none; }
-  .reading { font-family: var(--font-serif); font-size: 21px; line-height: 1.5; letter-spacing: -0.02em; }
+  .reading { font-family: var(--font-sans); font-size: 18px; line-height: 1.5; color: var(--foreground); }
   .dates { list-style: none; margin: 0; padding: 0; }
-  .dates li { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: 20px; }
+  .dates li { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 16px; color: var(--foreground); }
   .houses { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; margin: 0; }
   .houses div { border-top: 1px solid var(--line); padding: 14px 0; display: grid; gap: 4px; }
-  .houses dd { margin: 0; font-family: var(--font-serif); font-size: 17px; line-height: 1.4; }
+  .houses dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.5; color: var(--foreground); }
   .houses .mine dt { color: #fff; }
-  .live { display: flex; gap: 12px; align-items: center; padding: 16px 20px; }
+  .live { display: flex; gap: 16px; align-items: center; padding: 16px 20px; }
   .live[hidden] { display: none; }
-  .cta { padding: 28px; display: grid; gap: 12px; margin-top: 32px; }
+  .cta { padding: 24px; display: grid; gap: 16px; margin-top: 32px; }
   .cta h2 { margin: 0; }
-  .origin { font-family: var(--font-serif); font-size: 18px; line-height: 1.5; }
-  .others { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; }
+  .origin { font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
+  .others { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
   .others .chip { display: inline-flex; align-items: center; text-decoration: none; }
   @media (max-width: 640px) { .houses { grid-template-columns: 1fr; } }
 </style>

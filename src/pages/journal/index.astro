@@ -6,7 +6,7 @@ const posts = (await getCollection('journal', (p) => !p.data.draft)).sort((a, b)
 ---
 <Base title="Journal" description="Notes on the moon, the signs and small practices to live them.">
   <section class="wrap">
-    <div class="sec-head"><p class="label">Journal</p><h1 class="h-sec">Notes for each moon.</h1></div>
+    <div class="sec-head"><p class="label">Journal</p><h1 class="h-sec">Notes for each moon</h1></div>
     <div class="list">
       {posts.map((p) => (
         <a class="post glass" href={`/journal/${p.id}`}>
@@ -16,14 +16,14 @@ const posts = (await getCollection('journal', (p) => !p.data.draft)).sort((a, b)
         </a>
       ))}
     </div>
-    <div class="sub glass"><h2 class="h-card">One letter per moon.</h2><Signup source="journal" note="The next moon, read for each sign. Unsubscribe any time." /></div>
+    <div class="sub glass"><h2 class="h-card">One letter per moon</h2><Signup source="journal" note="The next moon, read for each sign. Unsubscribe any time." /></div>
   </section>
 </Base>
 <style>
   .list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .post { padding: 24px; display: grid; gap: 10px; text-decoration: none; align-content: start; }
+  .post { padding: 24px; display: grid; gap: 8px; text-decoration: none; align-content: start; }
   .post:hover { background: var(--glass-selected); }
   .post p { margin: 0; }
-  .sub { margin-top: 48px; padding: 28px; display: grid; gap: 16px; }
+  .sub { margin-top: 48px; padding: 24px; display: grid; gap: 16px; }
   @media (max-width: 820px) { .list { grid-template-columns: 1fr; } }
 </style>
