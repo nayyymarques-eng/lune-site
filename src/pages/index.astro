@@ -310,6 +310,11 @@ const schema = [
   }
   @media (max-width: 900px) {
     .pgrid, .agrid { grid-template-columns: 1fr; }
+    /* the spiral sits high, right under the section above, and the text tucks under it (Nayara 26 Oct) */
+    .pillars { padding-top: 16px; }
+    .pgrid { gap: 0; }
+    .sci { padding-bottom: 32px; }
+    .plight canvas { width: min(430px, 100vw); height: min(430px, 100vw); margin: -64px 0 -64px; }
     .wgrid { grid-template-columns: 1fr 1fr; }
     .phone { width: 240px; }
     .phones { width: 340px; }
