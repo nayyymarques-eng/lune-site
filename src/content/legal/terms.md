@@ -10,7 +10,7 @@ Last updated: [date]
 
 **Your account.** Keep your login safe. You may delete your account at any time.
 
-**Subscription.** Lune offers a free tier and a paid subscription ($9.99 a month or $59.99 a year, with a 15-day free trial). Payment is handled by Apple or Google. The subscription renews automatically unless you cancel at least 24 hours before the end of the period, in your store account settings. Refunds follow the store's rules.
+**Subscription.** Lune offers a free tier and a paid subscription ($9.99 a month or $59.99 a year, with a 7-day free trial). Payment is handled by Apple or Google. The subscription renews automatically unless you cancel at least 24 hours before the end of the period, in your store account settings. Refunds follow the store's rules.
 
 **Content.** The texts, readings, images and design of Lune belong to us or to those who licensed them to us. Some photographs are used under Creative Commons licences, listed in You › Credits. You may use the app for yourself, but you may not copy or resell its content.
 
