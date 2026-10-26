@@ -441,7 +441,14 @@ const schema = [
     .cgrid { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 560px) {
-    .cgrid, .wgrid { grid-template-columns: 1fr; }
+    .wgrid { grid-template-columns: 1fr; }
+    /* moon cards: a sideways carousel on phones, like How it works (Nayara 26 Oct) */
+    .cal .wrap { position: relative; }
+    .cgrid { position: static; grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(300px, 80vw); gap: 12px;
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
+      margin-inline: calc(-1 * var(--gutter, 16px)); padding: 0 var(--gutter, 16px) 8px; scroll-padding-inline: var(--gutter, 16px); }
+    .cgrid::-webkit-scrollbar { display: none; }
+    .cgrid .mcard { scroll-snap-align: start; }
     .wgrid { gap: 12px; }
     .wcell { grid-template-columns: 72px 1fr; column-gap: 16px; row-gap: 6px; padding: 20px 20px 20px 12px; align-items: center; }
     .wcell canvas { width: 80px; height: 80px; margin: -6px; grid-row: span 2; align-self: start; }
