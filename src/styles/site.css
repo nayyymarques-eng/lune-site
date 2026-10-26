@@ -37,6 +37,9 @@ p { text-wrap: pretty; }
   font: var(--text-label); text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: background .2s, transform .2s; }
 .btn:active { transform: scale(.98); }
 .btn:focus-visible { box-shadow: var(--focus-ring); outline: none; }
+/* Button labels a step heavier than other labels (Nayara 26 Oct: "thicker stroke everywhere") */
+.btn { font-weight: 500; }
+.btn.secondary { border-width: 1.5px; }
 .btn.primary { background: var(--primary); color: var(--primary-foreground); }
 .btn.primary:hover { background: rgba(255,255,255,.88); }
 .btn.secondary { background: var(--glass-fill); border-color: var(--glass-edge); color: var(--foreground); box-shadow: var(--glass-highlight); }
