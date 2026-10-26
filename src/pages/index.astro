@@ -36,18 +36,19 @@ const schema = [
 <Base glow={false} description="A 15-minute ritual for every moon, with a candle, a glass of water or a pen. Lune gives you tonight's practice, timed to the moon. Free to start." schema={schema}>
   <section class="hero">
     <Sky />
-    <div class="wrap hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
+    <div class="hleft">
       <div class="hmoonw">
-        <canvas class="hmoon" data-light="moon" data-size="300" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
+        <canvas class="hmoon" data-light="moon" data-size="380" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
         <script is:inline>document.currentScript.previousElementSibling.dataset.phase = (((Date.now() - 947182440000) / 2551442877) % 1).toFixed(3);</script>
+        <div class="hmark"><Wordmark height={72} /></div>
       </div>
-      <div class="glass hcard">
-        <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
-        <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
-        <div class="hform"><Signup source="hero" /></div>
-        <Stores where="hero" />
-        <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
-      </div>
+    </div>
+    <div class="glass hcard hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
+      <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
+      <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
+      <div class="hform"><Signup source="hero" /></div>
+      <Stores where="hero" />
+      <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
       <ul class="proof">
         <li><span class="spark"></span>Practices timed to every moon through 2030</li>
         <li><span class="spark"></span>Gestures kept by traditions across the world</li>
@@ -222,81 +223,21 @@ const schema = [
 
 <style>
   section { position: relative; }
-  .hero { position: relative; min-height: min(100svh, 920px); display: grid; align-items: center; padding: 64px 0 96px; overflow: hidden; }
-  .hero .wrap { position: relative; z-index: 1; }
-  .hero::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 46% 42% at 50% 55%, rgb(0 0 0 / .6), rgb(0 0 0 / 0)); }
-  @media (max-width: 720px) { .hero::before { background: radial-gradient(ellipse 90% 50% at 50% 55%, rgb(0 0 0 / .7), rgb(0 0 0 / 0)); } }
-  .hcol { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 24px; }
-  .hlogo { width: 112px; height: auto; opacity: .9; }
-  .hmoon { width: 300px; height: 300px; display: block; }
-  .hcard { box-sizing: border-box; max-width: 100%; min-width: 0; display: grid; justify-items: center; gap: 20px; width: min(640px, 100%); margin: -130px auto 0; padding: 40px 40px 32px; border-radius: 16px; position: relative; z-index: 2; }
+  /* Hero (Nayara 26 Oct): desktop = moon and logo on the sky at left, full-height glass panel at right;
+     mobile = moon with the logo inside it, the card rising over its lower half. */
+  .hero { position: relative; min-height: min(100svh, 920px); display: grid; grid-template-columns: 1fr minmax(460px, 44%); align-items: stretch; padding: 0; overflow: hidden; }
+  .hleft { position: relative; z-index: 1; display: grid; place-items: center; padding: 64px 24px; }
+  .hmoonw { position: relative; display: grid; justify-items: center; gap: 24px; }
+  .hmoon { width: 380px; height: 380px; display: block; }
+  .hmark { display: grid; justify-items: center; }
+  .hcard { position: relative; z-index: 2; box-sizing: border-box; min-width: 0; display: grid; gap: 20px; align-content: center; justify-items: start; padding: 72px clamp(32px, 5vw, 72px); border-width: 0 0 0 1px; border-radius: 0; }
   .hcol .h-hero { margin: 0; }
   .hcol .lead { max-width: 520px; }
   .more { display: inline-flex; gap: 8px; margin-top: 24px; font: var(--text-body); color: var(--foreground); text-decoration: none; border-bottom: 1px solid rgb(255 255 255 / .24); padding-bottom: 2px; }
   .more:hover { border-color: var(--foreground); }
   .hcol .more { margin-top: 0; color: var(--muted-foreground); }
-  .hform { display: grid; justify-items: center; width: 100%; }
-  .hform :global(form) { justify-content: center; margin-inline: auto; }
-  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; font: var(--text-small); font-size: 12px; color: var(--muted-foreground); }
-  .proof li { display: flex; align-items: center; gap: 8px; }
-  .spark { width: 4px; height: 4px; border-radius: 50%; background: #fff; flex: none;
-    box-shadow: 0 0 4px 1px rgba(255,246,232,.9), 0 0 12px 3px rgba(232,201,140,.35); animation: spark 3.2s ease-in-out infinite; }
-  .proof li:nth-child(2) .spark { animation-delay: -1.1s; }
-  .proof li:nth-child(3) .spark { animation-delay: -2.2s; }
-  @keyframes spark { 0%, 100% { opacity: .55; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.15); } }
-  .app { overflow: hidden; }
-  .agrid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-  .agrid > * { min-width: 0; }
-  .phone { width: 300px; aspect-ratio: 430 / 932; border-radius: 44px; padding: 8px; background: #0b0b0b; border: 1px solid var(--glass-edge);
-    box-shadow: var(--glass-highlight), 0 40px 120px rgba(0,0,0,.8); }
-  .phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 36px; }
-  .phones { position: relative; width: 420px; max-width: 100%; aspect-ratio: 420 / 600; }
-  .phones .phone { position: absolute; width: 260px; }
-  .phones .back { left: 0; top: 0; transform: rotate(-4deg); opacity: .7; }
-  .phones .front { right: 0; bottom: 0; transform: rotate(3deg); box-shadow: var(--glass-highlight), 0 40px 120px rgba(0,0,0,.9); }
-  .acopy { display: grid; gap: 24px; justify-items: start; }
-  .why .lead { max-width: 640px; }
-  .wgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .wcell { padding: 24px; display: grid; gap: 16px; align-content: start; }
-  .wcell p { margin: 0; }
-  .wcell canvas { width: 64px; height: 64px; margin: -8px 0 0 -8px; }
-  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .steps li { padding: 24px; display: grid; gap: 16px; align-content: start; }
-  .steps p { margin: 0; }
-  .slight { width: 120px; height: 120px; margin: -16px 0 0 -16px; }
-  .tint { border-radius: var(--radius-card); border: 1px solid rgb(var(--c) / .18); background: radial-gradient(130% 90% at 50% 0%, rgb(var(--c) / .12), transparent 62%), var(--glass-fill);
-    box-shadow: var(--glass-highlight); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
-  .pillars { overflow: hidden; }
-  .pgrid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
-  .plight { display: grid; place-items: center; }
-  .plight canvas { width: 430px; height: 430px; max-width: 100%; }
-  .pcopy { display: grid; gap: 24px; }
-  .three { display: grid; gap: 16px; margin: 0; }
-  .three div { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 8px; }
-  .three dd { margin: 0; font: var(--text-body); color: var(--foreground); }
-  .cgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .mcard { padding: 24px; display: grid; gap: 16px; text-decoration: none; align-content: start; }
-  .mcard p { margin: 0; font: var(--text-body); }
-  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-  .badge { font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--glass-fill); color: var(--foreground); }
-  .center { text-align: center; margin-inline: auto; justify-items: center; }
-  .prgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 840px; margin: 0 auto; }
-  .plan { padding: 24px; display: grid; gap: 16px; align-content: start; }
-  .plan p { margin: 0; }
-  .plan.sel { background: var(--glass-selected); border-color: rgba(255,255,255,.24); }
-  .plan .btn { margin-top: 8px; }
-  .seg { display: grid; grid-template-columns: 1fr 1fr; padding: var(--space-xs); border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge); }
-  .seg button { min-height: 32px; padding: 0 16px; border: 0; border-radius: 8px; background: none; color: var(--muted-foreground); font: var(--text-label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
-  .seg button.on { background: var(--glass-selected); color: var(--foreground); }
-  .price { font-family: var(--font-serif); font-size: 28px; letter-spacing: -0.035em; line-height: 1.04; color: var(--foreground); }
-  .per { font: var(--text-body); letter-spacing: 0; color: var(--muted-foreground); }
-  .feats { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-  .feats li { padding-left: 16px; position: relative; color: var(--foreground); }
-  .feats li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
-  details { border-top: 1px solid var(--line); padding: 16px 0; }
-  details:last-child { border-bottom: 1px solid var(--line); }
-  summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; font: var(--text-body); font-size: 15px; color: var(--foreground); }
-  summary::-webkit-details-marker { display: none; }
+  .hform { display: grid; width: 100%; }
+  .proof { list-style: none; padding: 0; margin: 16px 0 0; display: grid; gap: 8px; font: var(--text-small); font-size: 12px; color: var(--muted-foreground); }
   .chev { flex: none; color: var(--muted-foreground); transition: transform .3s; }
   details[open] .chev { transform: rotate(180deg); }
   details p { margin: 8px 0 0; }
@@ -311,9 +252,12 @@ const schema = [
     .phone { width: 240px; }
     .phones { width: 340px; }
     .phones .phone { width: 200px; border-radius: 32px; }
-    .hlogo { width: 96px; }
-    .hmoon { width: 220px; height: 220px; }
-    .hcard { padding: 32px 16px 24px; margin-top: -104px; }
+    .hero { grid-template-columns: 1fr; min-height: 0; padding: 32px 0 64px; }
+    .hleft { padding: 0; }
+    .hmoon { width: min(380px, 100vw - 16px); height: min(380px, 100vw - 16px); }
+    .hmark { position: absolute; inset: 0; place-items: center; align-content: center; }
+    .hmark :global(img) { height: 56px !important; }
+    .hcard { width: min(640px, 100% - 32px); margin: -110px auto 0; padding: 32px 20px 24px; border-width: 1px; border-radius: 16px; }
     .steps, .prgrid { grid-template-columns: 1fr; }
     .cgrid { grid-template-columns: 1fr 1fr; }
     .plan.sel { order: -1; }
