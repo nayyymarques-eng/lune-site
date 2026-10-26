@@ -2,7 +2,7 @@
    Every <canvas data-light> draws itself: data-light (form), data-size (css px), data-color ("r g b"),
    data-r (radius share), data-sparkle (points of mixed sizes that twinkle).
    Each slot has its own canvas so it scrolls with the page (a fixed layer lagged behind scrolling, Nayara 26 Oct).
-   Lights up to 160 px are drawn once and stay still; larger ones move only while on screen, at about 30 fps. */
+   Lights up to 160 px are drawn once and stay still unless they carry data-live; larger ones move only while on screen, at about 30 fps. */
 (function () {
   const LL = window.LuneLight; if (!LL) return;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -13,7 +13,7 @@
     if (!cv.style.width && cv.clientWidth === 300) { cv.style.width = size + 'px'; cv.style.height = size + 'px'; } // canvases CSS leaves at the 300 px default
     const R = LL.create(cv); if (!R) return;
     const d = cv.dataset, s = { cv, R, form: d.light, rgb: (d.color || '255 250 240').split(' ').map(Number), r: d.r ? +d.r : undefined, phase: d.phase ? +d.phase : undefined,
-      sparkle: 'sparkle' in d, still: size <= 160 || reduce };
+      sparkle: 'sparkle' in d, still: (size <= 160 && !('live' in d)) || reduce };
     slots.push(s);
   });
   function paint(s, T) {

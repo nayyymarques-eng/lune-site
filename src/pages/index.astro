@@ -63,10 +63,10 @@ const schema = [
         <p class="lead">Every act in Lune is read from three sides at once. The moon gives it a time. A tradition, somewhere in the world, gives it a memory. Neuroscience and psychology are beginning to show what it does in us. You decide how much to believe: a prayer, a symbol, or simply a pause. Each level is welcome, and each one adds meaning to the same small gesture.</p>
       </div>
       <div class="wgrid">
-        <div class="glass wcell"><canvas data-light="mirror" data-size="64" data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">The moon keeps the time</h3><p class="muted">Each phase is a moment to begin, to tend or to let go. It decides nothing; it only asks you to pause and choose.</p></div>
-        <div class="glass wcell"><canvas data-light="twin" data-size="64" data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Gestures with a long memory</h3><p class="muted">A candle, a glass of water, a knot in a cord. Each one shows the people who kept it, beside its kin in another culture. Spiritual, not religious.</p></div>
-        <div class="glass wcell"><canvas data-light="ripple" data-size="64" data-color="158 220 164" aria-hidden="true"></canvas><h3 class="h-card">What the mind tells us</h3><p class="muted">What neuroscience and psychology have found about breath, ritual and attention, cited with their limits. Where no study exists, we say so.</p></div>
-        <div class="glass wcell"><canvas data-light="body" data-size="64" data-color="240 169 124" aria-hidden="true"></canvas><h3 class="h-card">Meaning at your own depth</h3><p class="muted">Believe all of it, some of it or none. A practice is a moment of attention, never treatment, and never aimed at another person's will.</p></div>
+        <div class="glass wcell"><canvas data-light="vortex" data-size="96" data-sparkle data-live data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">The moon keeps the time</h3><p class="muted">Each phase is a moment to begin, to tend or to let go. It decides nothing; it only asks you to pause and choose.</p></div>
+        <div class="glass wcell"><canvas data-light="flame" data-size="96" data-sparkle data-live data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Gestures with a long memory</h3><p class="muted">A candle, a glass of water, a knot in a cord. Each one shows the people who kept it, beside its kin in another culture. Spiritual, not religious.</p></div>
+        <div class="glass wcell"><canvas data-light="salt" data-size="96" data-sparkle data-live data-color="158 220 164" aria-hidden="true"></canvas><h3 class="h-card">What the mind tells us</h3><p class="muted">What neuroscience and psychology have found about breath, ritual and attention, cited with their limits. Where no study exists, we say so.</p></div>
+        <div class="glass wcell"><canvas data-light="steam" data-size="96" data-sparkle data-live data-color="240 169 124" aria-hidden="true"></canvas><h3 class="h-card">Meaning at your own depth</h3><p class="muted">Believe all of it, some of it or none. A practice is a moment of attention, never treatment, and never aimed at another person's will.</p></div>
       </div>
     </div>
   </section>
@@ -95,21 +95,21 @@ const schema = [
         <p class="label">How it works</p>
         <h2 class="h-sec">Light it, live it, let it go</h2>
       </div>
-      <ol class="steps">
+      <ol class="steps" aria-label="Three steps, swipe to see more">
         <li class="tint" style="--c: 179 166 242">
-          <canvas class="slight" data-light="moon" data-size="120" data-r="0.4" data-phase="0.5" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="moon" data-size="220" data-r="0.4" data-phase="0.5" data-sparkle aria-hidden="true"></canvas>
           <span class="label">01 · Tonight's moon</span>
           <h3 class="h-card">What the night is asking</h3>
           <p class="muted">A few words on the moon's mood: what tonight invites, and what to hold more lightly. Written as a mirror, never as a forecast.</p>
         </li>
         <li class="tint" style="--c: 240 169 124">
-          <canvas class="slight" data-light="burst" data-size="120" data-r="0.4" data-color="240 169 124" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="burst" data-size="220" data-r="0.42" data-sparkle data-color="240 169 124" aria-hidden="true"></canvas>
           <span class="label">02 · A practice to live it</span>
           <h3 class="h-card">Fifteen minutes, with what you have</h3>
           <p class="muted">A candle, water, paper, your breath. Open, a few gestures, close, around what matters to you now: love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
         </li>
         <li class="tint" style="--c: 143 184 242">
-          <canvas class="slight" data-light="vortex" data-size="120" data-r="0.5" data-color="143 184 242" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="jar" data-size="220" data-r="0.42" data-sparkle data-color="143 184 242" aria-hidden="true"></canvas>
           <span class="label">03 · Keep it</span>
           <h3 class="h-card">A quiet record of your moons</h3>
           <p class="muted">Each practice stays with you, so at the full moon you can look back at what you planted at the new one, and see what it became.</p>
@@ -227,11 +227,14 @@ const schema = [
   .wgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .wcell { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .wcell p { margin: 0; }
-  .wcell canvas { width: 64px; height: 64px; margin: -8px 0 0 -8px; }
-  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .steps li { padding: 24px; display: grid; gap: 16px; align-content: start; }
+  .wcell canvas { width: 96px; height: 96px; margin: -16px 0 -8px -16px; }
+  /* How it works = carousel of portrait cards, all the same size, swiped sideways (Nayara 26 Oct) */
+  .steps { list-style: none; padding: 0 0 8px; margin: 0; display: grid; grid-auto-flow: column; grid-auto-columns: min(340px, 78vw); gap: 16px;
+    overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .steps::-webkit-scrollbar { display: none; }
+  .steps li { aspect-ratio: 3 / 4.4; padding: 24px; display: grid; grid-template-rows: 1fr auto auto 5.6lh; gap: 12px; scroll-snap-align: start; }
   .steps p { margin: 0; }
-  .slight { width: 120px; height: 120px; margin: -16px 0 0 -16px; }
+  .slight { width: 220px; height: 220px; place-self: center; }
   .tint { border-radius: var(--radius-card); border: 1px solid rgb(var(--c) / .18); background: radial-gradient(130% 90% at 50% 0%, rgb(var(--c) / .12), transparent 62%), var(--glass-fill);
     box-shadow: var(--glass-highlight); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
   .pillars { overflow: hidden; }
@@ -274,10 +277,15 @@ const schema = [
     .hmark :global(img) { height: 56px !important; }
     .hcard { width: min(640px, 100% - 32px); margin: -110px auto 0; padding: 32px 20px 24px; border: 1px solid var(--glass-edge); border-radius: 16px; background: rgb(20 20 26 / .86); box-shadow: var(--glass-highlight); }
     .hcard::before { display: none; }
-    .steps { grid-template-columns: 1fr; }
+    .steps { margin-inline: calc(-1 * var(--gutter, 16px)); padding-inline: var(--gutter, 16px); scroll-padding-inline: var(--gutter, 16px); }
     .cgrid { grid-template-columns: 1fr 1fr; }
   }
-  @media (max-width: 560px) { .cgrid, .wgrid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .cgrid, .wgrid { grid-template-columns: 1fr; }
+    .wgrid { gap: 12px; }
+    .wcell { grid-template-columns: 72px 1fr; column-gap: 16px; row-gap: 6px; padding: 20px 20px 20px 12px; align-items: center; }
+    .wcell canvas { width: 80px; height: 80px; margin: -6px; grid-row: span 2; align-self: start; }
+  }
   /* Entrance, after the app opening: the moon gathers from far back, the ring and card follow, words come out of blur */
   @media (prefers-reduced-motion: no-preference) {
     /* The sheet slides in from the right (transform only, so it stays smooth), then the words arrive. */
