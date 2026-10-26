@@ -72,8 +72,8 @@ const { fade = 'bottom' } = Astro.props;
   // A large panel marked data-solid skips the blur (too costly every frame): it is tinted in CSS and simply hides the stars behind it.
   function frostRects() {
     const cr = cv.getBoundingClientRect();
-    return [...cv.parentElement.querySelectorAll('.glass')].map((e) => [e.getBoundingClientRect(), e.hasAttribute('data-solid')])
-      .filter(([r]) => r.width > 200 && r.height > 120).map(([r, solid]) => ({ x: r.left - cr.left, y: r.top - cr.top, w: r.width, h: r.height, solid }));
+    return [...cv.parentElement.querySelectorAll('.glass')].map((e) => [e.getBoundingClientRect(), e.hasAttribute('data-solid'), parseFloat(getComputedStyle(e).borderTopLeftRadius) || 0])
+      .filter(([r]) => r.width > 200 && r.height > 120).map(([r, solid, rad]) => ({ x: r.left - cr.left, y: r.top - cr.top, w: r.width, h: r.height, solid, rad }));
   }
   const hit = (r, x, y) => x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h;
   const inside = (fr, x, y) => fr.some((r) => !r.solid && hit(r, x, y));
@@ -85,7 +85,7 @@ const { fade = 'bottom' } = Astro.props;
     tmp = tmp || document.createElement('canvas');
     tmp.width = cv.width; tmp.height = cv.height; tmp.getContext('2d').drawImage(cv, 0, 0);
     for (const r of fr) {
-      ctx.save(); ctx.beginPath(); ctx.roundRect ? ctx.roundRect(r.x, r.y, r.w, r.h, 16) : ctx.rect(r.x, r.y, r.w, r.h); ctx.clip();
+      ctx.save(); ctx.beginPath(); ctx.roundRect ? ctx.roundRect(r.x, r.y, r.w, r.h, r.rad) : ctx.rect(r.x, r.y, r.w, r.h); ctx.clip();
       ctx.clearRect(r.x, r.y, r.w, r.h); ctx.filter = 'blur(18px)'; ctx.drawImage(tmp, 0, 0, W, H); ctx.restore();
     }
   }
@@ -110,12 +110,13 @@ const { fade = 'bottom' } = Astro.props;
 
   // The Milky Way turns about 1 degree every 8 seconds, so the heavy 2D layer is only repainted twice a second
   // (or every frame while a shooting star crosses); the twinkling points on the WebGL layer run every frame.
-  let lastRot = -1, wasShoot = false;
+  // A glass panel that moves (its entrance) is followed every frame until it settles.
+  let lastRot = -1, wasShoot = false, lastKey = '';
   function frame(ms) {
     const rot = reduce ? 0 : Math.floor(ms / 500) * 0.5 * 0.0022;
-    const fr = frostRects();
-    if (rot === lastRot && !shoot && !wasShoot && ms > 0) { points(ms, rot, fr); return; }
-    lastRot = rot; wasShoot = !!shoot;
+    const fr = frostRects(), key = fr.map((r) => `${r.x | 0},${r.y | 0},${r.w | 0},${r.h | 0}`).join(';');
+    if (rot === lastRot && key === lastKey && !shoot && !wasShoot && ms > 0) { points(ms, rot, fr); return; }
+    lastRot = rot; lastKey = key; wasShoot = !!shoot;
     ctx.clearRect(0, 0, W, H);
     ctx.save(); ctx.translate(W / 2, H * .35); ctx.rotate(rot); ctx.translate(-D / 2, -D / 2);
     ctx.drawImage(layer, 0, 0, D, D);
