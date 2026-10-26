@@ -68,7 +68,25 @@ const { fade = 'bottom' } = Astro.props;
     bright.forEach((b) => (b.rgb = b.c.split(' ').map(Number)));
   }
 
-  function points(ms, rot) {
+  // Glass cards in this section frost what is behind them. Done here because backdrop-filter does not reach these canvases.
+  function frostRects() {
+    const cr = cv.getBoundingClientRect();
+    return [...cv.parentElement.querySelectorAll('.glass')].map((e) => e.getBoundingClientRect())
+      .filter((r) => r.width > 200 && r.height > 120).map((r) => ({ x: r.left - cr.left, y: r.top - cr.top, w: r.width, h: r.height }));
+  }
+  const inside = (fr, x, y) => fr.some((r) => x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h);
+  let tmp = null;
+  function frost(fr) {
+    if (!fr.length || !('filter' in ctx)) return;
+    tmp = tmp || document.createElement('canvas');
+    tmp.width = cv.width; tmp.height = cv.height; tmp.getContext('2d').drawImage(cv, 0, 0);
+    for (const r of fr) {
+      ctx.save(); ctx.beginPath(); ctx.roundRect ? ctx.roundRect(r.x, r.y, r.w, r.h, 16) : ctx.rect(r.x, r.y, r.w, r.h); ctx.clip();
+      ctx.clearRect(r.x, r.y, r.w, r.h); ctx.filter = 'blur(18px)'; ctx.drawImage(tmp, 0, 0, W, H); ctx.restore();
+    }
+  }
+
+  function points(ms, rot, fr) {
     if (!GL && window.LuneLight) GL = LuneLight.create(glc);
     if (!GL) { // no WebGL: paint the stars flat
       ctx.save(); ctx.translate(W / 2, H * .35); ctx.rotate(rot); ctx.translate(-D / 2, -D / 2);
@@ -78,9 +96,10 @@ const { fade = 'bottom' } = Astro.props;
     const c = Math.cos(rot), sn = Math.sin(rot), ox = W / 2, oy = H * .35, h = D / 2;
     const at = (x, y) => [ox + c * (x - h) - sn * (y - h), oy + sn * (x - h) + c * (y - h)];
     GL.begin();
-    for (const s of stars) { const [x, y] = at(s.x, s.y); if (x < -4 || y < -4 || x > W + 4 || y > H + 4) continue; GL.dot(x, y, .35 + s.r * .55, s.c, s.a); }
+    for (const s of stars) { const [x, y] = at(s.x, s.y); if (x < -4 || y < -4 || x > W + 4 || y > H + 4) continue; if (inside(fr, x, y)) { if (s.r > .6) GL.dot(x, y, 2.4 + s.r * 2, s.c, s.a * .12); continue; } GL.dot(x, y, .35 + s.r * .55, s.c, s.a); }
     for (const s of bright) { const [x, y] = at(s.x, s.y); if (x < -9 || y < -9 || x > W + 9 || y > H + 9) continue;
       const tw = reduce ? .85 : .55 + .45 * Math.sin(ms / 1000 * s.f + s.p) * Math.sin(ms / 1700 * s.f + s.p * 2);
+      if (inside(fr, x, y)) { GL.dot(x, y, 3 + s.r * 3, s.rgb, .12 * tw); continue; }
       GL.dot(x, y, s.r * .9, s.rgb, Math.max(.15, tw)); }
     GL.end();
   }
@@ -96,7 +115,9 @@ const { fade = 'bottom' } = Astro.props;
         ctx.beginPath(); ctx.moveTo(s.x - L, s.y); ctx.lineTo(s.x + L, s.y); ctx.moveTo(s.x, s.y - L); ctx.lineTo(s.x, s.y + L); ctx.stroke(); }
     }
     ctx.restore();
-    points(ms, rot);
+    const fr = frostRects();
+    frost(fr);
+    points(ms, rot, fr);
     if (!reduce) {
       if (!shoot && ms > nextShoot) { const a = .5 + Math.random() * .5; shoot = { x: W * (.2 + Math.random() * .6), y: H * Math.random() * .3, vx: Math.cos(a) * 900, vy: Math.sin(a) * 900, t0: ms }; }
       if (shoot) {
