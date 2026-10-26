@@ -20,11 +20,11 @@ const big = (moon as any).phases.filter((p: any) => (p.kind === 'new_moon' || p.
 });
 
 const faq = [
-  ['Do I need to believe in astrology?', 'No. Lune reads the moon as a mirror, never as a prediction. The moon does nothing by itself: a phase is a moment, the sign a tone, the house an area of life. You bring the meaning.'],
-  ['Is Lune religious?', 'Lune is spiritual, not religious. Practices come from many traditions, shown side by side as kin, never ranked. Believe what you choose.'],
+  ['Do I need to believe in astrology?', 'No. Lune holds belief at many depths. Some people feel the moon as something sacred, some use it as the oldest clock we have, some come only for the quiet fifteen minutes. The practice is the same for all of them: a phase is a moment, a sign a tone, a house an area of life. The moon decides nothing. You bring the meaning.'],
+  ['Is Lune religious?', 'Lune is spiritual, not religious. Each gesture shows the people who kept it and its kin in other cultures, side by side, never ranked. Take what speaks to you and believe what you choose.'],
   ['What do I need for a practice?', 'What you already have at home: a candle, a glass of water, paper and a pen. Tell Lune what you have and practices start from it. Fifteen minutes, often less.'],
   ['Do I need my birth time?', 'No. Without it, Lune counts your houses from your Sun sign. Add it whenever you like to see the moon in your own houses.'],
-  ['Is the science real?', 'Every "What science says" cites a published study, with its limits said plainly. Where no study exists, we say so.'],
+  ['Is the science real?', 'Every "What science says" cites published research, mostly neuroscience and psychology on breath, ritual and attention: who was studied, for how long, and where the evidence is still thin. Where no study exists, we say so, and let the tradition speak for itself.'],
   ['How does the trial work?', `Premium is free for ${PRICE.trialDays} days. After that it is ${PRICE.month} a month or ${PRICE.year} a year, and you can cancel any time in your store settings. The free tier stays free.`],
 ];
 const schema = [
@@ -61,14 +61,14 @@ const schema = [
     <div class="wrap">
       <div class="sec-head">
         <p class="label">Why Lune</p>
-        <h2 class="h-sec">An old rhythm for a tired, lit-up life</h2>
-        <p class="lead">Our days run on screens. Lune uses the oldest clock we have, the moon, as a cue to put the phone down, light a candle and come back to yourself. Small, regular, yours.</p>
+        <h2 class="h-sec">A different way to connect with something bigger</h2>
+        <p class="lead">Every act in Lune is read from three sides at once. The moon gives it a time. A tradition, somewhere in the world, gives it a memory. Neuroscience and psychology are beginning to show what it does in us. You decide how much to believe: a prayer, a symbol, or simply a pause. Each level is welcome, and each one adds meaning to the same small gesture.</p>
       </div>
       <div class="wgrid">
-        <div class="glass wcell"><canvas data-light="mirror" data-size="64" data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">A mirror, never a prophecy</h3><p class="muted">The moon is a cue, not a forecast. It decides nothing; you bring the meaning.</p></div>
-        <div class="glass wcell"><canvas data-light="twin" data-size="64" data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Many traditions, as kin</h3><p class="muted">Each gesture shows where it comes from, beside the same gesture in another culture. Spiritual, not religious.</p></div>
-        <div class="glass wcell"><canvas data-light="ripple" data-size="64" data-color="158 220 164" aria-hidden="true"></canvas><h3 class="h-card">Science, said gently</h3><p class="muted">What studies suggest, cited, with their limits. Where no study exists, we say so.</p></div>
-        <div class="glass wcell"><canvas data-light="body" data-size="64" data-color="240 169 124" aria-hidden="true"></canvas><h3 class="h-card">Care before anything</h3><p class="muted">A practice is a moment of attention, not treatment. Nothing is ever aimed at another person's will.</p></div>
+        <div class="glass wcell"><canvas data-light="mirror" data-size="64" data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">The moon keeps the time</h3><p class="muted">Each phase is a moment to begin, to tend or to let go. It decides nothing; it only asks you to pause and choose.</p></div>
+        <div class="glass wcell"><canvas data-light="twin" data-size="64" data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Gestures with a long memory</h3><p class="muted">A candle, a glass of water, a knot in a cord. Each one shows the people who kept it, beside its kin in another culture. Spiritual, not religious.</p></div>
+        <div class="glass wcell"><canvas data-light="ripple" data-size="64" data-color="158 220 164" aria-hidden="true"></canvas><h3 class="h-card">What the mind tells us</h3><p class="muted">What neuroscience and psychology have found about breath, ritual and attention, cited with their limits. Where no study exists, we say so.</p></div>
+        <div class="glass wcell"><canvas data-light="body" data-size="64" data-color="240 169 124" aria-hidden="true"></canvas><h3 class="h-card">Meaning at your own depth</h3><p class="muted">Believe all of it, some of it or none. A practice is a moment of attention, never treatment, and never aimed at another person's will.</p></div>
       </div>
     </div>
   </section>
@@ -84,8 +84,8 @@ const schema = [
       </Ring>
       <div class="acopy">
         <p class="label">Tonight, in the app</p>
-        <h2 class="h-sec">Tonight's practice, ready when you are</h2>
-        <p class="lead">Each evening Lune opens on the moon above you and one practice for it: open, a few gestures, close. Why tonight, where the gesture comes from and what science says sit one tap away.</p>
+        <h2 class="h-sec">Tonight's practice, waiting for you</h2>
+        <p class="lead">Each evening Lune opens on the moon above you and one practice made for it: you arrive, you make a few small gestures, you close. When you want to go deeper, why tonight, where the gesture was born and what the studies say are one tap away. When you don't, the practice is enough.</p>
         <a class="btn secondary" href="/tonight" data-cta="app-tonight">See tonight's moon</a>
       </div>
     </div>
@@ -101,20 +101,20 @@ const schema = [
         <li class="tint" style="--c: 179 166 242">
           <canvas class="slight" data-light="moon" data-size="120" data-r="0.4" data-phase="0.5" aria-hidden="true"></canvas>
           <span class="label">01 · Tonight's moon</span>
-          <h3 class="h-card">One sentence for the night</h3>
-          <p class="muted">What the night is good for, and what to go easy on. Plain, warm words.</p>
+          <h3 class="h-card">What the night is asking</h3>
+          <p class="muted">A few words on the moon's mood: what tonight invites, and what to hold more lightly. Written as a mirror, never as a forecast.</p>
         </li>
         <li class="tint" style="--c: 240 169 124">
           <canvas class="slight" data-light="burst" data-size="120" data-r="0.4" data-color="240 169 124" aria-hidden="true"></canvas>
           <span class="label">02 · A practice to live it</span>
-          <h3 class="h-card">Fifteen minutes, with a candle and a pen</h3>
-          <p class="muted">Open, a few gestures, close. Choose love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
+          <h3 class="h-card">Fifteen minutes, with what you have</h3>
+          <p class="muted">A candle, water, paper, your breath. Open, a few gestures, close, around what matters to you now: love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
         </li>
         <li class="tint" style="--c: 143 184 242">
           <canvas class="slight" data-light="vortex" data-size="120" data-r="0.5" data-color="143 184 242" aria-hidden="true"></canvas>
           <span class="label">03 · Keep it</span>
           <h3 class="h-card">A quiet record of your moons</h3>
-          <p class="muted">Each practice stays with you, so you can see what you planted at the new moon and what it became.</p>
+          <p class="muted">Each practice stays with you, so at the full moon you can look back at what you planted at the new one, and see what it became.</p>
         </li>
       </ol>
       <a class="more" href="#waitlist" data-cta="how-more">Get early access <span aria-hidden="true">→</span></a>
@@ -127,11 +127,11 @@ const schema = [
       <div class="plight"><canvas data-light="galaxy" data-size="430" data-r="0.46" data-sparkle data-color="232 140 221" aria-hidden="true"></canvas></div>
       <div class="pcopy">
         <p class="label">Every practice, three ways to see it</p>
-        <h2 class="h-sec">Every gesture, explained</h2>
+        <h2 class="h-sec">One gesture, many layers of meaning</h2>
         <dl class="three">
-          <div><dt class="label">Yours</dt><dd>Why tonight, for you: the sign and house where the moon falls in your chart.</dd></div>
-          <div><dt class="label">Where it comes from</dt><dd>The tradition behind the gesture, and the same gesture in another tradition, as kin.</dd></div>
-          <div><dt class="label">What science says</dt><dd>What studies suggest, cited, with their limits said gently.</dd></div>
+          <div><dt class="label">Yours</dt><dd>Why tonight, for you: the sign and house where the moon falls in your sky, and the part of life it lights.</dd></div>
+          <div><dt class="label">Where it comes from</dt><dd>The people who kept this gesture, and its kin in another culture. Many roots, none ranked above the others.</dd></div>
+          <div><dt class="label">What science says</dt><dd>What neuroscience and psychology have found about breath, ritual and attention, with who was studied and where the evidence ends.</dd></div>
         </dl>
         <a class="more" href="/journal" data-cta="pillars-more">Read the journal <span aria-hidden="true">→</span></a>
       </div>
@@ -215,7 +215,7 @@ const schema = [
     <div class="narrow center">
       <canvas class="fmoon" data-light="moon" data-size="140" data-phase="0.5" aria-hidden="true"></canvas>
       <h2 class="h-sec">The next moon is already on its way</h2>
-      <p class="lead">Be there when it arrives.</p>
+      <p class="lead">Something bigger keeps its rhythm, whether we watch or not. Be there when it arrives.</p>
       <div class="fform"><Signup source="final" /></div>
     </div>
   </section>
@@ -264,6 +264,7 @@ const schema = [
   .phones .front { right: 0; bottom: 0; transform: rotate(3deg); box-shadow: var(--glass-highlight), 0 40px 120px rgba(0,0,0,.9); }
   .acopy { display: grid; gap: 24px; justify-items: start; }
   .why .lead { max-width: 640px; }
+  .why .label { color: var(--foreground); }
   .wgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .wcell { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .wcell p { margin: 0; }
