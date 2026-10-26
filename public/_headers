@@ -1,0 +1,10 @@
+# Security headers for every page and file (Cloudflare Workers static assets read this file).
+# No Content-Security-Policy yet: the pages run inline scripts (moon phase, lights, nav), and a strict
+# script-src would blank the hero. Add one with hashes when the inline scripts move to files.
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin

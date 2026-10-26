@@ -1,0 +1,35 @@
+# Checks on every pull request and on main: the site builds, the waitlist worker parses, no secret is committed,
+# and the dependency audit is shown. Actions are pinned by commit hash (same versions as mesa-juridica).
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  build:
+    name: Build and secrets
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - name: Gitleaks with pinned version and hash
+        run: |
+          install -d -m 0700 "$RUNNER_TEMP/gitleaks"
+          curl --proto '=https' --tlsv1.2 --fail --location --silent --show-error https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz -o "$RUNNER_TEMP/gitleaks/release.tar.gz"
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  $RUNNER_TEMP/gitleaks/release.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/gitleaks/release.tar.gz" -C "$RUNNER_TEMP/gitleaks" gitleaks
+          "$RUNNER_TEMP/gitleaks/gitleaks" dir . --no-banner --redact --log-level=error
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: node --check worker/index.js
+      - run: npm run build
+      - name: Dependency audit (shown, not blocking until the Astro upgrade)
+        run: npm audit --audit-level=high || echo "::warning::npm audit found high or critical advisories"
