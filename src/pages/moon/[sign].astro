@@ -1,0 +1,94 @@
+---
+// One page per sign: "The moon in Aries". Made for search and for the per-sign pins on Pinterest.
+import Base from '../../layouts/Base.astro';
+import Signup from '../../components/Signup.astro';
+import moon from '../../data/moon.json';
+import R from '../../data/readings.json';
+import { SIGNS, SIGN_GLYPH, cap, visitsOf, lunationsIn, houseFrom, fmtDate, utcOf } from '../../lib/moon';
+
+export function getStaticPaths() { return SIGNS.map((sign) => ({ params: { sign } })); }
+const { sign } = Astro.params as { sign: string };
+const S = (R.signs as any)[sign];
+const visits = visitsOf(moon as any, sign, Date.now(), 4);
+const lun = lunationsIn(moon as any, sign);
+const ord = (n: number) => n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
+const houses = SIGNS.map((sun) => {
+  const h = houseFrom(sign, sun);
+  return { sun, h, text: (R.houses as any)[String(h)].replace(/^In your \d+\w\w house, it falls on /, '') };
+});
+const title = `The moon in ${S.name}`;
+const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next dates, the new and full moon in ${S.name}, and what it touches for each sign.`;
+---
+<Base title={title} description={desc} type="article">
+  <article class="narrow page">
+    <p class="label"><a href="/moon">Moon in your sign</a> · {SIGN_GLYPH[sign]} {S.name}</p>
+    <h1 class="h-sec">{title}</h1>
+    <p class="lead">Every two and a half days the moon moves into a new sign. In {S.name}, the night carries {S.tone}.</p>
+
+    <div class="live glass" data-sign={sign} hidden>
+      <span class="dot"></span>
+      <p>Tonight the moon is in {S.name}. If it's your sign, this is your night: <a href="#for-you">see how to use it</a>.</p>
+    </div>
+
+    <h2>Next moons in {S.name}</h2>
+    <ul class="dates">
+      {visits.map((v) => <li><span>{fmtDate(v.start)} to {fmtDate(v.end)}</span><span class="label">about {Math.round((v.end - v.start) / 36e5)} hours</span></li>)}
+    </ul>
+    <p class="small muted">Dates in UTC. The app times every moon to your city.</p>
+
+    <h2>New moon in {S.name}</h2>
+    <p class="reading">{S.new}</p>
+    <h2>Full moon in {S.name}</h2>
+    <p class="reading">{S.full}</p>
+    {lun.length > 0 && <p class="small muted">Next: {lun.map((p: any) => `${p.kind === 'new_moon' ? 'New' : 'Full'} moon, ${fmtDate(utcOf(p.utc))} ${new Date(utcOf(p.utc)).getUTCFullYear()}`).join(' · ')}</p>}
+
+    <h2 id="for-you">Where it lands, sign by sign</h2>
+    <p class="muted">Counted from your Sun sign. With your birth time, the app counts from your rising sign instead.</p>
+    <dl class="houses">
+      {houses.map((x) => (
+        <div class={x.h === 1 ? 'mine' : ''}>
+          <dt class="label">{SIGN_GLYPH[x.sun]} {cap(x.sun)} · {ord(x.h)} house</dt>
+          <dd>{x.h === 1 ? `The moon is in your sign. It falls on ${x.text}` : `It falls on ${x.text}`}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <div class="cta glass">
+      <h2>Get the moon read for your own sky.</h2>
+      <p class="muted">Your rising sign, your houses, and a 15-minute practice for tonight.</p>
+      <Signup source={`sign-${sign}`} />
+    </div>
+
+    <h2>Where it comes from</h2>
+    <p class="muted origin">{R.origin.text.replace(/[¹²³]/g, '')}.</p>
+    <p class="small muted">{R.tone.split('.')[0]}.</p>
+    <nav class="others">{SIGNS.filter((g) => g !== sign).map((g) => <a class="chip" href={`/moon/${g}`}>{SIGN_GLYPH[g]} {cap(g)}</a>)}</nav>
+  </article>
+</Base>
+<style>
+  .page { padding-block: 64px; display: grid; gap: 20px; }
+  .page h2 { font-size: 28px; line-height: 1.15; margin-top: 32px; }
+  .page p { margin: 0; }
+  .label a { text-decoration: none; }
+  .reading { font-family: var(--font-serif); font-size: 21px; line-height: 1.5; letter-spacing: -0.02em; }
+  .dates { list-style: none; margin: 0; padding: 0; }
+  .dates li { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-family: var(--font-serif); font-size: 20px; }
+  .houses { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; margin: 0; }
+  .houses div { border-top: 1px solid var(--line); padding: 14px 0; display: grid; gap: 4px; }
+  .houses dd { margin: 0; font-family: var(--font-serif); font-size: 17px; line-height: 1.4; }
+  .houses .mine dt { color: #fff; }
+  .live { display: flex; gap: 12px; align-items: center; padding: 16px 20px; }
+  .live[hidden] { display: none; }
+  .cta { padding: 28px; display: grid; gap: 12px; margin-top: 32px; }
+  .cta h2 { margin: 0; }
+  .origin { font-family: var(--font-serif); font-size: 18px; line-height: 1.5; }
+  .others { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 32px; }
+  .others .chip { display: inline-flex; align-items: center; text-decoration: none; }
+  @media (max-width: 640px) { .houses { grid-template-columns: 1fr; } }
+</style>
+<script>
+  import moon from '../../data/moon.json';
+  import { signAt } from '../../lib/moon';
+  const el = document.querySelector('.live') as HTMLElement;
+  if (el && signAt(moon as any).sign === el.dataset.sign) el.hidden = false;
+</script>

@@ -1,0 +1,184 @@
+{
+ "phases": {
+  "new_moon": {
+   "name": "New moon",
+   "line": "The sky goes dark and quiet",
+   "reading": "Nothing to see, everything to begin. This is the dark before a seed decides to grow, a good night to name one thing and plant it small"
+  },
+  "waxing_crescent": {
+   "name": "Waxing crescent",
+   "line": "A thin light returns",
+   "reading": "The first sliver asks for a first step. Keep what you named close and give it one small act today"
+  },
+  "first_quarter": {
+   "name": "First quarter",
+   "line": "Half light, half dark",
+   "reading": "Halfway up, the moon meets resistance, and so may you. A good moment to adjust, not to give up"
+  },
+  "waxing_gibbous": {
+   "name": "Waxing gibbous",
+   "line": "Almost full",
+   "reading": "The light is gathering. Tend what is growing, patiently, the way you water a plant you can't yet see flower"
+  },
+  "full_moon": {
+   "name": "Full moon",
+   "line": "The whole face, lit",
+   "reading": "Everything is visible now, the beautiful and the unfinished. Look, give thanks, and let yourself be seen"
+  },
+  "waning_gibbous": {
+   "name": "Waning gibbous",
+   "line": "The light begins to leave",
+   "reading": "After the fullness comes the sharing. Pass on what you learned, thank who walked with you"
+  },
+  "last_quarter": {
+   "name": "Last quarter",
+   "line": "Half light, turning inward",
+   "reading": "A moment to sort and release. Keep what is true, set down what no longer fits"
+  },
+  "waning_crescent": {
+   "name": "Waning crescent",
+   "line": "A last thin light",
+   "reading": "The cycle is resting before it begins again. Sleep a little more, ask a little less, make room"
+  }
+ },
+ "signs": {
+  "aries": {
+   "name": "Aries",
+   "new": "The new moon in Aries is the zodiac's first breath. A good night to begin the thing you keep postponing, small and brave rather than perfect",
+   "full": "The full moon lights Aries across from Libra. See where you have been fighting alone, and what your courage has already made possible",
+   "tone": "a little courage"
+  },
+  "taurus": {
+   "name": "Taurus",
+   "new": "The new moon in Taurus asks for something slow. Plant a habit, a saving, a kinder way of caring for your body, and let it take its time",
+   "full": "The full moon lights Taurus across from Scorpio. Harvest what you built with patience, and notice what you are holding too tightly",
+   "tone": "patience and the body"
+  },
+  "gemini": {
+   "name": "Gemini",
+   "new": "The new moon in Gemini loves words. Say your intention out loud, begin a study, write the letter you keep drafting in your head",
+   "full": "The full moon lights Gemini across from Sagittarius. Listen for what has been said and what has not, and choose the words you want to keep",
+   "tone": "a curious mind"
+  },
+  "cancer": {
+   "name": "Cancer",
+   "new": "The new moon in Cancer turns toward home. Make room for care: your space, your people, the child you once were",
+   "full": "The full moon lights Cancer, the moon's own sign, across from Capricorn. Feel what home means to you now, and thank those who hold you",
+   "tone": "tenderness for home"
+  },
+  "leo": {
+   "name": "Leo",
+   "new": "The new moon in Leo speaks to the heart. Begin something that makes you glad to be yourself, even if no one sees it yet",
+   "full": "The full moon lights Leo across from Aquarius. Let yourself be seen in what you made, and celebrate it without shrinking",
+   "tone": "warmth and play"
+  },
+  "virgo": {
+   "name": "Virgo",
+   "new": "The new moon in Virgo is about daily care. Choose one simple gesture for your body or your days and keep it gently",
+   "full": "The full moon lights Virgo across from Pisces. See which routines feed you and which only tire you",
+   "tone": "small, careful order"
+  },
+  "libra": {
+   "name": "Libra",
+   "new": "The new moon in Libra seeks balance. Begin a new agreement, with someone you love or with yourself",
+   "full": "The full moon lights Libra across from Aries. Notice where you give more than you receive, and where you receive without noticing",
+   "tone": "balance with others"
+  },
+  "scorpio": {
+   "name": "Scorpio",
+   "new": "The new moon in Scorpio goes deep. Sow trust by opening one door you usually keep closed",
+   "full": "The full moon lights Scorpio across from Taurus. Let go of what has already ended, and keep what is true",
+   "tone": "depth and honesty"
+  },
+  "sagittarius": {
+   "name": "Sagittarius",
+   "new": "The new moon in Sagittarius looks far. Ask a bigger question and take the first step toward it",
+   "full": "The full moon lights Sagittarius across from Gemini. See how far you have come, and what you believe now",
+   "tone": "a wider view"
+  },
+  "capricorn": {
+   "name": "Capricorn",
+   "new": "The new moon in Capricorn builds. Lay the first stone of a long goal, one you are willing to walk slowly",
+   "full": "The full moon lights Capricorn across from Cancer. Recognize your effort, and set down a weight that was never yours",
+   "tone": "steady effort"
+  },
+  "aquarius": {
+   "name": "Aquarius",
+   "new": "The new moon in Aquarius thinks of others. Sow a hope that has room for more people than you",
+   "full": "The full moon lights Aquarius across from Leo. See who walks with you, and where you want to be free",
+   "tone": "friendship and freedom"
+  },
+  "pisces": {
+   "name": "Pisces",
+   "new": "The new moon in Pisces begins in silence. A dream, a prayer, a softer way of meeting the day",
+   "full": "The full moon lights Pisces across from Virgo. Feel what is dissolving now, and trust what remains",
+   "tone": "softness and dreams"
+  }
+ },
+ "houses": {
+  "1": "In your 1st house, it falls on you: your body, your presence, the way you begin",
+  "2": "In your 2nd house, it falls on what you value: your resources, your money, what feels like enough",
+  "3": "In your 3rd house, it falls on your words: what you learn, the people close by, your daily paths",
+  "4": "In your 4th house, it falls on your roots: home, family, the ground you stand on",
+  "5": "In your 5th house, it falls on your joy: love, creativity, what makes you play",
+  "6": "In your 6th house, it falls on your days: the small habits that care for you",
+  "7": "In your 7th house, it falls on your bonds: partners, love, the agreements you share",
+  "8": "In your 8th house, it falls on what is shared and what is ready to change and be let go",
+  "9": "In your 9th house, it falls on meaning: faith, study, the places you long to go",
+  "10": "In your 10th house, it falls on your work: your purpose and how the world meets you",
+  "11": "In your 11th house, it falls on your people: friends, community, the hopes you hold together",
+  "12": "In your 12th house, it falls on rest: solitude, retreat, what grows unseen"
+ },
+ "frames": {
+  "solar_eclipse": {
+   "name": "Solar eclipse",
+   "line": "A new moon that covers the sun. Many traditions met it with stillness rather than action, so this is a night to notice, not to force"
+  },
+  "lunar_eclipse": {
+   "name": "Lunar eclipse",
+   "line": "A full moon that passes through Earth's shadow and often turns copper. A night to watch, rest, and let something close on its own"
+  },
+  "supermoon": {
+   "name": "Supermoon",
+   "line": "The moon is near its closest to Earth, so it looks a little larger and brighter. The same moon, simply nearer"
+  },
+  "micromoon": {
+   "name": "Micromoon",
+   "line": "The moon is near its farthest from Earth, a little smaller in the sky. A quieter fullness"
+  },
+  "blue_moon": {
+   "name": "Blue moon",
+   "line": "The second full moon in one calendar month. Rare enough to name, a second chance at the same harvest"
+  },
+  "black_moon": {
+   "name": "Black moon",
+   "line": "The second new moon in one calendar month. A second dark, a second beginning"
+  }
+ },
+ "origin": {
+  "text": "Reading the moon by sign is old. Babylonian astronomers divided the sky into twelve equal signs around the fifth century BCE¹, and Hellenistic astrologers read each sign as a whole house of life, counting from the sign rising at birth². India keeps a kindred practice in its 27 lunar mansions, the nakshatras, and China in its 28 lodges, where the moon rests one night at a time³",
+  "refs": [
+   {
+    "n": 1,
+    "kind": "history",
+    "text": "Rochberg, F. (2004). The Heavenly Writing: Divination, Horoscopy, and Astronomy in Mesopotamian Culture. Cambridge University Press",
+    "link": "https://doi.org/10.1017/CBO9780511617409",
+    "check": "link not yet confirmed (search credits ran out 26 Oct)"
+   },
+   {
+    "n": 2,
+    "kind": "history",
+    "text": "Brennan, C. (2017). Hellenistic Astrology: The Study of Fate and Fortune. Amor Fati Publications",
+    "link": "https://theastrologypodcast.com/ep-227-transcript-origins-of-the-house-division-debate-in-ancient-astrology/"
+   },
+   {
+    "n": 3,
+    "kind": "history",
+    "text": "Pingree, D. (1963). Astronomy and astrology in India and Iran. Isis, 54(2), 229-246",
+    "link": "https://doi.org/10.1086/349703",
+    "check": "link not yet confirmed (search credits ran out 26 Oct)"
+   }
+  ]
+ },
+ "tone": "Light only. The moon does nothing by itself: a phase is a moment, the sign a tone, the house an area of life. Never predict, never promise. No final period, by design"
+}

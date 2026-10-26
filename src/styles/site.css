@@ -1,0 +1,63 @@
+/* Website layer over the app tokens (tokens.css is copied from design-system/tokens.css, never edited here). */
+@import './tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--background); color: var(--foreground); -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+body { margin: 0; font: var(--text-body); background: var(--background); overflow-x: hidden; }
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+em, i { font-style: normal; }
+h1, h2, h3 { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.035em; margin: 0; text-wrap: balance; }
+p { text-wrap: pretty; }
+
+.wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
+.narrow { width: min(680px, 100% - 32px); margin-inline: auto; }
+.label { font: var(--text-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-foreground); }
+.muted { color: var(--muted-foreground); }
+.dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); vertical-align: middle; }
+
+.h-hero { font-size: clamp(44px, 7.4vw, 92px); line-height: 1; }
+.h-sec { font-size: clamp(32px, 4.6vw, 56px); line-height: 1.04; }
+.h-card { font: var(--text-title); letter-spacing: -0.035em; }
+.lead { font-family: var(--font-serif); font-size: clamp(18px, 2vw, 22px); line-height: 1.45; letter-spacing: -0.02em; color: var(--muted-foreground); }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 24px; border-radius: var(--radius-button);
+  font: var(--text-label); text-transform: uppercase; letter-spacing: 0.08em; text-decoration: none; cursor: pointer; border: 1px solid transparent; transition: transform .2s, background .2s; }
+.btn:active { transform: scale(.98); }
+.btn.primary { background: var(--primary); color: var(--primary-foreground); }
+.btn.primary:hover { background: #e9e6e1; }
+.btn.secondary { background: var(--glass-fill); border-color: var(--glass-edge); color: var(--foreground); box-shadow: var(--glass-highlight); }
+.btn.secondary:hover { background: var(--glass-selected); }
+.btn.sm { height: 40px; padding: 0 16px; }
+
+.glass { background: var(--glass-fill); border: 1px solid var(--glass-edge); border-radius: var(--radius-card); box-shadow: var(--glass-highlight); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.chip { height: 38px; padding: 0 14px; border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge); color: var(--foreground);
+  font: var(--text-label); text-transform: uppercase; letter-spacing: 0.06em; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--foreground); color: var(--background); }
+
+section { padding-block: clamp(72px, 10vw, 140px); }
+.sec-head { display: grid; gap: 16px; max-width: 720px; margin-bottom: 48px; }
+
+/* Stardust: fine points of light behind every page. */
+.stars { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image: radial-gradient(1px 1px at 12% 18%, #fff8 50%, transparent), radial-gradient(1px 1px at 78% 12%, #fff6 50%, transparent),
+  radial-gradient(1px 1px at 34% 72%, #fff5 50%, transparent), radial-gradient(1px 1px at 88% 64%, #fff7 50%, transparent),
+  radial-gradient(1px 1px at 56% 38%, #fff4 50%, transparent), radial-gradient(1.4px 1.4px at 22% 44%, #e8c98c88 50%, transparent),
+  radial-gradient(1px 1px at 66% 88%, #fff5 50%, transparent), radial-gradient(1px 1px at 8% 92%, #fff4 50%, transparent);
+  background-size: 420px 420px; opacity: .55; }
+
+.prose { font: var(--text-body); color: rgba(255,255,255,.82); }
+.prose h2 { font-size: 32px; line-height: 1.1; margin: 48px 0 16px; color: #fff; }
+.prose h3 { font-size: 24px; margin: 32px 0 12px; color: #fff; }
+.prose p, .prose li { font-family: var(--font-serif); font-size: 19px; line-height: 1.6; letter-spacing: -0.01em; }
+.prose strong { color: #fff; font-weight: 400; }
+.prose a { text-decoration-color: rgba(255,255,255,.3); text-underline-offset: 3px; }
+.prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.prose td, .prose th { border-bottom: 1px solid var(--line); padding: 10px 8px; text-align: left; vertical-align: top; }
+.prose blockquote { margin: 32px 0; padding: 0 0 0 20px; border-left: 1px solid var(--border); color: #fff; }
+
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+
+/* Phase photos sit on black: screen blend lets the glass show through around the moon. */
+img[src*="/brand/moon-"]:not([src*="orbit"]) { mix-blend-mode: screen; border-radius: 50%; }
+@media (max-width: 560px) { form.signup .btn { flex: 1 1 100%; } }

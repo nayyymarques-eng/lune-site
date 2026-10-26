@@ -1,0 +1,93 @@
+/* Lume — generated from tokens.json */
+:root, [data-theme="night"] {
+  --background: #000000; /* Screen, night background */
+  --card: #0e0d0c; /* Home sheet, practice page sheet */
+  --foreground: #ffffff; /* Text, icons, primary fill, selected states */
+  --muted-foreground: rgba(255,255,255,0.6); /* The one grey text colour: her answers, body copy, labels, notes, inactive tabs. Only two text colours exist: white (the app's voice) and this grey (Nayara 25 Oct 19:55) */
+  --border: rgba(255,255,255,0.16); /* Hairlines, outlines */
+  --border-soft: rgba(255,255,255,0.12); /* Card and tile outlines */
+  --line: rgba(255,255,255,0.08); /* Row separators */
+  --surface: rgba(255,255,255,0.035); /* Cards and tiles fill */
+  --primary: #ffffff; /* Primary button fill */
+  --primary-foreground: #000000; /* Text on primary */
+  --accent: #e8c98c; /* Gold: small dots and number lights only. Never text, lines, borders or filled blocks */
+  --ink: #f3ece0; /* Scribble line */
+  --destructive: #e97f65; /* Error text and field outline */
+  --glass-fill: rgba(255,255,255,0.06); /* Glass surface fill: every card and everything that floats. */
+  --glass-edge: rgba(255,255,255,0.16); /* Glass 1px edge. Selected state raises it to 24%. */
+  --glass-selected: rgba(255,255,255,0.10); /* Selected glass fill (with edge 24%). */
+  --theme-love: #e88cdd; /* Love intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --theme-work: #f0a97c; /* Work intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --theme-health: #9edca4; /* Health intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --theme-prosperity: #8cdde8; /* Prosperity intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --theme-energy: #f2e28a; /* Energy intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --theme-divine: #b3a6f2; /* Divine intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --theme-gratitude: #f2b8b0; /* Gratitude intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --theme-new-paths: #8fb8f2; /* New Paths intention. Arrives only as light (never text): scribble soft stroke 55%, frame border 18%, wash 6-7%. Never a flat fill. */
+  --glass-highlight: inset 0 1px 0 rgba(255,255,255,0.10); /* Top inner light on glass. */
+  --sheet-highlight: inset 0 1px 0 rgba(255,255,255,0.06); /* Top inner light on the sheet. */
+  --focus-ring: 0 0 0 1px rgba(255,255,255,0.6); /* Focus: 2px white 60% ring outside. */
+}
+:root {
+  --space-xs: 4px; /* Inside small parts: chip gap, icon to label. */
+  --space-sm: 8px; /* Sheet inset, tab padding, gaps in a row. */
+  --space-md: 16px; /* Card padding. */
+  --space-lg: 24px; /* Screen margin. */
+  --space-xl: 32px; /* Between sections. */
+  --radius-button: 12px; /* Buttons, icon-only buttons, fields, chips, segments, chat bubbles, toast (Nayara 26 Oct 11:08) */
+  --radius-sharp: var(--radius-button); /* legacy name */
+  --radius-card: 16px; /* Cards, sheets, tiles, frames, big glass surfaces (Nayara 26 Oct 11:08) */
+  --radius-round: var(--radius-card); /* legacy name */
+  --radius-circle: 50%; /* True circles only: round button, dots. */
+  --font-serif: Tinos, Georgia, serif;
+  --font-sans: Geist, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --text-display: 400 40px/1.04 var(--font-serif); /* Practice title, home title, number of the day, invite title */
+  --text-title: 400 24px/1.15 var(--font-serif); /* Player cue, practice card, plan card, stats, sky quote, top card, moments */
+  --text-reading: 400 18px/1.45 var(--font-serif); /* Lenses, long reading, altar item names */
+  --text-body: 400 16px/1.5 var(--font-sans); /* Sky paragraph, practice lead, field text */
+  --text-small: 400 12px/1.45 var(--font-sans); /* Card sub lines, notes, toasts, citations */
+  --text-label: 400 12px/1.3 var(--font-mono); /* The one mono style: buttons, pills, eyebrows, tabs, badges, stat labels, lens names. Upper case. (label + micro merged, Nayara 25 Oct 20:09) */
+}
+.display {
+  font-family: var(--font-serif);
+  font-size: 40px;
+  line-height: 1.04;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+.title {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+.reading {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  line-height: 1.45;
+  font-weight: 400;
+  letter-spacing: -0.035em;
+}
+.body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.small {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.3;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+}

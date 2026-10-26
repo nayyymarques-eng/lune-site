@@ -1,0 +1,91 @@
+---
+import '../styles/site.css';
+import Wordmark from '../components/Wordmark.astro';
+import { CTA, POSTHOG_KEY, LIVE, APP_STORE_URL } from '../config';
+const { title, description = 'Your moon, read for you, and a 15-minute practice to live it.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · Your moon, read for you';
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{full}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content={type} />
+  <meta property="og:title" content={full} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={new URL(image, Astro.site)} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#000000" />
+  <link rel="icon" href="/brand/app-icon-1024.webp" />
+  <link rel="alternate" type="application/rss+xml" title="Lune Journal" href="/rss.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono&family=Tinos:wght@400&display=swap" rel="stylesheet" />
+  {LIVE && <meta name="apple-itunes-app" content={`app-id=${APP_STORE_URL.match(/id(\d+)/)?.[1] ?? ''}`} />}
+  {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  {POSTHOG_KEY && <script is:inline define:vars={{ POSTHOG_KEY }}>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init(POSTHOG_KEY,{api_host:'https://us.i.posthog.com',person_profiles:'identified_only'});
+  </script>}
+</head>
+<body>
+  <div class="stars" aria-hidden="true"></div>
+  <header class="top">
+    <div class="wrap bar">
+      <a href="/" aria-label="Lune home"><Wordmark /></a>
+      <nav>
+        <a href="/#how">How it works</a>
+        <a href="/moon">Moon in your sign</a>
+        <a href="/journal">Journal</a>
+        <a href="/#pricing">Pricing</a>
+      </nav>
+      <a class="btn primary sm" href="/#start" data-cta="header">{LIVE ? 'Try free' : 'Early access'}</a>
+    </div>
+  </header>
+  <main><slot /></main>
+  <footer class="foot">
+    <div class="wrap fgrid">
+      <div>
+        <Wordmark height={28} />
+        <p class="muted small" style="max-width:300px;margin-top:16px">Your moon, read for you, and a 15-minute practice to live it. Astrology here is a way to reflect, never a prediction.</p>
+      </div>
+      <div class="fcol"><span class="label">Lune</span><a href="/#how">How it works</a><a href="/#pricing">Pricing</a><a href="/#faq">Questions</a></div>
+      <div class="fcol"><span class="label">Read</span><a href="/moon">The moon in each sign</a><a href="/journal">Journal</a><a href="/rss.xml">RSS</a></div>
+      <div class="fcol"><span class="label">Care</span><a href="/care">Before you begin</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+    </div>
+    <div class="wrap small muted copy">© {new Date().getFullYear()} Lune. Not medical, psychological or financial advice. In crisis in the US, call or text 988.</div>
+  </footer>
+  <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
+</body>
+</html>
+<style>
+  .top { position: sticky; top: 0; z-index: 10; background: rgba(0,0,0,.6); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
+  nav { display: flex; gap: 28px; }
+  nav a { font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; color: var(--muted-foreground); text-decoration: none; }
+  nav a:hover { color: #fff; }
+  .foot { border-top: 1px solid var(--line); padding: 64px 0 32px; margin-top: 40px; }
+  .fgrid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
+  .fcol { display: grid; gap: 10px; align-content: start; }
+  .fcol a { color: var(--muted-foreground); text-decoration: none; font-size: 14px; }
+  .fcol a:hover { color: #fff; }
+  .copy { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--line); font-size: 12px; }
+  .sticky-cta { display: none; }
+  @media (max-width: 820px) {
+    nav { display: none; }
+    .fgrid { grid-template-columns: 1fr 1fr; }
+    .fgrid > div:first-child { grid-column: 1 / -1; }
+    .sticky-cta { display: flex; position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 20; box-shadow: 0 8px 30px #000; }
+    .foot { padding-bottom: 96px; }
+  }
+</style>
+<script>
+  document.addEventListener('click', (e) => {
+    const a = (e.target as HTMLElement).closest('[data-cta]') as HTMLElement | null;
+    if (a) (window as any).posthog?.capture?.('cta_clicked', { where: a.dataset.cta });
+  });
+</script>

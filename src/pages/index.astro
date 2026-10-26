@@ -1,0 +1,209 @@
+---
+import Base from '../layouts/Base.astro';
+import Tonight from '../components/Tonight.astro';
+import Signup from '../components/Signup.astro';
+import moon from '../data/moon.json';
+import R from '../data/readings.json';
+import { PHASE_IMG, cap, fmtDate, utcOf } from '../lib/moon';
+import { PRICE, CTA } from '../config';
+
+const now = Date.now();
+const big = (moon as any).phases.filter((p: any) => (p.kind === 'new_moon' || p.kind === 'full_moon') && utcOf(p.utc) > now).slice(0, 4).map((p: any) => {
+  const ecl = (moon as any).eclipses.find((e: any) => Math.abs(utcOf(e.utc) - utcOf(p.utc)) < 864e5);
+  const tag = ecl ? (ecl.kind === 'solar_eclipse' ? 'Solar eclipse' : 'Lunar eclipse') : p.kind === 'full_moon' && p.perigee_pct >= 90 ? 'Supermoon' : '';
+  const s = (R.signs as any)[p.sign];
+  return { ...p, tag, name: `${p.kind === 'new_moon' ? 'New' : 'Full'} moon in ${cap(p.sign)}`, text: p.kind === 'new_moon' ? s.new : s.full };
+});
+
+const faq = [
+  ['Do I need to believe in astrology?', 'No. Lune reads the moon as a mirror, never as a prediction. The moon does nothing by itself: a phase is a moment, the sign a tone, the house an area of life. You bring the meaning.'],
+  ['Is Lune religious?', 'Lune is spiritual, not religious. Practices come from many traditions, shown side by side as kin, never ranked. Believe what you choose.'],
+  ['What do I need for a practice?', 'What you already have at home: a candle, a glass of water, paper and a pen. Tell Lune what you have and practices start from it. Fifteen minutes, often less.'],
+  ['Do I need my birth time?', 'No. Without it, Lune counts your houses from your Sun sign. Add it whenever you like to see the moon in your own houses.'],
+  ['Is the science real?', 'Every "What science says" cites a published study, with its limits said plainly. Where no study exists, we say so.'],
+  ['How does the trial work?', `Premium is free for ${PRICE.trialDays} days. After that it is ${PRICE.month} a month or ${PRICE.year} a year, and you can cancel any time in your store settings. The free tier stays free.`],
+];
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'MobileApplication', name: 'Lune: Moon Rituals', operatingSystem: 'iOS, Android', applicationCategory: 'LifestyleApplication',
+    offers: [{ '@type': 'Offer', price: '9.99', priceCurrency: 'USD' }, { '@type': 'Offer', price: '59.99', priceCurrency: 'USD' }] },
+  { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
+];
+---
+<Base description="Lune reads tonight's moon for your own sky, then offers a 15-minute practice with what you already have at home. Free to start." schema={schema}>
+  <section class="hero">
+    <div class="wrap hgrid">
+      <div class="hcopy" id="start">
+        <p class="label">Lune · Moon rituals</p>
+        <h1 class="h-hero">Your moon,<br />read for you.</h1>
+        <p class="lead">Every night the moon crosses a sign and touches one part of your life. Lune reads it for your own sky, then offers a 15-minute practice to live it, with what you already have at home.</p>
+        <Signup source="hero" />
+        <ul class="proof">
+          <li><span class="dot"></span> Moon timed to the minute, 2026 to 2030</li>
+          <li><span class="dot"></span> Practices from traditions across the world</li>
+          <li><span class="dot"></span> Every claim sourced</li>
+        </ul>
+      </div>
+      <Tonight />
+    </div>
+  </section>
+
+  <section id="how" class="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">How it works</p>
+        <h2 class="h-sec">Three steps, one night at a time.</h2>
+      </div>
+      <ol class="steps">
+        <li class="glass">
+          <span class="label">01 · The moon</span>
+          <h3 class="h-card">Tonight's phase and sign, in plain, warm words.</h3>
+          <p class="muted">What the night is good for, and what to go easy on. No jargon without a reason.</p>
+        </li>
+        <li class="glass">
+          <span class="label">02 · Where it lands in your sky</span>
+          <h3 class="h-card">Your Sun, your rising sign, your houses.</h3>
+          <p class="muted">The same moon falls on a different part of every life. Lune shows you where it falls on yours.</p>
+        </li>
+        <li class="glass">
+          <span class="label">03 · A practice to live it</span>
+          <h3 class="h-card">Fifteen minutes, with a candle and a pen.</h3>
+          <p class="muted">Open, a few gestures, close. Choose love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="pillars">
+    <div class="wrap pgrid">
+      <img src="/brand/moon-hero-orbit.webp" alt="The Lune moon, made of points of light" width="900" height="600" loading="lazy" />
+      <div>
+        <p class="label">Every practice, three ways to see it</p>
+        <h2 class="h-sec">Yours. Where it comes from. What science says.</h2>
+        <dl class="three">
+          <div><dt class="label">Yours</dt><dd>Why tonight, for you: the sign and house where the moon falls in your chart.</dd></div>
+          <div><dt class="label">Where it comes from</dt><dd>The tradition behind the gesture, and the same gesture in another tradition, as kin.</dd></div>
+          <div><dt class="label">What science says</dt><dd>What studies suggest, cited, with their limits said gently.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="cal">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Coming up</p>
+        <h2 class="h-sec">The next moons, planned two months ahead.</h2>
+      </div>
+      <div class="cgrid">
+        {big.map((m: any) => (
+          <a class="mcard glass" href={`/moon/${m.sign}`}>
+            <div class="row"><span class="label">{fmtDate(utcOf(m.utc))}</span>{m.tag && <span class="badge">{m.tag}</span>}</div>
+            <img src={`/brand/${PHASE_IMG[m.kind]}.webp`} alt="" width="88" height="88" loading="lazy" />
+            <h3 class="h-card">{m.name}</h3>
+            <p class="muted small2">{m.text}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="honest">
+    <div class="narrow center">
+      <p class="label">Honest by design</p>
+      <h2 class="h-sec">A mirror, never a prophecy.</h2>
+      <p class="lead">Astrology here is a way to reflect, never a prediction. Science is cited, with its limits said gently. Nothing is ever aimed at another person's will. And a practice is a moment of attention, not treatment.</p>
+    </div>
+  </section>
+
+  <section id="pricing" class="pricing">
+    <div class="wrap">
+      <div class="sec-head center">
+        <p class="label">Pricing</p>
+        <h2 class="h-sec">Free to start. Premium when you want every moon.</h2>
+      </div>
+      <div class="prgrid">
+        <div class="plan glass">
+          <p class="label">Free</p>
+          <p class="price">$0</p>
+          <ul><li>Tonight's moon, read for your sky</li><li>This month's moons</li><li>A few practices to try</li></ul>
+        </div>
+        <div class="plan glass best">
+          <div class="row"><p class="label">Premium · Yearly</p><span class="badge">Save 50%</span></div>
+          <p class="price">{PRICE.year}<span class="per"> / year</span></p>
+          <p class="muted">{PRICE.yearPerMonth} a month, billed yearly. {PRICE.trialDays} days free.</p>
+          <ul><li>Every practice, every night</li><li>The full calendar, eclipses and supermoons</li><li>Your altar: 163 items with history and science</li></ul>
+          <a class="btn primary" href="#start" data-cta="pricing-year">{CTA}</a>
+        </div>
+        <div class="plan glass">
+          <p class="label">Premium · Monthly</p>
+          <p class="price">{PRICE.month}<span class="per"> / month</span></p>
+          <p class="muted">{PRICE.trialDays} days free. Cancel any time.</p>
+          <a class="btn secondary" href="#start" data-cta="pricing-month">{CTA}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <div class="narrow">
+      <div class="sec-head"><p class="label">Questions</p><h2 class="h-sec">Before you begin.</h2></div>
+      {faq.map(([q, a]) => (<details><summary>{q}</summary><p>{a}</p></details>))}
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="narrow center">
+      <img src="/brand/moon-full.webp" alt="" width="140" height="140" class="fmoon" loading="lazy" />
+      <h2 class="h-sec">The next moon is already on its way.</h2>
+      <p class="lead">Be there when it arrives.</p>
+      <div class="fform"><Signup source="final" /></div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-top: clamp(48px, 8vw, 96px); }
+  .hgrid { display: grid; grid-template-columns: 1.15fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+  .hcopy { display: grid; gap: 24px; align-content: center; }
+  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; font-size: 14px; color: var(--muted-foreground); }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .steps li { padding: 28px; display: grid; gap: 16px; align-content: start; }
+  .steps p { margin: 0; }
+  .pgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .pgrid img { width: 100%; height: auto; border-radius: var(--radius-card); }
+  .pgrid > div { display: grid; gap: 20px; }
+  .three { display: grid; gap: 20px; margin: 12px 0 0; }
+  .three div { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
+  .three dd { margin: 0; font-family: var(--font-serif); font-size: 19px; line-height: 1.45; letter-spacing: -0.02em; }
+  .cgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .mcard { padding: 20px; display: grid; gap: 12px; text-decoration: none; align-content: start; transition: background .2s; }
+  .mcard:hover { background: var(--glass-selected); }
+  .mcard img { width: 88px; height: 88px; }
+  .small2 { margin: 0; font-size: 14px; line-height: 1.5; }
+  .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .badge { font: var(--text-label); text-transform: uppercase; letter-spacing: .06em; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--glass-edge); font-size: 10px; }
+  .center { text-align: center; margin-inline: auto; justify-items: center; }
+  .honest .lead { margin-top: 24px; }
+  .prgrid { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 16px; align-items: stretch; }
+  .plan { padding: 28px; display: grid; gap: 12px; align-content: start; }
+  .plan ul { margin: 4px 0 8px; padding-left: 18px; display: grid; gap: 6px; color: rgba(255,255,255,.82); font-size: 15px; }
+  .plan.best { border-color: rgba(255,255,255,.4); background: var(--glass-selected); }
+  .plan p { margin: 0; }
+  .price { font-family: var(--font-serif); font-size: 48px; letter-spacing: -0.035em; line-height: 1; }
+  .per { font-size: 18px; color: var(--muted-foreground); }
+  details { border-top: 1px solid var(--line); padding: 20px 0; }
+  details:last-child { border-bottom: 1px solid var(--line); }
+  summary { cursor: pointer; font-family: var(--font-serif); font-size: 22px; letter-spacing: -0.02em; list-style: none; }
+  summary::after { content: '+'; float: right; color: var(--muted-foreground); }
+  details[open] summary::after { content: '–'; }
+  details p { color: var(--muted-foreground); margin: 12px 0 0; }
+  .final .narrow { display: grid; gap: 20px; }
+  .fmoon { margin: 0 auto; filter: drop-shadow(0 0 60px rgba(232,201,140,.2)); }
+  .fform { display: grid; justify-items: center; }
+  @media (max-width: 900px) {
+    .hgrid, .pgrid { grid-template-columns: 1fr; }
+    .steps, .prgrid { grid-template-columns: 1fr; }
+    .cgrid { grid-template-columns: 1fr 1fr; }
+    .best { order: -1; }
+  }
+</style>

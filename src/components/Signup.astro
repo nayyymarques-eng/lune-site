@@ -1,0 +1,46 @@
+---
+// The one conversion form. Before launch: email for early access. After launch: store buttons.
+import { APP_STORE_URL, PLAY_STORE_URL, LIVE, CTA, WAITLIST_ENDPOINT } from '../config';
+const { source = 'site', note = 'Free to start. 15 days of Premium on us at launch. No spam, one letter per moon.' } = Astro.props;
+---
+{LIVE ? (
+  <div class="stores">
+    <a class="btn primary" href={APP_STORE_URL} data-cta={source}>{CTA}</a>
+    {PLAY_STORE_URL && <a class="btn secondary" href={PLAY_STORE_URL} data-cta={source}>Get it on Google Play</a>}
+  </div>
+) : (
+  <form class="signup" data-endpoint={WAITLIST_ENDPOINT} data-source={source}>
+    <label class="sr" for={`em-${source}`}>Your email</label>
+    <input id={`em-${source}`} type="email" name="email" required placeholder="Your email" autocomplete="email" />
+    <button class="btn primary" type="submit">{CTA}</button>
+    <p class="ok" hidden>You're on the list. We'll write when the next moon opens the door.</p>
+  </form>
+)}
+<p class="small muted signote">{note}</p>
+
+<style>
+  .signup { display: flex; gap: 8px; flex-wrap: wrap; max-width: 520px; }
+  .signup input { flex: 1 1 220px; height: 52px; padding: 0 16px; border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge);
+    color: #fff; font: var(--text-body); outline: none; }
+  .signup input:focus { box-shadow: var(--focus-ring); }
+  .signup input::placeholder { color: var(--muted-foreground); }
+  .ok { flex-basis: 100%; margin: 4px 0 0; font-family: var(--font-serif); font-size: 18px; }
+  .stores { display: flex; gap: 8px; flex-wrap: wrap; }
+  .signote { margin: 12px 0 0; font: var(--text-small); }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+</style>
+<script>
+  document.querySelectorAll<HTMLFormElement>('form.signup').forEach((f) => {
+    if (f.dataset.bound) return; f.dataset.bound = '1';
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = (f.elements.namedItem('email') as HTMLInputElement).value;
+      const sign = localStorage.getItem('lune-sign') || '';
+      const body = { email, sign, source: f.dataset.source, page: location.pathname };
+      try { if (f.dataset.endpoint) await fetch(f.dataset.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); } catch {}
+      (window as any).posthog?.capture?.('waitlist_joined', { source: f.dataset.source, sign });
+      f.querySelectorAll('input,button').forEach((el) => ((el as HTMLElement).hidden = true));
+      (f.querySelector('.ok') as HTMLElement).hidden = false;
+    });
+  });
+</script>
