@@ -23,7 +23,11 @@ const L=window.LUME,TAU=Math.PI*2,W=[255,250,242];
 const cl=x=>x<0?0:x>1?1:x,lerp=(a,b,k)=>a+(b-a)*k,mixc=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
 const hash=(i,k)=>{const s=Math.sin(i*127.1+k*311.7)*43758.5453;return s-Math.floor(s)};
 const eio=x=>x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2;
-const ALIAS={seed:'bloom',globe:'moon'};
+/* Nayara 26 Oct 16:32: practices use only her 11 picked lights (moon, build, breath, galaxy, steam, vortex, flame, jar,
+   ripple, coin, twin); the other 13 lights are drawn as their nearest picked gesture */
+const PICKED={knot:'twin',mirror:'twin',binary:'flame',helix:'build',clear:'vortex',body:'breath',salt:'ripple',halo:'flame',
+ three:'jar',bloom:'jar',burst:'galaxy',fork:'galaxy',goodbye:'ripple',torus:'build'};
+const ALIAS={seed:'jar',globe:'moon',...PICKED};
 
 /* ---------- shapes ---------- */
 /* the globe: a uniform fibonacci sphere, turning slowly, tilted toward her. n grows with size. */
@@ -58,7 +62,39 @@ function profile(css){const k=cl((css-40)/(340-40));return{rounds:css<64?1:css<1
 /* phase 0 new → .5 full → 1 new: the sun side lit, a faint earthshine on the rest (lit right while waxing) */
 function lit(pts,phase){if(phase==null)return pts;const th=phase*TAU,lx=Math.sin(th),lz=-Math.cos(th);
  return pts.map(p=>{const k=cl((p[0]*lx+p[2]*lz)*3+.5);return[p[0],p[1],p[2],p[3],.05+.95*k]})}   /* p[4] carries the light on the globe */
-function shape(form,t,css,phase){form=ALIAS[form]||form;
+/* BIG LIGHTS, built like the globe (Nayara 26 Oct 15:05: "i love the way we built the globe... rethink, big ones only").
+   Each is a surface of evenly spread fine points (golden-angle spirals, no rows, no links), turning slowly like the
+   globe; the gesture lives in where the points are bright. Forms 'big:<name>'. */
+const GA=2.399963,fr=x=>x-Math.floor(x);
+const rotY=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0]*c+p[2]*s,p[1],-p[0]*s+p[2]*c,p[3],p[4]]};
+const rotX=(p,a)=>{const c=Math.cos(a),s=Math.sin(a);return[p[0],p[1]*c-p[2]*s,p[1]*s+p[2]*c,p[3],p[4]]};
+/* an even disc; a little jitter so the sunflower spirals never show */
+function vogel(n,R=1){const o=[],j=R*.9/Math.sqrt(n);for(let i=0;i<n;i++){const r=Math.sqrt((i+.5)/n)*R,a=i*GA,x=r*Math.cos(a)+(hash(i,51)-.5)*j,y=r*Math.sin(a)+(hash(i,52)-.5)*j;o.push([x,y,Math.hypot(x,y)])}return o}
+const BIG={
+ /* Gather strength: the globe itself gathers in (smaller, brighter) and rests open */
+ build(n,t){const ph=fr(t/7),g=ph<.6?eio(ph/.6):1-eio((ph-.6)/.4),r=.98-.24*g;
+  return fib(n).map((p,i)=>rotX(rotY([p[0]*r,p[1]*r,p[2]*r,.55+.45*g*(.6+.4*hash(i,44)),1],t*.1+.4),.28))},
+ /* Fill up: a glass jar of faint points; bright points settle from the bottom and the level rises, then it empties */
+ jar(n,t){const prof=y=>y<-.85?.5+.1*(y+1)/.15:y<.45?.6:y<.72?.6-.26*eio((y-.45)/.27):.34+(y>.86?.04:0),o=[];
+  const ns=Math.round(n*.55),lvl=-.9+1.55*eio(cl(fr(t/14)*1.25))-(fr(t/14)>.88?1.55*eio((fr(t/14)-.88)/.12):0);
+  for(let i=0;i<ns;i++){const y=-1+1.95*(i+.5)/ns,a=i*GA,R=prof(y);o.push([R*Math.cos(a),y,R*Math.sin(a),y<lvl?.75:.28,1])}
+  const nf=n-ns;for(let i=0;i<nf;i++){const y=-.95+(lvl+.95)*hash(i,53),R=prof(y)*.88*Math.sqrt(hash(i,54)),a=hash(i,55)*TAU;o.push([R*Math.cos(a),y,R*Math.sin(a),y<lvl?1:0,1])}
+  for(let i=0;i<14;i++){const f=fr(t*.5+i/14);o.push([0,1.15-(1.15-lvl)*f,0,lvl<.6?1-f*.4:0,1])}
+  return o.map(p=>rotX(rotY(p,t*.12),.32))},
+ /* Water carries: still water seen from above at an angle; rings of light travel out from the centre and fade */
+ ripple(n,t){return vogel(Math.round(n*1.6),1).map(([x,z,r],i)=>{let b=.04;for(let k=0;k<3;k++){const f=fr(t*.16+k/3),d=r-f;b+=Math.exp(-d*d/.006)*(1-f*.7)*2.2}b+=Math.exp(-r*r/.004)*.8
+  const y=.05*Math.sin(r*14-t*2)*(1-r);return rotX(rotY([x,y,z,Math.min(1,b),1],t*.05),1.05)})},
+ /* Money: a coin of light, its face and a bright rim, spinning on its edge */
+ coin(n,t){const o=[],nf=Math.round(n*.62);vogel(nf,.82).forEach(([x,y,r],i)=>o.push([x,y,(i%2?.025:-.025),.45+.5*Math.exp(-((r-.55)**2)/.004),1]));
+  const nr=n-nf;for(let i=0;i<nr;i++){const a=i/nr*TAU*3,z=(i%3-1)*.035;o.push([.9*Math.cos(a),.9*Math.sin(a),z,1,1])}
+  return o.map(p=>rotX(rotY(p,t*.75),.14))},
+ /* Meet: two bands of light, each a fine ring, crossing; light flows along both and is brightest where they meet */
+ twin(n,t){const o=[],h=n>>1;for(let s=0;s<2;s++)for(let i=0;i<h;i++){const a=i/h*TAU+(s?-1:1)*t*.5,w=(fr(i*.618)-.5)*.07,r=.86+w;
+  let p=[r*Math.cos(a),(fr(i*.7548)-.5)*.05,r*Math.sin(a),0,1];p=rotX(p,s?-.62:.62);p[3]=.4+.6*Math.pow(Math.max(0,Math.cos(a*2-t*1.1)),6)+.25*Math.exp(-(p[0]*p[0])/.02);o.push(p)}
+  return o.map(p=>rotX(rotY(p,t*.12),.5))},
+ moon(n,t){return globe(n,t)}
+};
+function shape(form,t,css,phase){if(form.startsWith('big:')){const B=BIG[form.slice(4)];return lit(B(Math.round(globeN(css)*(form==='big:moon'?1:1.15)),t),phase)}form=ALIAS[form]||form;
  if(form==='moon')return lit(globe(globeN(css),t),phase);
  const f=L.FORM[form]||L.FORM.bloom;return dense(f(t*.6),profile(css).rounds,form)}
 
@@ -90,7 +126,9 @@ function pearls(form,t,css,o){const fm=ALIAS[form]||form,f=L.FORM[fm]||L.FORM.bl
   out.push({x,y:yy,core:sz*.5/(2.3+2*dof),halo:2.3+2*dof,a:Math.min(1,a*(.35+d)*soft*(1+.7*G)),c:mixc(far,near,.55+.45*d),z})});  /* the core */
  return out.sort((u,v)=>u.z-v.z)}
 /* the particles of one light, around 0,0, in css px */
-function points(form,t,css,o={}){if(o.look!=='fairy'&&!(o.morph&&o.morph.k>0)&&(ALIAS[form]||form)!=='moon'&&!(o.field>0&&o.look!=='pearl'))return pearls(form,t,css,o);const Q=profile(css),isMoon=(ALIAS[form]||form)==='moon',R=css*(o.r||(isMoon?.4:.4)),rgb=o.rgb||W,alpha=o.alpha==null?1:o.alpha;
+/* large practice lights (>=220: practice page, player) of these forms are drawn built like the globe (Nayara 16:31 "i loved all the big lights") */
+const BIG_AT=220,BIGFORMS=new Set(['build','jar','ripple','coin','twin']);
+function points(form,t,css,o={}){{const fm=ALIAS[form]||form;if(css>=BIG_AT&&BIGFORMS.has(fm)&&!(o.morph&&o.morph.k>0)&&o.look!=='pearl')form='big:'+fm}if(o.look!=='fairy'&&!(o.morph&&o.morph.k>0)&&(ALIAS[form]||form)!=='moon'&&!form.startsWith('big:')&&!(o.field>0&&o.look!=='pearl'))return pearls(form,t,css,o);const Q=profile(css),isMoon=(ALIAS[form]||form)==='moon'||form.startsWith('big:'),R=css*(o.r||(isMoon?.4:.4)),rgb=o.rgb||W,alpha=o.alpha==null?1:o.alpha;
  let pts=shape(form,t,css,o.phase);
  if(o.morph&&o.morph.k>0){const k=o.morph.k,B=shape(o.morph.to,t,css,o.phase),ang=p=>Math.atan2(p[1],p[0]);
   const A=pts.slice().sort((a,b)=>ang(a)-ang(b)),Bs=B.slice().sort((a,b)=>ang(a)-ang(b)),n=Math.max(A.length,Bs.length);
@@ -99,7 +137,7 @@ function points(form,t,css,o={}){if(o.look!=='fairy'&&!(o.morph&&o.morph.k>0)&&(
  const tilt=!isMoon&&o.tilt!==false,out=[];
  pts.forEach((p,i)=>{const[x,y,z,s]=project(p,R,tilt),dep=cl((z+1)/2),star=hash(i,3)<Q.star;
   const tw=.78+.22*Math.sin(t*(.9+1.6*hash(i,5))+i*1.7);                      /* each point breathes on its own, slowly */
-  const a=(Q.floor+(1-Q.floor)*dep)*(.45+.55*cl(p[3]))*tw*alpha*(o.phase!=null?cl(p[4]):1);if(a<.01)return;
+  const a=(Q.floor+(1-Q.floor)*dep)*(form.startsWith('big:')?.08+.92*cl(p[3]):.45+.55*cl(p[3]))*tw*alpha*(o.phase!=null?cl(p[4]):1);if(a<.01)return;
   const core=(star?Q.starCore:lerp(Q.core,Q.coreMax,hash(i,9)))*s*(.8+.35*dep);
   out.push({x,y,core,halo:Q.halo,a:Math.min(1,a),c:mixc(rgb,W,.3+.6*dep)})});
  if(o.field){for(let i=0;i<o.field;i++){const an=hash(i,21)*TAU+t*.02*(hash(i,22)-.5),rad=Math.sqrt(hash(i,23))*.5*css,tw=.5+.5*Math.sin(t*(.5+hash(i,24))+i);

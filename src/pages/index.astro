@@ -41,7 +41,6 @@ const schema = [
         <canvas class="hmoon" data-light="moon" data-size="300" data-arrive="3.2" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
         <script is:inline>document.currentScript.previousElementSibling.dataset.phase = (((Date.now() - 947182440000) / 2551442877) % 1).toFixed(3);</script>
       </div>
-      <Ring w={1040} h={560} rx={0.48} ry={0.15} tilt={-7} n={1800} speed={0.03}>
       <div class="glass hcard">
         <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
         <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
@@ -49,7 +48,6 @@ const schema = [
         <Stores where="hero" />
         <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
       </div>
-      </Ring>
       <ul class="proof">
         <li><span class="spark"></span>Practices timed to every moon through 2030</li>
         <li><span class="spark"></span>Gestures kept by traditions across the world</li>
@@ -100,19 +98,19 @@ const schema = [
       </div>
       <ol class="steps">
         <li class="tint" style="--c: 179 166 242">
-          <canvas class="slight" data-light="moon" data-size="96" data-phase="0.5" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="moon" data-size="120" data-r="0.4" data-phase="0.5" aria-hidden="true"></canvas>
           <span class="label">01 · Tonight's moon</span>
           <h3 class="h-card">One sentence for the night</h3>
           <p class="muted">What the night is good for, and what to go easy on. Plain, warm words.</p>
         </li>
         <li class="tint" style="--c: 240 169 124">
-          <canvas class="slight" data-light="build" data-size="96" data-color="240 169 124" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="burst" data-size="120" data-r="0.4" data-color="240 169 124" aria-hidden="true"></canvas>
           <span class="label">02 · A practice to live it</span>
           <h3 class="h-card">Fifteen minutes, with a candle and a pen</h3>
           <p class="muted">Open, a few gestures, close. Choose love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
         </li>
         <li class="tint" style="--c: 143 184 242">
-          <canvas class="slight" data-light="jar" data-size="96" data-color="143 184 242" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="vortex" data-size="120" data-r="0.5" data-color="143 184 242" aria-hidden="true"></canvas>
           <span class="label">03 · Keep it</span>
           <h3 class="h-card">A quiet record of your moons</h3>
           <p class="muted">Each practice stays with you, so you can see what you planted at the new moon and what it became.</p>
@@ -265,7 +263,7 @@ const schema = [
   .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .steps li { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .steps p { margin: 0; }
-  .slight { width: 96px; height: 96px; margin: -8px 0 0 -8px; }
+  .slight { width: 120px; height: 120px; margin: -16px 0 0 -16px; }
   .tint { border-radius: var(--radius-card); border: 1px solid rgb(var(--c) / .18); background: radial-gradient(130% 90% at 50% 0%, rgb(var(--c) / .12), transparent 62%), var(--glass-fill);
     box-shadow: var(--glass-highlight); -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); }
   .pillars { overflow: hidden; }
@@ -323,7 +321,6 @@ const schema = [
   @media (max-width: 560px) { .cgrid, .wgrid { grid-template-columns: 1fr; } }
   /* Entrance, after the app opening: the moon gathers from far back, the ring and card follow, words come out of blur */
   @media (prefers-reduced-motion: no-preference) {
-    .hero :global(.ring) { animation: in-fade 2.4s 1.2s both cubic-bezier(.2,.8,.2,1); }
     .hcard { animation: in-rise 1.4s 1.4s both cubic-bezier(.22,1,.36,1); }
     .hcard .w { display: inline-block; animation: in-blur 1.2s both cubic-bezier(.2,.8,.2,1); animation-delay: calc(1.6s + var(--i) * .12s); }
     .hcard > :not(h1) { animation: in-fade 1.2s 2.2s both ease-out; }
