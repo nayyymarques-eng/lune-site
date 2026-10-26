@@ -38,7 +38,7 @@ const schema = [
     <Sky />
     <div class="wrap hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
       <div class="hmoonw">
-        <canvas class="hmoon" data-light="moon" data-size="300" data-arrive="3.2" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
+        <canvas class="hmoon" data-light="moon" data-size="300" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
         <script is:inline>document.currentScript.previousElementSibling.dataset.phase = (((Date.now() - 947182440000) / 2551442877) % 1).toFixed(3);</script>
       </div>
       <div class="glass hcard">
@@ -123,7 +123,7 @@ const schema = [
   <section class="pillars">
     <div class="bg l2" style="--bgc: 232 140 221" aria-hidden="true"></div>
     <div class="wrap pgrid">
-      <div class="plight"><canvas data-light="galaxy" data-size="430" data-r="0.46" data-sparkle data-reveal data-color="232 140 221" aria-hidden="true"></canvas></div>
+      <div class="plight"><canvas data-light="galaxy" data-size="430" data-r="0.46" data-sparkle data-color="232 140 221" aria-hidden="true"></canvas></div>
       <div class="pcopy">
         <p class="label">Every practice, three ways to see it</p>
         <h2 class="h-sec">Every gesture, explained</h2>
@@ -229,7 +229,7 @@ const schema = [
   .hcol { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 24px; }
   .hlogo { width: 112px; height: auto; opacity: .9; }
   .hmoon { width: 300px; height: 300px; display: block; }
-  .hcard { box-sizing: border-box; max-width: 100%; min-width: 0; display: grid; justify-items: center; gap: 20px; width: min(640px, 100%); margin: -24px auto 0; padding: 40px 40px 32px; border-radius: 16px; position: relative; z-index: 2; }
+  .hcard { box-sizing: border-box; max-width: 100%; min-width: 0; display: grid; justify-items: center; gap: 20px; width: min(640px, 100%); margin: -130px auto 0; padding: 40px 40px 32px; border-radius: 16px; position: relative; z-index: 2; }
   .hcol .h-hero { margin: 0; }
   .hcol .lead { max-width: 520px; }
   .more { display: inline-flex; gap: 8px; margin-top: 24px; font: var(--text-body); color: var(--foreground); text-decoration: none; border-bottom: 1px solid rgb(255 255 255 / .24); padding-bottom: 2px; }
@@ -313,7 +313,7 @@ const schema = [
     .phones .phone { width: 200px; border-radius: 32px; }
     .hlogo { width: 96px; }
     .hmoon { width: 220px; height: 220px; }
-    .hcard { padding: 32px 16px 24px; margin-top: -48px; }
+    .hcard { padding: 32px 16px 24px; margin-top: -104px; }
     .steps, .prgrid { grid-template-columns: 1fr; }
     .cgrid { grid-template-columns: 1fr 1fr; }
     .plan.sel { order: -1; }

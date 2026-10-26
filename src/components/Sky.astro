@@ -131,7 +131,7 @@ const { fade = 'bottom' } = Astro.props;
   }
 
   let last = 0;
-  function loop(ms) { if (vis && ms - last > 15) { frame(ms); last = ms; } requestAnimationFrame(loop); }
+  function loop(ms) { if (vis && ms - last > 32) { frame(ms); last = ms; } requestAnimationFrame(loop); }
   build(); frame(0); addEventListener('DOMContentLoaded', () => frame(performance.now()));
   let rt = 0;
   const rebuild = () => { clearTimeout(rt); rt = setTimeout(() => { if (Math.abs(cv.clientHeight - H) > 2 || Math.abs(cv.clientWidth - W) > 2) { build(); frame(performance.now()); } }, 120); };
