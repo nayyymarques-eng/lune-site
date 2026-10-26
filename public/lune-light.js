@@ -39,11 +39,11 @@ const globeN=css=>Math.round(cl((css-40)/400)*560+120);
    the other (or very close) are linked, so loose points (a jar filling, a ripple's centre) stay single stars. */
 const TOPO={};
 function step(pts,list,max=1e9){const o=pts.slice();for(const[i,j]of list){const p=pts[i],q=pts[j];if(p&&q&&Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2])<max)o.push([(p[0]+q[0])/2,(p[1]+q[1])/2,(p[2]+q[2])/2,(p[3]+q[3])/2,(p[4]+q[4])/2])}return o}
-function dense(pts,n,key){if(n<=0)return pts;const id=key+':'+n+':'+pts.length;let T=TOPO[id];
+function dense(pts,n,key,prox){if(n<=0)return pts;const id=key+(prox?'p':'')+':'+n+':'+pts.length;let T=TOPO[id];
  if(!T){T=[];let cur=pts,lim=.42;for(let r=0;r<n;r++){const nn=cur.map((p,i)=>{let b=1e9;for(let j=0;j<cur.length;j++){if(j===i)continue;const q=cur[j],d=Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2]);if(d<b)b=d}return b}).sort((a,b)=>a-b);
   const lm=Math.min(lim,(nn[nn.length>>1]||lim)*1.6),list=[],seen=new Set();
-  const md=nn[nn.length>>1]||lim;cur.forEach((p,i)=>{const best=[];cur.forEach((q,j)=>{if(j===i)return;const d=Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2]);if(d<lm&&(r>0||Math.abs(i-j)<=2||d<md*1.15))best.push([d,j])});
-   best.sort((a,b)=>a[0]-b[0]).slice(0,2).forEach(([,j])=>{const k=i<j?i+'-'+j:j+'-'+i;if(!seen.has(k)){seen.add(k);list.push([i,j])}})});
+  const md=nn[nn.length>>1]||lim;cur.forEach((p,i)=>{const best=[];cur.forEach((q,j)=>{if(j===i)return;const d=Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2]);if(d<lm&&(r>0||(!prox&&Math.abs(i-j)<=2)||d<md*1.15))best.push([d,j])});
+   best.sort((a,b)=>a[0]-b[0]).slice(0,prox===2?5:2).forEach(([,j])=>{const k=i<j?i+'-'+j:j+'-'+i;if(!seen.has(k)){seen.add(k);list.push([i,j])}})});
   T.push([list,lm*1.5]);cur=step(cur,list);lim*=.62}TOPO[id]=T}
  for(const[list,max]of T)pts=step(pts,list,max);return pts}   /* a link that has stretched (a falling point) is dropped */
 
@@ -68,14 +68,18 @@ function project(p,R,tilt){let x=p[0],y=p[1],z=p[2];if(tilt){const cy=Math.cos(.
    face her and cools (about 6 s). The globe and morphs keep the fairy-light grain. */
 const SPEC=[[150,125,255],[255,140,185],[255,196,120],[120,190,255]];
 const spec=u=>{u=((u%1)+1)%1;const f=u*4,i=Math.floor(f)%4;return mixc(SPEC[i],SPEC[(i+1)%4],f-i)};
-function pearls(form,t,css,o){const f=L.FORM[ALIAS[form]||form]||L.FORM.bloom,pts=f(t*.6),n=pts.length,rgb=o.rgb||W,alpha=o.alpha==null?1:o.alpha;
- const A=o.arrive==null?1:cl(o.arrive),q=1-eio(A),cs=Math.cos(1.25*q),sn=Math.sin(1.25*q),R=css*(o.r||.36),base=css/9.5,keep=.38,out=[];
+/* perspective (Nayara 14:44): the bigger the light, the more detail. Small (<=100) stays as approved; from medium up the
+   points grow in number continuously (in-between points fade in with size) and get smaller and crisper. */
+const CLOUD=new Set(['build','breath','clear','burst']);   /* sphere clouds fill evenly (5 neighbours), never in rows */
+function pearls(form,t,css,o){const fm=ALIAS[form]||form,f=L.FORM[fm]||L.FORM.bloom,G=cl((css-100)/200),raw=f(t*.6),n0=raw.length,
+  D=css>100&&fm!=='binary',PX=CLOUD.has(fm)?2:1,pts=D?dense(raw,2,fm,PX):raw,n1=D?dense(raw,1,fm,PX).length:n0,w1=cl((css-100)/80),w2=cl((css-180)/110),n=pts.length,rgb=o.rgb||W,alpha=o.alpha==null?1:o.alpha;
+ const A=o.arrive==null?1:cl(o.arrive),q=1-eio(A),cs=Math.cos(1.25*q),sn=Math.sin(1.25*q),R=css*(o.r||.36),base=css/9.5*lerp(1,.3,G),keep=.38,out=[];
  pts.forEach((p,i)=>{const y=p[1]*cs-p[2]*sn,z=p[1]*sn+p[2]*cs,d=cl((z+1)/2),s=3/(3-z),b0=cl(p[3]),b=b0>.02?.42+.58*b0:b0;
-  const a=b*(.6+.4*d)*(.25+.75*cl(A*3))*alpha*(.85+.15*Math.sin(t*(.9+1.6*hash(i,5))+i*1.7));if(a<.01)return;
+  const a=(i<n0?1:i<n1?w1:w2)*b*(.6+.4*d)*(.25+.75*cl(A*3))*alpha*(.85+.15*Math.sin(t*(.9+1.6*hash(i,5))+i*1.7));if(a<.01)return;
   const dof=cl((d-.78)/.22)*(.15+.85*q)+q*.1,sz=base*Math.max(.7,p[4])*s*(.75+.45*d)*(1+1.1*dof),pc=spec(i/n+t*.025);
   const far=mixc(rgb,pc,keep+(1-keep)*q),near=mixc(W,pc,.75*q),x=p[0]*s*R,yy=-y*s*R,soft=1-.5*dof;
-  out.push({x,y:yy,core:sz/1.15,halo:1.15,a:Math.min(1,a*(1.15-d*.6)*.8*soft),c:far,z});                 /* the glow */
-  out.push({x,y:yy,core:sz*.5/(2.3+2*dof),halo:2.3+2*dof,a:Math.min(1,a*(.35+d)*soft),c:mixc(far,near,.55+.45*d),z})});  /* the core */
+  out.push({x,y:yy,core:sz/1.15,halo:1.15,a:Math.min(1,a*(1.15-d*.6)*.8*soft*(1-.55*G)),c:far,z});                 /* the glow */
+  out.push({x,y:yy,core:sz*.5/(2.3+2*dof),halo:2.3+2*dof,a:Math.min(1,a*(.35+d)*soft*(1+.25*G)),c:mixc(far,near,.55+.45*d),z})});  /* the core */
  return out.sort((u,v)=>u.z-v.z)}
 /* the particles of one light, around 0,0, in css px */
 function points(form,t,css,o={}){if(o.look!=='fairy'&&!(o.morph&&o.morph.k>0)&&(ALIAS[form]||form)!=='moon'&&!(o.field>0&&o.look!=='pearl'))return pearls(form,t,css,o);const Q=profile(css),isMoon=(ALIAS[form]||form)==='moon',R=css*(o.r||(isMoon?.4:.4)),rgb=o.rgb||W,alpha=o.alpha==null?1:o.alpha;
