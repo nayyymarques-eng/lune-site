@@ -4,22 +4,22 @@ import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
 import moon from '../../data/moon.json';
 import R from '../../data/readings.json';
-import { SIGNS, SIGN_GLYPH, cap, visitsOf, lunationsIn, houseFrom, fmtDate, utcOf } from '../../lib/moon';
+import { SIGNS, SIGN_GLYPH, visitsOf, lunationsIn, fmtDate, utcOf } from '../../lib/moon';
 
 export function getStaticPaths() { return SIGNS.map((sign) => ({ params: { sign } })); }
 const { sign } = Astro.params as { sign: string };
 const S = (R.signs as any)[sign];
 const visits = visitsOf(moon as any, sign, Date.now(), 4);
 const lun = lunationsIn(moon as any, sign);
-const ord = (n: number) => n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
-// One word per house, from Copy's house lines (leituras-en.json).
-const AREA = ['self', 'values', 'words', 'roots', 'joy', 'days', 'bonds', 'change', 'meaning', 'work', 'people', 'rest'];
-const houses = SIGNS.map((sun) => {
-  const h = houseFrom(sign, sun);
-  return { sun, h, area: AREA[h - 1] };
-});
+// The next new and full moon in this sign, shown on their cards so each reading has its date.
+const when = (kind: string) => {
+  const p: any = lun.find((x: any) => x.kind === kind);
+  return p && `${fmtDate(utcOf(p.utc))}, ${new Date(utcOf(p.utc)).getUTCFullYear()}`;
+};
+const nextNew = when('new_moon');
+const nextFull = when('full_moon');
 const title = `The moon in ${S.name}`;
-const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next dates, the new and full moon in ${S.name}, and what it touches for each sign.`;
+const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next dates and the new and full moon in ${S.name}.`;
 ---
 <Base title={title} description={desc} type="article">
   <article class="narrow page">
@@ -29,43 +29,32 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
 
     <div class="live glass" data-sign={sign} hidden>
       <span class="dot"></span>
-      <p>Tonight the moon is in {S.name}. If it's your sign, this is your night: <a href="#for-you">see how to use it</a>.</p>
+      <p>Tonight the moon is in {S.name}. If it's your sign, this is your night: <a href="#next">see the next dates</a>.</p>
     </div>
 
     <div class="pgrid">
       <div class="pcard glass">
         <canvas class="plight" data-light="burst" data-size="88" data-r="0.46" data-color="179 166 242" aria-hidden="true"></canvas>
         <p class="label">At the new moon</p>
+        {nextNew && <p class="when">Next new moon in {S.name} · {nextNew}</p>}
         <p class="reading">{S.new}</p>
       </div>
       <div class="pcard glass">
         <canvas class="plight" data-light="moon" data-size="88" data-r="0.42" data-phase="0.5" aria-hidden="true"></canvas>
         <p class="label">At the full moon</p>
+        {nextFull && <p class="when">Next full moon in {S.name} · {nextFull}</p>}
         <p class="reading">{S.full}</p>
       </div>
     </div>
-    {lun.length > 0 && <p class="small muted">Next: {lun.map((p: any) => `${p.kind === 'new_moon' ? 'New' : 'Full'} moon, ${fmtDate(utcOf(p.utc))} ${new Date(utcOf(p.utc)).getUTCFullYear()}`).join(' · ')}</p>}
-
-    <h2 id="for-you">Where it lands for you</h2>
-    <p class="muted">Find your Sun sign to see which part of life this moon lights. The app counts from your rising sign.</p>
-    <div class="houses">
-      {houses.map((x) => (
-        <a class={`hcell${x.h === 1 ? ' mine' : ''}`} href={`/moon/${x.sun}`} data-sun={x.sun}>
-          <span class="label">{cap(x.sun)}</span>
-          <span class="hn">{ord(x.h)}</span>
-          <span class="ha">{x.h === 1 ? 'your sign' : x.area}</span>
-        </a>
-      ))}
-    </div>
     <div class="share">
-      <button type="button" class="btn secondary sm" data-share data-title={`The moon in ${S.name} · Lune`} data-text={`The moon in ${S.name}: see which part of life it lights for your sign.`}>
+      <button type="button" class="btn secondary sm" data-share data-title={`The moon in ${S.name} · Lune`} data-text={`The moon in ${S.name}: what it asks of the night, and the next dates.`}>
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg>
         Share with a friend
       </button>
       <span class="small muted" data-shared hidden role="status">Link copied</span>
     </div>
 
-    <h2>Next moons in {S.name}</h2>
+    <h2 id="next">Next moons in {S.name}</h2>
     <ul class="dates">
       {visits.map((v) => <li><span>{fmtDate(v.start)} to {fmtDate(v.end)}</span><span class="label">about {Math.round((v.end - v.start) / 36e5)} hours</span></li>)}
     </ul>
@@ -84,12 +73,6 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
   </article>
 </Base>
 <script>
-  // Highlight the visitor's own Sun sign when they picked one on Tonight; otherwise the page's sign stays lit.
-  try {
-    const mine = localStorage.getItem('lune-sign');
-    const cell = mine && document.querySelector<HTMLElement>(`.hcell[data-sun="${mine}"]`);
-    if (cell) { document.querySelectorAll('.hcell.mine').forEach((c) => c.classList.remove('mine')); cell.classList.add('mine', 'you'); }
-  } catch {}
   document.querySelectorAll<HTMLButtonElement>('[data-share]').forEach((b) => b.addEventListener('click', async () => {
     const data = { title: b.dataset.title, text: b.dataset.text, url: location.href };
     try {
@@ -104,21 +87,12 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
   .page h2 { font: var(--text-title); letter-spacing: -0.035em; margin-top: 32px; }
   .page p { margin: 0; }
   .label a { text-decoration: none; }
+  .when { font: var(--text-small); color: var(--foreground); }
   .reading { font-family: var(--font-sans); font-size: 18px; line-height: 1.5; color: var(--foreground); }
   .dates { list-style: none; margin: 0; padding: 0; }
   .dates li { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 16px; color: var(--foreground); }
-  .houses { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .hcell { display: grid; gap: 4px; padding: 16px; border-radius: var(--radius-card); background: var(--glass-fill); border: 1px solid var(--glass-edge); box-shadow: var(--glass-highlight); text-decoration: none; }
-  .hcell:hover { background: var(--glass-selected); }
-  .hcell.mine { position: relative; border-color: rgb(179 166 242 / .7); background: linear-gradient(160deg, rgb(179 166 242 / .22), rgb(179 166 242 / .06));
-    box-shadow: 0 0 0 1px rgb(179 166 242 / .35), 0 0 32px rgb(179 166 242 / .28), var(--glass-highlight); }
-  .hcell.mine .ha { color: var(--foreground); }
-  .hcell.mine.you::after { content: 'You'; position: absolute; top: 14px; right: 14px; padding: 2px 8px; border-radius: 999px; font: var(--text-label); text-transform: uppercase; letter-spacing: .08em;
-    background: rgb(179 166 242 / .3); color: #fff; }
-  .share { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+  .share { display: flex; align-items: center; gap: 12px; }
   .share .btn { display: inline-flex; align-items: center; gap: 8px; }
-  .hn { font: var(--text-title); letter-spacing: -0.035em; color: var(--foreground); }
-  .ha { font: var(--text-small); color: var(--muted-foreground); }
   .live { display: flex; gap: 16px; align-items: center; padding: 16px 20px; }
   .live[hidden] { display: none; }
   .cta { padding: 24px; display: grid; gap: 16px; margin-top: 32px; }
@@ -129,7 +103,7 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
   .origin { margin-top: 32px; border-top: 1px solid var(--line); padding-top: 16px; }
   .origin summary { cursor: pointer; font: var(--text-small); color: var(--foreground); }
   .origin p { margin-top: 12px; font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
-  @media (max-width: 640px) { .houses { grid-template-columns: repeat(3, 1fr); } .pgrid { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .pgrid { grid-template-columns: 1fr; } }
 </style>
 <script>
   import moon from '../../data/moon.json';
