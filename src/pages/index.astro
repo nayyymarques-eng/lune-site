@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Ring from '../components/Ring.astro';
+import Sky from '../components/Sky.astro';
 import Wordmark from '../components/Wordmark.astro';
 import Signup from '../components/Signup.astro';
 import moon from '../data/moon.json';
@@ -33,12 +34,12 @@ const schema = [
 ---
 <Base glow={false} description="A 15-minute ritual for every moon, with a candle, a glass of water or a pen. Lune gives you tonight's practice, timed to the moon. Free to start." schema={schema}>
   <section class="hero">
-    <div class="bg l1" aria-hidden="true"></div>
+    <Sky />
     <div class="wrap hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
-      <Ring w={640} h={340} rx={0.46} ry={0.13} tilt={-10} n={620}>
+      <Ring w={420} h={220} rx={0.46} ry={0.13} tilt={-10} n={460}>
         <img class="hlogo" src="/brand/lune-white.svg" alt="Lune" width="300" height="135" />
       </Ring>
-      <h1 class="h-hero">A small ritual for every moon</h1>
+      <h1 class="h-hero">A ritual for every moon</h1>
       <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
       <div class="hform"><Signup source="hero" /></div>
       <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
@@ -213,17 +214,20 @@ const schema = [
 
 <style>
   section { position: relative; }
-  .hero { padding-top: 48px; overflow: hidden; }
+  .hero { position: relative; min-height: min(100svh, 920px); display: grid; align-items: center; padding: 64px 0 96px; overflow: hidden; }
+  .hero .wrap { position: relative; z-index: 1; }
+  .hero::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 46% 42% at 50% 55%, rgb(0 0 0 / .6), rgb(0 0 0 / 0)); }
+  @media (max-width: 720px) { .hero::before { background: radial-gradient(ellipse 90% 50% at 50% 55%, rgb(0 0 0 / .7), rgb(0 0 0 / 0)); } }
   .hcol { display: grid; justify-items: center; text-align: center; gap: 24px; }
-  .hlogo { width: 300px; height: auto; }
+  .hlogo { width: 180px; height: auto; }
   .hcol .h-hero { margin-top: -16px; }
-  .hcol .lead { max-width: 600px; }
+  .hcol .lead { max-width: 520px; }
   .more { display: inline-flex; gap: 8px; margin-top: 24px; font: var(--text-body); color: var(--foreground); text-decoration: none; border-bottom: 1px solid rgb(255 255 255 / .24); padding-bottom: 2px; }
   .more:hover { border-color: var(--foreground); }
   .hcol .more { margin-top: 0; color: var(--muted-foreground); }
   .hform { display: grid; justify-items: center; width: 100%; }
   .hform :global(form) { justify-content: center; margin-inline: auto; }
-  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; font: var(--text-body); color: var(--muted-foreground); }
+  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; font: var(--text-small); font-size: 13px; color: var(--muted-foreground); }
   .proof li { display: flex; align-items: center; gap: 8px; }
   .spark { width: 4px; height: 4px; border-radius: 50%; background: #fff; flex: none;
     box-shadow: 0 0 4px 1px rgba(255,246,232,.9), 0 0 12px 3px rgba(232,201,140,.35); animation: spark 3.2s ease-in-out infinite; }
@@ -270,7 +274,7 @@ const schema = [
   .seg { display: grid; grid-template-columns: 1fr 1fr; padding: var(--space-xs); border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge); }
   .seg button { min-height: 32px; padding: 0 16px; border: 0; border-radius: 8px; background: none; color: var(--muted-foreground); font: var(--text-label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
   .seg button.on { background: var(--glass-selected); color: var(--foreground); }
-  .price { font-family: var(--font-serif); font-size: 40px; letter-spacing: -0.035em; line-height: 1.04; color: var(--foreground); }
+  .price { font-family: var(--font-serif); font-size: 32px; letter-spacing: -0.035em; line-height: 1.04; color: var(--foreground); }
   .per { font: var(--text-body); letter-spacing: 0; color: var(--muted-foreground); }
   .feats { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
   .feats li { padding-left: 16px; position: relative; color: var(--foreground); }
@@ -290,7 +294,7 @@ const schema = [
     .pgrid, .agrid { grid-template-columns: 1fr; }
     .wgrid { grid-template-columns: 1fr 1fr; }
     .phone { width: 240px; }
-    .hlogo { width: 200px; }
+    .hlogo { width: 140px; }
     .steps, .prgrid { grid-template-columns: 1fr; }
     .cgrid { grid-template-columns: 1fr 1fr; }
     .plan.sel { order: -1; }

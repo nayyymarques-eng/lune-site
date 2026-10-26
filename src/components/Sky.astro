@@ -1,0 +1,96 @@
+---
+// Full night sky behind a section: a pre-rendered Milky Way and star field that turns
+// slowly, bright stars that twinkle, and a rare shooting star. Static under reduced motion.
+---
+<canvas class="sky" aria-hidden="true"></canvas>
+<style>
+  .sky { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+    -webkit-mask: linear-gradient(#000 70%, transparent); mask: linear-gradient(#000 70%, transparent); }
+</style>
+<script is:inline>
+(() => {
+  const cv = document.currentScript.previousElementSibling.tagName === 'CANVAS' ? document.currentScript.previousElementSibling : document.querySelector('canvas.sky');
+  if (!cv) return;
+  const ctx = cv.getContext('2d');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const rnd = (s => () => (s = (s * 16807) % 2147483647) / 2147483647)(7);
+  const TEMP = ['200 215 255', '225 232 255', '255 255 255', '255 244 228', '255 226 190', '255 205 165'];
+  let W, H, D, S, layer, bright = [], shoot = null, nextShoot = 4000, vis = true;
+
+  function build() {
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    D = Math.ceil(Math.hypot(W, H) * 1.15); S = dpr;
+    layer = document.createElement('canvas'); layer.width = D * S; layer.height = D * S;
+    const g = layer.getContext('2d'); g.scale(S, S);
+    // Milky Way band: a diagonal through the centre
+    const ang = -0.5, cx = D / 2, cy = D / 2, ux = Math.cos(ang), uy = Math.sin(ang);
+    const band = (t, off) => [cx + ux * t - uy * off, cy + uy * t + ux * off];
+    const k = D / 1950, area0 = D * D / 1e6;
+    g.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 68 * area0; i++) {
+      const t = (rnd() - .5) * D, off = (rnd() + rnd() + rnd() - 1.5) * D * .07;
+      const [x, y] = band(t, off), r = (30 + rnd() * 120) * Math.max(k, .6);
+      const c = rnd() < .5 ? '179 166 242' : rnd() < .6 ? '255 236 214' : '143 184 242';
+      const gr = g.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, `rgb(${c} / ${.025 + rnd() * .035})`); gr.addColorStop(1, `rgb(${c} / 0)`);
+      g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+    g.globalCompositeOperation = 'source-over';
+    // dust lanes
+    for (let i = 0; i < 18 * area0; i++) {
+      const t = (rnd() - .5) * D, off = (rnd() - .5) * D * .03;
+      const [x, y] = band(t, off), r = (20 + rnd() * 60) * Math.max(k, .6);
+      const gr = g.createRadialGradient(x, y, 0, x, y, r);
+      gr.addColorStop(0, 'rgb(0 0 0 / .35)'); gr.addColorStop(1, 'rgb(0 0 0 / 0)');
+      g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+    }
+    // faint stars, denser along the band
+    const area = D * D / 1e6;
+    for (let i = 0; i < 2600 * area; i++) {
+      let x, y;
+      if (rnd() < .45) { const t = (rnd() - .5) * D, off = (rnd() + rnd() - 1) * D * .09; [x, y] = band(t, off); }
+      else { x = rnd() * D; y = rnd() * D; }
+      const m = Math.pow(rnd(), 3.2), r = .25 + m * .9, a = .18 + m * .7;
+      g.fillStyle = `rgb(${TEMP[(rnd() * TEMP.length) | 0]} / ${a})`;
+      g.beginPath(); g.arc(x, y, r, 0, 7); g.fill();
+    }
+    // bright stars, drawn live so they twinkle
+    bright = [];
+    for (let i = 0; i < 70 * area; i++) bright.push({ x: rnd() * D, y: rnd() * D, r: .7 + Math.pow(rnd(), 5) * 1.4,
+      c: TEMP[(rnd() * TEMP.length) | 0], p: rnd() * 6.28, f: .6 + rnd() * 1.8 });
+  }
+
+  function frame(ms) {
+    const rot = reduce ? 0 : ms / 1000 * 0.0022; // about 1 degree every 8 seconds
+    ctx.clearRect(0, 0, W, H);
+    ctx.save(); ctx.translate(W / 2, H * .35); ctx.rotate(rot); ctx.translate(-D / 2, -D / 2);
+    ctx.drawImage(layer, 0, 0, D, D);
+    for (const s of bright) {
+      const tw = reduce ? .85 : .55 + .45 * Math.sin(ms / 1000 * s.f + s.p) * Math.sin(ms / 1700 * s.f + s.p * 2);
+      const r = s.r * 3, gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, r);
+      gr.addColorStop(0, `rgb(${s.c} / ${tw})`); gr.addColorStop(.18, `rgb(${s.c} / ${tw * .3})`); gr.addColorStop(1, `rgb(${s.c} / 0)`);
+      ctx.fillStyle = gr; ctx.fillRect(s.x - r, s.y - r, r * 2, r * 2);
+    }
+    ctx.restore();
+    if (!reduce) {
+      if (!shoot && ms > nextShoot) { const a = .5 + Math.random() * .5; shoot = { x: W * (.2 + Math.random() * .6), y: H * Math.random() * .3, vx: Math.cos(a) * 900, vy: Math.sin(a) * 900, t0: ms }; }
+      if (shoot) {
+        const k = (ms - shoot.t0) / 1000, x = shoot.x + shoot.vx * k, y = shoot.y + shoot.vy * k, life = 1 - k / .9;
+        if (life <= 0) { shoot = null; nextShoot = ms + 7000 + Math.random() * 9000; }
+        else { const gr = ctx.createLinearGradient(x, y, x - shoot.vx * .12, y - shoot.vy * .12);
+          gr.addColorStop(0, `rgb(255 255 255 / ${.8 * life})`); gr.addColorStop(1, 'rgb(255 255 255 / 0)');
+          ctx.strokeStyle = gr; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - shoot.vx * .12, y - shoot.vy * .12); ctx.stroke(); }
+      }
+    }
+  }
+
+  let last = 0;
+  function loop(ms) { if (vis && ms - last > 33) { frame(ms); last = ms; } requestAnimationFrame(loop); }
+  build(); frame(0);
+  addEventListener('resize', () => { build(); frame(performance.now()); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(e => { vis = e[0].isIntersecting; }).observe(cv);
+  if (!reduce) requestAnimationFrame(loop);
+})();
+</script>
