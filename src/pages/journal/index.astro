@@ -5,9 +5,9 @@ import { getCollection } from 'astro:content';
 import Cover from '../../components/Cover.astro';
 const posts = (await getCollection('journal', (p) => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date);
 ---
-<Base title="Journal" description="Notes on the moon, the signs and small practices to live them.">
+<Base title="Journal" description="Guides to each moon: what it means, where it comes from and a ritual to answer it.">
   <section class="wrap">
-    <div class="sec-head"><p class="label">Journal</p><h1 class="h-sec">Notes for each moon</h1></div>
+    <div class="sec-head"><p class="label">Journal</p><h1 class="h-sec">Guides for each moon</h1></div>
     <div class="list">
       {posts.map((p) => (
         <a class="post glass" href={`/journal/${p.id}`}>
@@ -21,7 +21,7 @@ const posts = (await getCollection('journal', (p) => !p.data.draft)).sort((a, b)
     <div class="sub glass">
       <canvas data-light="moon" data-size="96" data-phase="0.5" aria-hidden="true"></canvas>
       <h2 class="h-card">One letter per moon</h2>
-      <p class="muted">The next moon, read for each sign, the night before it arrives.</p>
+      <p class="muted">The next moon and a ritual to answer it, a few days before it arrives.</p>
       <Signup source="journal" note="Unsubscribe any time." />
     </div>
   </section>

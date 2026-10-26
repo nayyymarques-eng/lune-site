@@ -31,18 +31,28 @@ Add one markdown file to `src/content/journal/`, kebab-case name = URL:
 
 ```md
 ---
-title: "The moon in Aries tonight: a little courage"
+title: "Full moon in Gemini, 24 November 2026: meaning and a ritual"
 description: "About 150 characters for Google and the post card."
-date: 2026-11-02
-sign: aries          # optional; the closing CTA then speaks to that sign
-phase: full_moon     # optional
-tags: [moon-in-sign]
-cover: /journal/aries-nov.webp   # optional, put the image in public/journal/
+date: 2026-11-16
+sign: gemini         # optional; the closing CTA then speaks to that sign
+phase: full_moon     # optional; adds the "find it in your chart" link to the moon compass
+tags: [full-moon]
+keywords: [the searches this post answers]   # not shown on the page
+faq:                 # optional; shown at the end and sent to Google as FAQPage
+  - q: "A question people really search"
+    a: "A full answer, two to four sentences."
+cover: /journal/gemini-nov.webp   # optional, put the image in public/journal/
 draft: false
 ---
 ```
 
-Link each post to its sign page (`/moon/aries`). Rules: English, never promise results, astrology as reflection, kinship rule for traditions, no Jewish traditions, sources for any study.
+**Each post is a full article on one topic.** Rules from Nayara (26 Oct 2026):
+
+- **Topics come from search data.** Pick a query with measured volume (Keyword Planner CSVs in `/mnt/project-files/keyword-research/`) or real Google autocomplete, and use the questions people ask as headings and FAQ.
+- **Depth over breadth.** A guide runs about 1,500 words: what it means, where it comes from (traditions, the sky), when, what you need, the ritual step by step, why it helps (sourced studies), and a FAQ. Four or more sections get a contents list automatically.
+- **Never one line per sign.** A generalist post does not split into twelve short sign sections; nobody reads a whole post for one line about their sign. Cover the topic for everyone, and send people to their own reading: the moon compass (`/tonight`) for their house, `/moon/[sign]` for their sign. A sign gets its own post only when it is the whole topic (for example "new moon in Scorpio").
+- **Practice first, astrology as reflection.** The ritual uses many altar items, never only a candle and water. Meaning over speed: never sell minutes or "quick". Many ways to believe, each one full; never measure belief, never mention religion.
+- English, never promise results, kinship rule for traditions, no Jewish traditions, safety notes for any flame, sources for every study.
 
 ## Launch switches (environment variables)
 
