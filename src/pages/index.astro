@@ -43,7 +43,7 @@ const schema = [
     </div>
     <div class="glass hcard hcol" id="start" data-solid><span id="waitlist" aria-hidden="true"></span>
       <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
-      <p class="lead">For the spirituality you are growing into. Each moon, Lune gives your wishes, prayers and meditations a ritual: how to do it, where the gesture was born, and why it can matter, honouring every tradition that kept it.</p>
+      <p class="lead">Every moon asks something different. Lune tells you what tonight asks, and guides you through a ritual to answer it.</p>
       <div class="hform"><Signup source="hero" /></div>
       <Stores where="hero" />
       <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
@@ -435,6 +435,9 @@ const schema = [
     .hmark :global(img) { height: 56px !important; }
     .hcard { width: min(640px, 100% - 32px); margin: -110px auto 0; padding: 32px 20px 24px; border: 1px solid var(--glass-edge); border-radius: 16px; background: rgb(20 20 26 / .86); box-shadow: var(--glass-highlight); }
     .hcard::before { display: none; }
+    .hcard { justify-items: center; text-align: center; }
+    .hcard .hform { width: 100%; }
+    .hcard .proof { justify-items: center; }
     .steps { margin-inline: calc(-1 * var(--gutter, 16px)); padding-inline: var(--gutter, 16px); scroll-padding-inline: var(--gutter, 16px); }
     .cgrid { grid-template-columns: 1fr 1fr; }
   }
