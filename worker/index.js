@@ -3,6 +3,7 @@
 // then, when RESEND_API_KEY is set, adds it to a Resend audience (RESEND_AUDIENCE_ID) and sends a note to WAITLIST_TO.
 // Resend is best effort: once the email is in KV the visitor sees success.
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
+const MAX_BODY = 2048;
 const SIGNS = new Set(['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']);
 const json = (status, body) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
 
@@ -18,14 +19,21 @@ async function resend(env, path, body) {
 
 async function waitlist(request, env) {
   const origin = request.headers.get('origin');
-  if (origin && new URL(origin).host !== new URL(request.url).host) return json(403, { ok: false });
-  if (Number(request.headers.get('content-length') || 0) > 2048) return json(413, { ok: false });
+  if (origin && URL.parse(origin)?.host !== new URL(request.url).host) return json(403, { ok: false });
+  if (!(request.headers.get('content-type') || '').includes('application/json')) return json(415, { ok: false });
+  if (Number(request.headers.get('content-length') || 0) > MAX_BODY) return json(413, { ok: false });
   if (env.WAITLIST_RATE_LIMIT) {
     const { success } = await env.WAITLIST_RATE_LIMIT.limit({ key: request.headers.get('cf-connecting-ip') || 'local' });
     if (!success) return json(429, { ok: false });
   }
+  // content-length can be missing (chunked), so the body is measured too before parsing.
   let d;
-  try { d = await request.json(); } catch { return json(400, { ok: false }); }
+  try {
+    const raw = await request.text();
+    if (raw.length > MAX_BODY) return json(413, { ok: false });
+    d = JSON.parse(raw);
+  } catch { return json(400, { ok: false }); }
+  if (!d || typeof d !== 'object') return json(400, { ok: false });
   if (d.site) return json(200, { ok: true }); // honeypot: bots fill the hidden field
   const email = String(d.email || '').trim().toLowerCase();
   if (!EMAIL.test(email)) return json(400, { ok: false, error: 'email' });
