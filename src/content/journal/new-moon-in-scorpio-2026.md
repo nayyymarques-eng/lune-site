@@ -1,62 +1,101 @@
 ---
-title: "New moon in Scorpio, 9 November 2026: a 15-minute ritual for every sign"
+title: "New moon in Scorpio, 9 November 2026: meaning and a ritual for honest beginnings"
 slug: new-moon-in-scorpio-2026
 date: 2026-11-04
-description: "The new moon in Scorpio is exact on 9 November 2026. What it opens for each zodiac sign and a simple 15-minute new moon ritual with nothing to buy."
-keywords: [new moon in scorpio 2026, new moon ritual, scorpio new moon, new moon november 2026, new moon intentions]
-author: Lune
+description: "The new moon in Scorpio is exact on 9 November 2026. What Scorpio means, where the sign comes from in the sky, and a new moon ritual for beginning with honesty."
+sign: scorpio
+phase: new_moon
+tags: [new-moon, scorpio, event]
+keywords: [new moon in scorpio 2026, new moon in scorpio november 2026, new moon in scorpio meaning, new moon in scorpio ritual, scorpio new moon, new moon november 2026]
+faq:
+  - q: "When is the new moon in Scorpio in 2026?"
+    a: "The new moon is exact on Monday 9 November 2026 at 07:02 UTC, which is 2:02 AM Eastern, 11:02 PM Pacific on Sunday 8 November, and 7:02 AM in London. It falls at 17 degrees Scorpio."
+  - q: "What is the best night for the ritual?"
+    a: "The evening of Monday 9 November, the first evening after the exact moment. Tuesday 10 and Wednesday 11 November carry the same meaning. The first thin crescent should be visible low in the west after sunset on the 10th or 11th."
+  - q: "What does a new moon in Scorpio mean?"
+    a: "Astrologers read the new moon as a beginning and Scorpio as depth, honesty and what is shared. Together they ask for a beginning made from the inside: one honest conversation, one door opened, one thing let go so something truer can start."
+  - q: "Which house does it fall in for me?"
+    a: "It depends on your rising sign, which comes from your birth time and place. Lune's moon compass works it out for you and shows which area of your life this new moon lights."
 ---
 
-The new moon is exact on **Mon 9 Nov at 2:02 AM ET** (17° Scorpio). The best night for the ritual is the first evening after that moment: **Monday 9 November**.
+The new moon in Scorpio is exact on **Monday 9 November 2026 at 2:02 AM ET** (07:02 UTC), at 17° Scorpio. The best evening for the ritual is **Monday 9 November**, and Tuesday or Wednesday work just as well.
 
-## What the new moon in Scorpio asks
+Every new moon is a beginning. This one begins in the sign astrologers have always read as the deepest of the twelve, and it asks for a particular kind of start: not something new on the surface, but something true underneath.
 
-Nothing to see, everything to begin. This is the dark before a seed decides to grow, a good night to name one thing and plant it small.
+## What the new moon in Scorpio means
 
-The new moon in Scorpio goes deep. Sow trust by opening one door you usually keep closed. Scorpio is a water sign with a long memory. It asks for depth and honesty, gently.
+The new moon is the dark before a seed decides to grow, the night to name one thing and plant it small. Scorpio gives that beginning its colour.
 
-## A 15-minute new moon ritual
+In astrology, Scorpio is a **fixed water sign**. Water is feeling and memory; fixed means steady, loyal, slow to change and hard to move once it has. Scorpio's traditional ruler is Mars, the planet of courage, and modern astrologers add Pluto, the planet of what is hidden and what transforms. Its symbol is the scorpion, and in some later traditions the eagle, the same creature seen once from the ground and once from the sky.
 
-You need paper, a pen and, if you like, a candle. Nothing to buy.
+Put together, the new moon in Scorpio reads as an invitation to begin with honesty. It is a good night to:
 
-1. **Prepare (2 min).** Dim the lights. Put your phone in another room. Light the candle and never leave it alone.
-2. **Arrive (3 min).** Breathe in through your nose for 4, out for 6. Ten rounds.
-3. **Name it (5 min).** Write: "I'm here to..." and finish the sentence with one thing you want to begin. Keep it small enough to start this week.
-4. **Open one door (3 min).** Scorpio's gesture: write one door you usually keep closed, and one small way to open it.
-5. **Close (2 min).** Fold the page. Keep it somewhere you will see it at the full moon on 24 November.
+- start a conversation you have been circling,
+- open one door you usually keep closed,
+- let go of something so that something truer has room,
+- commit to something you are ready to stay with.
 
-## What it opens for your sign
+Scorpio asks for depth, gently. Nothing has to be said to anyone tonight. The beginning can be a sentence on a page that only you will read.
 
-Counted from your Sun sign (solar houses). With your birth time, the reading comes from your rising sign and is more personal.
+## Scorpio in the sky
 
-**Aries** (Mar 21 to Apr 19) · 8th house, what is shared and what is ready to change and be let go. Open one door you usually keep closed.
+The sign is named after the constellation Scorpius, one of the few that looks like what it is called: a long curl of stars with a raised tail, low in the summer sky of the northern hemisphere.
 
-**Taurus** (Apr 20 to May 20) · 7th house, your bonds: partners, love, the agreements you share. Open a new agreement with someone close.
+Its heart is **Antares**, a red supergiant so large that, placed where the Sun is, it would swallow the orbits of the inner planets. Its name means "rival of Ares", the Greek Mars, because its red colour competes with the red planet when they pass near each other.
 
-**Gemini** (May 21 to Jun 20) · 6th house, your days: the small habits that care for you. Choose one small habit and keep it gently.
+The Greeks told that the scorpion was sent against the hunter Orion, and that the two were placed on opposite sides of the sky so they would never meet: Orion sets in the west as Scorpius rises in the east. In Polynesian navigation the same stars are the fishhook of Māui, which pulled islands up from the sea. One shape in the sky, read as a sting, as a hunt, as a hook that brings new land up from deep water.
 
-**Cancer** (Jun 21 to Jul 22) · 5th house, your joy: love, creativity, what makes you play. Start something only for the joy of it.
+The zodiac sign and the constellation no longer line up exactly. Over two thousand years the Earth's slow wobble has shifted the signs against the stars, so on 9 November the Sun and moon stand in front of the stars of Libra, in the stretch astrologers call Scorpio. Astrology keeps the signs tied to the seasons, not to the stars.
 
-**Leo** (Jul 23 to Aug 22) · 4th house, your roots: home, family, the ground you stand on. Make one corner of home feel like yours.
+## The season it falls in
 
-**Virgo** (Aug 23 to Sep 22) · 3rd house, your words: what you learn, the people close by, your daily paths. Write the message you have been drafting in your head.
+In the northern hemisphere, the Scorpio new moon comes in late autumn. The harvest is in, leaves are down, and the days shorten fast. Many calendars treat this time as the turning of the year toward the inside: the home, the hearth, the long evenings.
 
-**Libra** (Sep 23 to Oct 22) · 2nd house, what you value: your resources, your money, what feels like enough. Name what "enough" means to you this month.
+In the southern hemisphere it is late spring. The same new moon reads there as a seed going into warm ground. Both are true. The sign gives the depth, your season gives the weather of it.
 
-**Scorpio** (Oct 23 to Nov 21) · 1st house, you: your body, your presence, the way you begin. Begin with your body: one new morning gesture.
+## A new moon ritual for honest beginnings
 
-**Sagittarius** (Nov 22 to Dec 21) · 12th house, rest: solitude, retreat, what grows unseen. Rest, and let a dream speak before you plan.
+You need a page and a pen, a small bowl of water, and one stone, shell or other small object you can hold in your hand. A candle or lamp if you like, on a steady plate and never left alone. Take your time with each step.
 
-**Capricorn** (Dec 22 to Jan 19) · 11th house, your people: friends, community, the hopes you hold together. Plant a hope with room for others in it.
+### 1. Clear and dim
 
-**Aquarius** (Jan 20 to Feb 18) · 10th house, your work: your purpose and how the world meets you. Lay the first stone of a long goal.
+Wipe the surface you will use and clear away one thing that does not belong. Dim the lights. Put the bowl of water in the middle. Water is Scorpio's element; here it simply stands for what runs underneath.
 
-**Pisces** (Feb 19 to Mar 20) · 9th house, meaning: faith, study, the places you long to go. Ask a bigger question and take one step toward it.
+### 2. Arrive
 
-## Why paper
+Sit, and breathe in through the nose for a count of four and out for a count of six. Stay until your breath has slowed and the day has gone quiet.
 
-In a classic study, students who wrote about their deepest feelings for 15 minutes, four days in a row, visited the doctor less in the months after (Pennebaker & Beall, 1986). It was a small study, and writing can feel sad at first. Go gently.
+### 3. Look under the surface
 
-Lune: Moon Rituals reads the moon for your own chart and gives you a 15-minute practice to live it. [Join the waitlist](/#waitlist).
+Hold the stone. Ask yourself one question: what is true for me right now that I have not said, even to myself? Let the answer come. It may be small. Write it on the page, just as it comes.
 
-**Sources:** Pennebaker, J. W., & Beall, S. K. (1986). Journal of Abnormal Psychology, 95(3), 274-281. Moon times: astronomy-engine, checked against NASA.
+### 4. Name the beginning
+
+Below it, write what you want to begin because of that truth. Keep it to one thing. Then write its first step, small enough for this week, in the form "When [a moment in my week], I will [the step]."
+
+### 5. Open one door
+
+Scorpio's gesture: write one door you usually keep closed, a subject, a feeling or a place in your life, and one small way to open it a little this month. A message, a question, an hour alone with it.
+
+### 6. Close
+
+Dip your fingers in the water and touch the stone with them. Keep the stone somewhere you will see it. Fold the page and keep it until the full moon on **24 November**, when you will read it back.
+
+## Where it falls in your chart
+
+Astrologers read every new moon in a house of your chart, an area of life where the beginning takes root. The house depends on your rising sign, which comes from the hour and place you were born, so two people with the same Sun sign can have this new moon in completely different parts of life.
+
+Rather than reading a line for your Sun sign, you can find your own: the [moon compass](/tonight) takes your birth date, time and place and shows which house the moon lights for you tonight and what that area holds. If you were born under Scorpio, the [moon in Scorpio](/moon/scorpio) page has the next dates the moon returns to your sign.
+
+## Why honest beginnings hold
+
+Two findings make this new moon's gesture more than symbolic.
+
+- **Writing what is true.** Writing about thoughts and feelings you keep to yourself, over a few days, went with fewer visits to the doctor in the months after (Pennebaker & Beall, 1986). It was a small study, and writing can stir feelings at first. Go gently.
+- **A plan with a when.** People who wrote their goal as "when this happens, I will do that" were far more likely to act on it than people who only named the goal, across 94 studies (Gollwitzer & Sheeran, 2006).
+
+The new moon gives the beginning a night. The honest sentence gives it roots.
+
+Lune: Moon Rituals reads each moon for your own chart and guides you through a ritual to answer it, with where each gesture comes from. [Join the waitlist](/#waitlist) to be the first to try it.
+
+**Sources:** Gollwitzer, P. M., & Sheeran, P. (2006). Implementation intentions and goal achievement: A meta-analysis of effects and processes. Advances in Experimental Social Psychology, 38, 69-119. Pennebaker, J. W., & Beall, S. K. (1986). Journal of Abnormal Psychology, 95(3), 274-281. Moon times: astronomy-engine, checked against NASA.

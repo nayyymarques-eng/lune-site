@@ -8,8 +8,14 @@ export async function getStaticPaths() {
   return (await getCollection('journal', (p) => !p.data.draft)).map((p) => ({ params: { slug: p.id }, props: { p } }));
 }
 const { p } = Astro.props;
-const { Content } = await render(p);
-const schema = { '@context': 'https://schema.org', '@type': 'Article', headline: p.data.title, description: p.data.description, datePublished: p.data.date.toISOString(), publisher: { '@type': 'Organization', name: 'Lune' } };
+const { Content, headings } = await render(p);
+// A guide gets a contents list once it has enough sections to need one.
+const toc = headings.filter((h) => h.depth === 2);
+const faq = p.data.faq;
+const schema = [
+  { '@context': 'https://schema.org', '@type': 'Article', headline: p.data.title, description: p.data.description, datePublished: p.data.date.toISOString(), publisher: { '@type': 'Organization', name: 'Lune' } },
+  ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
+];
 ---
 <Base title={p.data.title} description={p.data.description} type="article" image={p.data.cover} schema={schema}>
   <article class="narrow art">
@@ -17,7 +23,26 @@ const schema = { '@context': 'https://schema.org', '@type': 'Article', headline:
     <h1 class="h-sec">{p.data.title}</h1>
     <p class="lead">{p.data.description}</p>
     <Cover post={p} size="hero" />
+    {toc.length >= 4 && (
+      <nav class="toc glass" aria-label="In this guide">
+        <p class="label">In this guide</p>
+        <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
+      </nav>
+    )}
     <div class="prose"><Content /></div>
+    {p.data.phase && (
+      <a class="chart glass" href="/tonight">
+        <span class="label">Where it falls for you</span>
+        <span class="h-card">Find the house this moon lights in your own chart</span>
+        <span class="muted">Your birth date, time and place give you your own reading, not your sign's.</span>
+      </a>
+    )}
+    {faq.length > 0 && (
+      <section class="faq prose" aria-labelledby="faq">
+        <h2 id="faq">Questions people ask</h2>
+        {faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+      </section>
+    )}
     <div class="cta glass">
       <h2 class="h-card">{p.data.sign ? `Is ${cap(p.data.sign)} your sign? Tonight's practice is waiting` : 'Tonight\'s practice is waiting'}</h2>
       <Signup source={`post-${p.id}`} />
@@ -30,4 +55,13 @@ const schema = { '@context': 'https://schema.org', '@type': 'Article', headline:
   .lead { margin: 0; }
   .cover { border-radius: var(--radius-card); }
   .cta { padding: 24px; display: grid; gap: 16px; margin-top: 40px; }
+  .toc { padding: 20px 24px; display: grid; gap: 8px; }
+  .toc ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+  .toc a { color: var(--muted-foreground); text-decoration: none; }
+  .toc a:hover { color: var(--foreground); }
+  .chart { padding: 24px; display: grid; gap: 6px; text-decoration: none; margin-top: 24px; }
+  .chart:hover { background: var(--glass-selected); }
+  .faq details { border-bottom: 1px solid var(--line); padding: 16px 0; }
+  .faq summary { cursor: pointer; color: var(--foreground); }
+  .faq details p { margin: 12px 0 0; }
 </style>

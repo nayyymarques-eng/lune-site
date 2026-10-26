@@ -5,6 +5,8 @@ date: 2026-11-02
 description: "Every month the moon passes through your sign for about two and a half days. What it means, when it happens, and three small ways to use it for each sign."
 keywords: [moon in your sign, moon in aries, moon in scorpio, moon signs, moon rituals, astrology for beginners]
 author: Lune
+# Unpublished 26 Oct 2026 (Nayara): a generalist post with a few lines per sign. Each sign has its own page at /moon/[sign].
+draft: true
 ---
 
 The Sun takes a year to walk around the zodiac. The moon does it in about 27 days. So every month, for roughly two and a half days, the moon passes through the sign you were born under.
