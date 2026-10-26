@@ -1,7 +1,7 @@
 // Cloudflare Workers Builds: repo root, build command "npm run build", deploy "npx wrangler deploy", branch main.
 // Secrets (dashboard, never here): RESEND_API_KEY. Vars below are filled when the domain exists.
 {
-  "name": "lune-site",
+  "name": "lunerituals",
   "compatibility_date": "2026-10-08",
   "main": "worker/index.js",
   "workers_dev": true,
