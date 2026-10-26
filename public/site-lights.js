@@ -1,5 +1,5 @@
 /* Site driver for the one Lune light renderer (lune-light.js, from the Motion thread, 26 Oct 2026).
-   Every <canvas data-light> draws itself: data-light (form), data-size (css px), data-color ("r g b"),
+   Every <canvas data-light> draws itself: data-light (form, read each frame so a page can change it), data-size (css px), data-color ("r g b"),
    data-r (radius share), data-sparkle (points of mixed sizes that twinkle).
    Each slot has its own canvas so it scrolls with the page (a fixed layer lagged behind scrolling, Nayara 26 Oct).
    Lights up to 160 px are drawn once and stay still unless they carry data-live; larger ones move only while on screen, at about 30 fps. */
@@ -20,11 +20,11 @@
     const w = s.cv.clientWidth, h = s.cv.clientHeight, size = Math.min(w, h), t = 8 + T * 0.6;
     if (size < 4) return;
     s.R.begin();
-    if (s.sparkle) LL.points(s.form, t, size, { rgb: s.rgb, r: s.r, phase: s.phase }).forEach((q, i) => {
+    if (s.sparkle) LL.points(s.cv.dataset.light, t, size, { rgb: s.rgb, r: s.r, phase: s.phase }).forEach((q, i) => {
       const k = 0.3 + 1.1 * Math.pow(hash(i, 11), 2.6), tw = 0.55 + 0.45 * Math.sin(T * (0.8 + 1.6 * hash(i, 12)) + 6.28 * hash(i, 13));
       s.R.dot(w / 2 + q.x, h / 2 + q.y, q.core * k, q.c, Math.min(1, q.a * (0.2 + 0.6 * tw)));
     });
-    else s.R.light(w / 2, h / 2, size, s.form, t, s.rgb, { r: s.r, phase: s.phase });
+    else s.R.light(w / 2, h / 2, size, s.cv.dataset.light, t, s.rgb, { r: s.r, phase: s.phase });
     s.R.end();
   }
   slots.forEach((s) => paint(s, 10));

@@ -3,7 +3,7 @@ import '../styles/site.css';
 import Wordmark from '../components/Wordmark.astro';
 import Stores from '../components/Stores.astro';
 import { CTA, POSTHOG_KEY, LIVE, APP_STORE_URL } from '../config';
-const { glow = true, title, description = 'A 15-minute ritual for every moon, with what you already have at home.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
+const { glow = true, title, description = 'A ritual for every moon: how to do it, where it comes from and why it matters.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual for every moon';
 ---
@@ -51,7 +51,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
     <div class="wrap fgrid">
       <div>
         <Wordmark height={28} />
-        <p class="muted small" style="max-width:300px;margin-top:16px">A small ritual for every moon, fifteen minutes with what you have at home. The moon is a cue, never a prediction.</p>
+        <p class="muted small" style="max-width:300px;margin-top:16px">A ritual for every moon, with the meaning it carries. The moon is a cue, never a prediction.</p>
       </div>
       <div class="fcol"><span class="label">Lune</span><a href="/#how">How it works</a><a href="/#faq">Questions</a></div>
       <div class="fcol"><span class="label">Read</span><a href="/moon">The moon in each sign</a><a href="/journal">Journal</a><a href="/rss.xml">RSS</a></div>

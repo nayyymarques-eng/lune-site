@@ -77,7 +77,18 @@ const schema = [
       <Ring w={620} h={760} rx={0.47} ry={0.2} tilt={-16} n={560} speed={0.035}>
         <div class="phones">
           <div class="phone back"><img src="/brand/app-h1-today.webp" alt="The Lune app: tonight's moon, read for you" width="430" height="932" loading="lazy" /></div>
-          <div class="phone front"><img src="/brand/app-p1-practice.webp" alt="A Lune practice: fifteen minutes, open, a few gestures, close" width="430" height="932" loading="lazy" /></div>
+          <div class="phone front" role="img" aria-label="A Lune practice playing: open, breathe, write, let it dissolve, close">
+            <div class="play" data-play aria-hidden="true">
+              <canvas class="plg" data-light="flame" data-size="200" data-sparkle data-color="232 140 221"></canvas>
+              <div class="ptop"><span>Love · Full moon</span><span class="pn">1 / 5</span></div>
+              <div class="pbar"><i></i><i></i><i></i><i></i><i></i></div>
+              <div class="pstep">
+                <p class="pk">Open</p>
+                <p class="pt">Light the blue candle. Say, in your own words, what you came here to let go.</p>
+              </div>
+              <div class="pbtn">Next</div>
+            </div>
+          </div>
         </div>
       </Ring>
       <div class="acopy">
@@ -103,13 +114,13 @@ const schema = [
           <p class="muted">A few words on the moon's mood: what tonight invites, and what to hold more lightly. Written as a mirror, never as a forecast.</p>
         </li>
         <li class="tint" style="--c: 240 169 124">
-          <canvas class="slight" data-light="burst" data-size="220" data-r="0.42" data-sparkle data-color="240 169 124" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="twin" data-size="220" data-r="0.4" data-color="240 169 124" aria-hidden="true"></canvas>
           <span class="label">02 · A practice to live it</span>
           <h3 class="h-card">A gesture, done with meaning</h3>
           <p class="muted">A candle, water, paper, your breath. Lune shows you how, step by step, around what matters to you now: love, work, health, prosperity, gratitude, new paths or the divine. Every way of doing it is welcome.</p>
         </li>
         <li class="tint" style="--c: 143 184 242">
-          <canvas class="slight" data-light="jar" data-size="220" data-r="0.42" data-sparkle data-color="143 184 242" aria-hidden="true"></canvas>
+          <canvas class="slight" data-light="ripple" data-size="220" data-r="0.44" data-color="143 184 242" aria-hidden="true"></canvas>
           <span class="label">03 · Keep it</span>
           <h3 class="h-card">A quiet record of your moons</h3>
           <p class="muted">Each practice stays with you, so at the full moon you can look back at what you planted at the new one, and see what it became.</p>
@@ -207,6 +218,30 @@ const schema = [
   </section>
 </Base>
 
+<script>
+  // The practice on the phone plays its five steps; each step has its own light (the Motion library's forms).
+  const STEPS = [
+    ['Open', 'Light the blue candle. Say, in your own words, what you came here to let go.', 'flame'],
+    ['Breathe', 'In for four, out for eight. Let the flame be the only thing you watch.', 'breath'],
+    ['Write', 'On the paper, write what this love gave you, and what hurt.', 'bloom'],
+    ['Let it dissolve', 'Keep the first. Lay the second in water and watch the ink soften.', 'ripple'],
+    ['Close', 'Thank the moon, and the people who kept this gesture before you.', 'halo'],
+  ];
+  document.querySelectorAll<HTMLElement>('[data-play]').forEach((el) => {
+    const cv = el.querySelector('canvas')!, step = el.querySelector('.pstep')!, k = el.querySelector('.pk')!, t = el.querySelector('.pt')!, n = el.querySelector('.pn')!, bars = [...el.querySelectorAll('.pbar i')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let i = 0;
+    const show = () => {
+      bars.forEach((b, j) => { b.className = j < i ? 'done' : j === i && !reduce ? 'now' : ''; });
+      k.textContent = STEPS[i][0]; t.textContent = STEPS[i][1]; n.textContent = `${i + 1} / 5`; cv.dataset.light = STEPS[i][2];
+      step.classList.remove('out');
+    };
+    show();
+    if (reduce) return;
+    setInterval(() => { step.classList.add('out'); setTimeout(() => { i = (i + 1) % STEPS.length; show(); }, 600); }, 5000);
+  });
+</script>
+
 <style>
   section { position: relative; }
   /* Hero (Nayara 26 Oct): desktop = moon and logo on the sky at left, full-height glass panel at right;
@@ -249,6 +284,21 @@ const schema = [
   .phones .back { left: 0; top: 0; transform: rotate(-4deg); opacity: .7; }
   .phones .front { right: 0; bottom: 0; transform: rotate(3deg); box-shadow: var(--glass-highlight), 0 40px 120px rgba(0,0,0,.9); }
   .acopy { display: grid; gap: 24px; justify-items: start; }
+  /* A practice playing on the phone (Nayara 26 Oct: "one of the practices happening"): the light, the step and the progress change on their own. */
+  .play { position: relative; height: 100%; border-radius: 36px; overflow: hidden; display: grid; grid-template-rows: auto auto 1fr auto auto; gap: 10px; padding: 22px 18px 18px;
+    background: radial-gradient(120% 70% at 50% 28%, rgb(92 52 92 / .9), rgb(30 18 32) 60%, #0d0a0e); }
+  .plg { position: absolute; left: 50%; top: 22%; width: 200px; height: 200px; transform: translate(-50%, -50%); pointer-events: none; }
+  .ptop { display: flex; justify-content: space-between; font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; font-size: 9px; color: rgb(255 255 255 / .6); }
+  .pbar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .pbar i { height: 2px; border-radius: 2px; background: rgb(255 255 255 / .18); overflow: hidden; position: relative; }
+  .pbar i.done { background: rgb(255 255 255 / .85); }
+  .pbar i.now::after { content: ''; position: absolute; inset: 0; background: rgb(255 255 255 / .85); transform-origin: left; animation: pfill var(--pdur, 5s) linear forwards; }
+  @keyframes pfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  .pstep { grid-row: 4; display: grid; gap: 8px; transition: opacity .6s ease, transform .6s ease; }
+  .pstep.out { opacity: 0; transform: translateY(6px); }
+  .pk { margin: 0; font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; font-size: 10px; color: rgb(232 140 221); }
+  .pt { margin: 0; font-family: var(--font-serif); font-size: 21px; line-height: 1.2; letter-spacing: -.02em; color: #fff; text-wrap: pretty; }
+  .pbtn { grid-row: 5; height: 40px; border-radius: 12px; background: #fff; color: #000; display: grid; place-items: center; font: var(--text-label); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
   .why .lead { max-width: 640px; }
   .why .label { color: var(--foreground); }
   .wgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -319,6 +369,10 @@ const schema = [
     .phone { width: 240px; }
     .phones { width: 340px; }
     .phones .phone { width: 200px; border-radius: 32px; }
+    .play { border-radius: 26px; padding: 16px 14px 14px; }
+    .plg { width: 160px; height: 160px; }
+    .pt { font-size: 16px; }
+    .pbtn { height: 32px; font-size: 9px; }
     .hero { grid-template-columns: 1fr; min-height: 0; padding: 32px 0 64px; }
     .hleft { padding: 0; }
     .hmoon { width: min(380px, 100vw - 16px); height: min(380px, 100vw - 16px); }
