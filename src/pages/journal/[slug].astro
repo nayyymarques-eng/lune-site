@@ -19,7 +19,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'Article', headline:
     <Cover post={p} size="hero" />
     <div class="prose"><Content /></div>
     <div class="cta glass">
-      <h2 class="h-card">{p.data.sign ? `Is ${cap(p.data.sign)} your sign? Get the moon read for your sky` : 'Get the moon read for your own sky'}</h2>
+      <h2 class="h-card">{p.data.sign ? `Is ${cap(p.data.sign)} your sign? Tonight's practice is waiting` : 'Tonight\'s practice is waiting'}</h2>
       <Signup source={`post-${p.id}`} />
     </div>
   </article>

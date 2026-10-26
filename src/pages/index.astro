@@ -31,18 +31,18 @@ const schema = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
 ];
 ---
-<Base glow={false} description="Lune reads tonight's moon for your own sky, then offers a 15-minute practice with what you already have at home. Free to start." schema={schema}>
+<Base glow={false} description="A 15-minute ritual for every moon, with a candle, a glass of water or a pen. Lune gives you tonight's practice, timed to the moon. Free to start." schema={schema}>
   <section class="hero">
     <div class="bg l1" aria-hidden="true"></div>
     <div class="wrap hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
       <Ring w={640} h={340} rx={0.46} ry={0.13} tilt={-10} n={620}>
         <img class="hlogo" src="/brand/lune-white.svg" alt="Lune" width="300" height="135" />
       </Ring>
-      <h1 class="h-hero">Your moon, read for you</h1>
-      <p class="lead">Every night the moon crosses a sign and touches one part of your life. Lune reads it for your own sky, then offers a 15-minute practice to live it, with what you already have at home.</p>
+      <h1 class="h-hero">A small ritual for every moon</h1>
+      <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
       <div class="hform"><Signup source="hero" /></div>
       <ul class="proof">
-        <li><span class="spark"></span>The moon, timed to the minute through 2030</li>
+        <li><span class="spark"></span>Practices timed to every moon through 2030</li>
         <li><span class="spark"></span>Gestures kept by traditions across the world</li>
         <li><span class="spark"></span>Every word with its source</li>
       </ul>
@@ -53,13 +53,13 @@ const schema = [
     <div class="bg l2" style="--bgc: 179 166 242" aria-hidden="true"></div>
     <div class="wrap agrid">
       <Ring w={620} h={760} rx={0.47} ry={0.2} tilt={-16} n={560} speed={0.035}>
-        <div class="phone"><img src="/brand/app-h1-today.webp" alt="The Lune app: tonight's full moon in Taurus, read for your sky" width="430" height="932" loading="lazy" /></div>
+        <div class="phone"><img src="/brand/app-h1-today.webp" alt="The Lune app: tonight's full moon and its practice" width="430" height="932" loading="lazy" /></div>
       </Ring>
       <div class="acopy">
         <p class="label">Tonight, in the app</p>
-        <h2 class="h-sec">One sentence for your night, then the why</h2>
-        <p class="lead">Each evening Lune opens on the moon above you: what the night is good for, what to go easy on, and where it falls in your own chart. Two months of moons sit one swipe away.</p>
-        <a class="btn secondary" href="/tonight" data-cta="app-tonight">Read tonight's moon for your sign</a>
+        <h2 class="h-sec">Tonight's practice, ready when you are</h2>
+        <p class="lead">Each evening Lune opens on the moon above you and one practice for it: open, a few gestures, close. Why tonight, where the gesture comes from and what science says sit one tap away.</p>
+        <a class="btn secondary" href="/tonight" data-cta="app-tonight">See tonight's moon</a>
       </div>
     </div>
   </section>
@@ -68,26 +68,26 @@ const schema = [
     <div class="wrap">
       <div class="sec-head">
         <p class="label">How it works</p>
-        <h2 class="h-sec">Three steps, one night at a time</h2>
+        <h2 class="h-sec">Light it, live it, let it go</h2>
       </div>
       <ol class="steps">
         <li class="tint" style="--c: 179 166 242">
           <canvas class="slight" data-light="breath" data-size="96" data-color="179 166 242" aria-hidden="true"></canvas>
-          <span class="label">01 · The moon</span>
-          <h3 class="h-card">Tonight's phase and sign, in plain, warm words</h3>
-          <p class="muted">What the night is good for, and what to go easy on. No jargon without a reason.</p>
-        </li>
-        <li class="tint" style="--c: 143 184 242">
-          <canvas class="slight" data-light="ripple" data-size="96" data-color="143 184 242" aria-hidden="true"></canvas>
-          <span class="label">02 · Where it lands in your sky</span>
-          <h3 class="h-card">Your Sun, your rising sign, your houses</h3>
-          <p class="muted">The same moon falls on a different part of every life. Lune shows you where it falls on yours.</p>
+          <span class="label">01 · Tonight's moon</span>
+          <h3 class="h-card">One sentence for the night</h3>
+          <p class="muted">What the night is good for, and what to go easy on. Plain, warm words.</p>
         </li>
         <li class="tint" style="--c: 240 169 124">
           <canvas class="slight" data-light="flame" data-size="96" data-color="240 169 124" aria-hidden="true"></canvas>
-          <span class="label">03 · A practice to live it</span>
+          <span class="label">02 · A practice to live it</span>
           <h3 class="h-card">Fifteen minutes, with a candle and a pen</h3>
           <p class="muted">Open, a few gestures, close. Choose love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
+        </li>
+        <li class="tint" style="--c: 143 184 242">
+          <canvas class="slight" data-light="ripple" data-size="96" data-color="143 184 242" aria-hidden="true"></canvas>
+          <span class="label">03 · Keep it</span>
+          <h3 class="h-card">A quiet record of your moons</h3>
+          <p class="muted">Each practice stays with you, so you can see what you planted at the new moon and what it became.</p>
         </li>
       </ol>
     </div>
@@ -136,7 +136,7 @@ const schema = [
         <p class="lead">Our days run on screens and notifications. Lune uses the oldest clock we have, the moon, as a gentle cue to put the phone down, light a candle and come back to yourself. Ritual as routine: small, regular, yours.</p>
       </div>
       <div class="wgrid">
-        <div class="glass wcell"><canvas data-light="halo" data-size="64" data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">A mirror, never a prophecy</h3><p class="muted">Astrology here is a way to reflect. The moon decides nothing; you bring the meaning.</p></div>
+        <div class="glass wcell"><canvas data-light="halo" data-size="64" data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">A mirror, never a prophecy</h3><p class="muted">The moon is a cue, not a forecast. It decides nothing; you bring the meaning.</p></div>
         <div class="glass wcell"><canvas data-light="three" data-size="64" data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Many traditions, as kin</h3><p class="muted">Each gesture shows where it comes from, beside the same gesture in another culture. Spiritual, not religious.</p></div>
         <div class="glass wcell"><canvas data-light="clear" data-size="64" data-color="158 220 164" aria-hidden="true"></canvas><h3 class="h-card">Science, said gently</h3><p class="muted">What studies suggest, cited, with their limits. Where no study exists, we say so.</p></div>
         <div class="glass wcell"><canvas data-light="flame" data-size="64" data-color="240 169 124" aria-hidden="true"></canvas><h3 class="h-card">Care before anything</h3><p class="muted">A practice is a moment of attention, not treatment. Nothing is ever aimed at another person's will.</p></div>
