@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Tonight from '../components/Tonight.astro';
+import Signup from '../components/Signup.astro';
+---
+<Base title="Tonight's moon" description="Where the moon is tonight, and where it falls in your sky. Pick your sign.">
+  <section class="tpage">
+    <div class="narrow head">
+      <p class="label">Tonight</p>
+      <h1 class="h-sec">The moon above you, read for your sign</h1>
+    </div>
+    <Tonight />
+    <div class="narrow cta">
+      <p class="lead">The app reads it from your own rising sign and houses, then offers a 15-minute practice for the night.</p>
+      <Signup source="tonight-page" />
+    </div>
+  </section>
+</Base>
+<style>
+  .tpage { display: grid; gap: 48px; padding-top: 64px; }
+  .head, .cta { display: grid; gap: 16px; justify-items: center; text-align: center; }
+  .cta :global(form) { justify-content: center; margin-inline: auto; }
+</style>

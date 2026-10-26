@@ -1,0 +1,19 @@
+---
+// Journal cover: the post's own image when Content gives one, otherwise a Lune light over its colour wash.
+const { post, size = 'card' } = Astro.props;
+const d = post.data;
+const t = (d.title + ' ' + (d.phase || '')).toLowerCase();
+const [form, color, phase] = t.includes('full') ? ['moon', '255 246 232', '0.5'] : t.includes('new moon') ? ['bloom', '179 166 242', ''] : t.includes('sign') ? ['galaxy', '143 184 242', ''] : ['flame', '240 169 124', ''];
+const px = size === 'hero' ? 320 : 200;
+---
+<div class={`cover ${size}`} style={`--c: ${color}`}>
+  {d.cover ? <img src={d.cover} alt="" loading="lazy" /> :
+    <canvas data-light={form} data-size={px} data-color={color} data-phase={phase || undefined} aria-hidden="true" style={`width:${px}px;height:${px}px`}></canvas>}
+</div>
+<style>
+  .cover { position: relative; display: grid; place-items: center; overflow: hidden; border-radius: var(--radius-card); aspect-ratio: 16 / 10;
+    background: radial-gradient(90% 80% at 50% 50%, rgb(var(--c) / .22), rgb(var(--c) / .06) 55%, transparent 85%), var(--glass-fill); border: 1px solid rgb(var(--c) / .18); }
+  .cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cover canvas { max-width: 90%; height: auto !important; aspect-ratio: 1; }
+  .cover.hero { aspect-ratio: 16 / 8; }
+</style>

@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
 import { getCollection, render } from 'astro:content';
 import { cap } from '../../lib/moon';
+import Cover from '../../components/Cover.astro';
 export async function getStaticPaths() {
   return (await getCollection('journal', (p) => !p.data.draft)).map((p) => ({ params: { slug: p.id }, props: { p } }));
 }
@@ -15,7 +16,7 @@ const schema = { '@context': 'https://schema.org', '@type': 'Article', headline:
     <p class="label"><a href="/journal">Journal</a> · {p.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</p>
     <h1 class="h-sec">{p.data.title}</h1>
     <p class="lead">{p.data.description}</p>
-    {p.data.cover && <img src={p.data.cover} alt="" class="cover" />}
+    <Cover post={p} size="hero" />
     <div class="prose"><Content /></div>
     <div class="cta glass">
       <h2 class="h-card">{p.data.sign ? `Is ${cap(p.data.sign)} your sign? Get the moon read for your sky` : 'Get the moon read for your own sky'}</h2>

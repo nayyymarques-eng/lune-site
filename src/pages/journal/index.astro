@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
 import { getCollection } from 'astro:content';
+import Cover from '../../components/Cover.astro';
 const posts = (await getCollection('journal', (p) => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date);
 ---
 <Base title="Journal" description="Notes on the moon, the signs and small practices to live them.">
@@ -10,20 +11,31 @@ const posts = (await getCollection('journal', (p) => !p.data.draft)).sort((a, b)
     <div class="list">
       {posts.map((p) => (
         <a class="post glass" href={`/journal/${p.id}`}>
+          <Cover post={p} />
           <span class="label">{p.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</span>
           <h2 class="h-card">{p.data.title}</h2>
           <p class="muted">{p.data.description}</p>
         </a>
       ))}
     </div>
-    <div class="sub glass"><h2 class="h-card">One letter per moon</h2><Signup source="journal" note="The next moon, read for each sign. Unsubscribe any time." /></div>
+    <div class="sub glass">
+      <canvas data-light="moon" data-size="96" data-phase="0.5" aria-hidden="true"></canvas>
+      <h2 class="h-card">One letter per moon</h2>
+      <p class="muted">The next moon, read for each sign, the night before it arrives.</p>
+      <Signup source="journal" note="Unsubscribe any time." />
+    </div>
   </section>
 </Base>
 <style>
   .list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  .post { padding: 24px; display: grid; gap: 8px; text-decoration: none; align-content: start; }
+  .post { padding: 8px 8px 24px; display: grid; gap: 8px; text-decoration: none; align-content: start; }
+  .post > :not(.cover) { margin-inline: 16px; }
+  .post > :global(.cover) { margin-bottom: 8px; }
   .post:hover { background: var(--glass-selected); }
   .post p { margin: 0; }
-  .sub { margin-top: 48px; padding: 24px; display: grid; gap: 16px; }
+  .sub { margin: 64px auto 0; max-width: 640px; padding: 32px 24px; display: grid; gap: 8px; justify-items: center; text-align: center; }
+  .sub canvas { width: 96px; height: 96px; }
+  .sub p { margin: 0 0 16px; }
+  .sub :global(form) { justify-content: center; margin-inline: auto; }
   @media (max-width: 820px) { .list { grid-template-columns: 1fr; } }
 </style>

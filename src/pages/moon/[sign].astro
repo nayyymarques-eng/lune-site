@@ -12,9 +12,11 @@ const S = (R.signs as any)[sign];
 const visits = visitsOf(moon as any, sign, Date.now(), 4);
 const lun = lunationsIn(moon as any, sign);
 const ord = (n: number) => n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
+// One word per house, from Copy's house lines (leituras-en.json).
+const AREA = ['self', 'values', 'words', 'roots', 'joy', 'days', 'bonds', 'change', 'meaning', 'work', 'people', 'rest'];
 const houses = SIGNS.map((sun) => {
   const h = houseFrom(sign, sun);
-  return { sun, h, text: (R.houses as any)[String(h)].replace(/^In your \d+\w\w house, it falls on /, '') };
+  return { sun, h, area: AREA[h - 1] };
 });
 const title = `The moon in ${S.name}`;
 const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next dates, the new and full moon in ${S.name}, and what it touches for each sign.`;
@@ -43,15 +45,16 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
     {lun.length > 0 && <p class="small muted">Next: {lun.map((p: any) => `${p.kind === 'new_moon' ? 'New' : 'Full'} moon, ${fmtDate(utcOf(p.utc))} ${new Date(utcOf(p.utc)).getUTCFullYear()}`).join(' · ')}</p>}
 
     <h2 id="for-you">Where it lands, sign by sign</h2>
-    <p class="muted">Counted from your Sun sign. With your birth time, the app counts from your rising sign instead.</p>
-    <dl class="houses">
+    <p class="muted">The house it falls in, counted from your Sun sign. The app counts from your rising sign.</p>
+    <div class="houses">
       {houses.map((x) => (
-        <div class={x.h === 1 ? 'mine' : ''}>
-          <dt class="label">{SIGN_GLYPH[x.sun]} {cap(x.sun)} · {ord(x.h)} house</dt>
-          <dd>{x.h === 1 ? `The moon is in your sign. It falls on ${x.text}` : `It falls on ${x.text}`}</dd>
-        </div>
+        <a class={`hcell${x.h === 1 ? ' mine' : ''}`} href={`/moon/${x.sun}`}>
+          <span class="label">{cap(x.sun)}</span>
+          <span class="hn">{ord(x.h)}</span>
+          <span class="ha">{x.h === 1 ? 'your sign' : x.area}</span>
+        </a>
       ))}
-    </dl>
+    </div>
 
     <div class="cta glass">
       <h2>Get the moon read for your own sky</h2>
@@ -73,10 +76,12 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
   .reading { font-family: var(--font-sans); font-size: 18px; line-height: 1.5; color: var(--foreground); }
   .dates { list-style: none; margin: 0; padding: 0; }
   .dates li { display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--line); font-family: var(--font-sans); font-size: 16px; color: var(--foreground); }
-  .houses { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; margin: 0; }
-  .houses div { border-top: 1px solid var(--line); padding: 14px 0; display: grid; gap: 4px; }
-  .houses dd { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.5; color: var(--foreground); }
-  .houses .mine dt { color: #fff; }
+  .houses { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .hcell { display: grid; gap: 4px; padding: 16px; border-radius: var(--radius-card); background: var(--glass-fill); border: 1px solid var(--glass-edge); box-shadow: var(--glass-highlight); text-decoration: none; }
+  .hcell:hover { background: var(--glass-selected); }
+  .hcell.mine { border-color: rgba(255,255,255,.24); background: var(--glass-selected); }
+  .hn { font: var(--text-title); letter-spacing: -0.035em; color: var(--foreground); }
+  .ha { font: var(--text-small); color: var(--muted-foreground); }
   .live { display: flex; gap: 16px; align-items: center; padding: 16px 20px; }
   .live[hidden] { display: none; }
   .cta { padding: 24px; display: grid; gap: 16px; margin-top: 32px; }
@@ -84,7 +89,7 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
   .origin { font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
   .others { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
   .others .chip { display: inline-flex; align-items: center; text-decoration: none; }
-  @media (max-width: 640px) { .houses { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .houses { grid-template-columns: repeat(3, 1fr); } }
 </style>
 <script>
   import moon from '../../data/moon.json';

@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import Tonight from '../components/Tonight.astro';
+import Ring from '../components/Ring.astro';
+import Wordmark from '../components/Wordmark.astro';
 import Signup from '../components/Signup.astro';
 import moon from '../data/moon.json';
 import R from '../data/readings.json';
@@ -33,19 +34,33 @@ const schema = [
 <Base glow={false} description="Lune reads tonight's moon for your own sky, then offers a 15-minute practice with what you already have at home. Free to start." schema={schema}>
   <section class="hero">
     <div class="bg l1" aria-hidden="true"></div>
-    <div class="wrap hgrid">
-      <div class="hcopy" id="start"><span id="waitlist" aria-hidden="true"></span>
-        <p class="label">Lune · Moon rituals</p>
-        <h1 class="h-hero">Your moon,<br />read for you</h1>
-        <p class="lead">Every night the moon crosses a sign and touches one part of your life. Lune reads it for your own sky, then offers a 15-minute practice to live it, with what you already have at home.</p>
-        <Signup source="hero" />
-        <ul class="proof">
-          <li><span class="dot"></span>Moon timed to the minute, 2026 to 2030</li>
-          <li><span class="dot"></span>Practices from traditions across the world</li>
-          <li><span class="dot"></span>Every claim sourced</li>
-        </ul>
+    <div class="wrap hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
+      <Ring w={640} h={340} rx={0.46} ry={0.13} tilt={-10} n={620}>
+        <img class="hlogo" src="/brand/lune-white.svg" alt="Lune" width="300" height="135" />
+      </Ring>
+      <h1 class="h-hero">Your moon, read for you</h1>
+      <p class="lead">Every night the moon crosses a sign and touches one part of your life. Lune reads it for your own sky, then offers a 15-minute practice to live it, with what you already have at home.</p>
+      <div class="hform"><Signup source="hero" /></div>
+      <ul class="proof">
+        <li><span class="spark"></span>The moon, timed to the minute through 2030</li>
+        <li><span class="spark"></span>Gestures kept by traditions across the world</li>
+        <li><span class="spark"></span>Every word with its source</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="app">
+    <div class="bg l2" style="--bgc: 179 166 242" aria-hidden="true"></div>
+    <div class="wrap agrid">
+      <Ring w={620} h={760} rx={0.47} ry={0.2} tilt={-16} n={560} speed={0.035}>
+        <div class="phone"><img src="/brand/app-h1-today.webp" alt="The Lune app: tonight's full moon in Taurus, read for your sky" width="430" height="932" loading="lazy" /></div>
+      </Ring>
+      <div class="acopy">
+        <p class="label">Tonight, in the app</p>
+        <h2 class="h-sec">One sentence for your night, then the why</h2>
+        <p class="lead">Each evening Lune opens on the moon above you: what the night is good for, what to go easy on, and where it falls in your own chart. Two months of moons sit one swipe away.</p>
+        <a class="btn secondary" href="/tonight" data-cta="app-tonight">Read tonight's moon for your sign</a>
       </div>
-      <Tonight />
     </div>
   </section>
 
@@ -113,11 +128,19 @@ const schema = [
     </div>
   </section>
 
-  <section class="honest">
-    <div class="narrow center">
-      <p class="label">Honest by design</p>
-      <h2 class="h-sec">A mirror, never a prophecy</h2>
-      <p class="lead">Astrology here is a way to reflect, never a prediction. Science is cited, with its limits said gently. Nothing is ever aimed at another person's will. And a practice is a moment of attention, not treatment.</p>
+  <section class="why">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">Why Lune</p>
+        <h2 class="h-sec">An old rhythm for a tired, lit-up life</h2>
+        <p class="lead">Our days run on screens and notifications. Lune uses the oldest clock we have, the moon, as a gentle cue to put the phone down, light a candle and come back to yourself. Ritual as routine: small, regular, yours.</p>
+      </div>
+      <div class="wgrid">
+        <div class="glass wcell"><canvas data-light="halo" data-size="64" data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">A mirror, never a prophecy</h3><p class="muted">Astrology here is a way to reflect. The moon decides nothing; you bring the meaning.</p></div>
+        <div class="glass wcell"><canvas data-light="three" data-size="64" data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Many traditions, as kin</h3><p class="muted">Each gesture shows where it comes from, beside the same gesture in another culture. Spiritual, not religious.</p></div>
+        <div class="glass wcell"><canvas data-light="clear" data-size="64" data-color="158 220 164" aria-hidden="true"></canvas><h3 class="h-card">Science, said gently</h3><p class="muted">What studies suggest, cited, with their limits. Where no study exists, we say so.</p></div>
+        <div class="glass wcell"><canvas data-light="flame" data-size="64" data-color="240 169 124" aria-hidden="true"></canvas><h3 class="h-card">Care before anything</h3><p class="muted">A practice is a moment of attention, not treatment. Nothing is ever aimed at another person's will.</p></div>
+      </div>
     </div>
   </section>
 
@@ -185,12 +208,32 @@ const schema = [
 
 <style>
   section { position: relative; }
-  .hero { padding-top: 64px; overflow: hidden; }
-  .hgrid { position: relative; display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
-  .hgrid > * { min-width: 0; }
-  .hcopy { display: grid; gap: 24px; align-content: center; }
-  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; font: var(--text-body); color: var(--muted-foreground); }
+  .hero { padding-top: 48px; overflow: hidden; }
+  .hcol { display: grid; justify-items: center; text-align: center; gap: 24px; }
+  .hlogo { width: 300px; height: auto; }
+  .hcol .h-hero { margin-top: -16px; }
+  .hcol .lead { max-width: 600px; }
+  .hform { display: grid; justify-items: center; width: 100%; }
+  .hform :global(form) { justify-content: center; margin-inline: auto; }
+  .proof { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 24px; font: var(--text-body); color: var(--muted-foreground); }
   .proof li { display: flex; align-items: center; gap: 8px; }
+  .spark { width: 4px; height: 4px; border-radius: 50%; background: #fff; flex: none;
+    box-shadow: 0 0 4px 1px rgba(255,246,232,.9), 0 0 12px 3px rgba(232,201,140,.35); animation: spark 3.2s ease-in-out infinite; }
+  .proof li:nth-child(2) .spark { animation-delay: -1.1s; }
+  .proof li:nth-child(3) .spark { animation-delay: -2.2s; }
+  @keyframes spark { 0%, 100% { opacity: .55; transform: scale(.8); } 50% { opacity: 1; transform: scale(1.15); } }
+  .app { overflow: hidden; }
+  .agrid { position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .agrid > * { min-width: 0; }
+  .phone { width: 300px; aspect-ratio: 430 / 932; border-radius: 44px; padding: 8px; background: #0b0b0b; border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-highlight), 0 40px 120px rgba(0,0,0,.8); }
+  .phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 36px; }
+  .acopy { display: grid; gap: 24px; justify-items: start; }
+  .why .lead { max-width: 640px; }
+  .wgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .wcell { padding: 24px; display: grid; gap: 16px; align-content: start; }
+  .wcell p { margin: 0; }
+  .wcell canvas { width: 64px; height: 64px; margin: -8px 0 0 -8px; }
   .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .steps li { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .steps p { margin: 0; }
@@ -211,7 +254,6 @@ const schema = [
   .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .badge { font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--glass-fill); color: var(--foreground); }
   .center { text-align: center; margin-inline: auto; justify-items: center; }
-  .honest .narrow { display: grid; gap: 24px; }
   .prgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 840px; margin: 0 auto; }
   .plan { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .plan p { margin: 0; }
@@ -237,12 +279,15 @@ const schema = [
   .fmoon { width: 140px; height: 140px; margin: 0 auto; }
   .fform { display: grid; justify-items: center; }
   @media (max-width: 900px) {
-    .hgrid, .pgrid { grid-template-columns: 1fr; }
+    .pgrid, .agrid { grid-template-columns: 1fr; }
+    .wgrid { grid-template-columns: 1fr 1fr; }
+    .phone { width: 240px; }
+    .hlogo { width: 200px; }
     .steps, .prgrid { grid-template-columns: 1fr; }
     .cgrid { grid-template-columns: 1fr 1fr; }
     .plan.sel { order: -1; }
   }
-  @media (max-width: 560px) { .cgrid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .cgrid, .wgrid { grid-template-columns: 1fr; } }
 </style>
 <script>
   document.querySelectorAll<HTMLElement>('[data-plan]').forEach((card) => {
