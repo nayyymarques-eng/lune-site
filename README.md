@@ -54,7 +54,7 @@ Link each post to its sign page (`/moon/aries`). Rules: English, never promise r
 | `PUBLIC_POSTHOG_KEY` | Turns on PostHog. Events: `cta_clicked`, `sign_picked`, `waitlist_joined` |
 | `SITE_URL` | The real domain (canonical links, sitemap, RSS) |
 
-Deploy: Cloudflare Workers Builds, project `lunerituals`, auto-deploys on every push to `main`. Repo root, build `npm run build`, deploy `npx wrangler deploy` (wrangler.jsonc serves `dist/` and runs worker/index.js for `/api/waitlist`). Domain lunerituals.app. Secret `RESEND_API_KEY` lives only in the Cloudflare dashboard.
+Deploy: Cloudflare Workers Builds, project `lune-site`, auto-deploys on every push to `main`. Repo root, build `npm run build`, deploy `npx wrangler deploy` (wrangler.jsonc serves `dist/` and runs worker/index.js for `/api/waitlist`). Domain lunerituals.app. Secret `RESEND_API_KEY` lives only in the Cloudflare dashboard.
 
 ## Why it is built this way (what converts in this category)
 
