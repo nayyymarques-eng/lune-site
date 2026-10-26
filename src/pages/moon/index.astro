@@ -1,12 +1,32 @@
 ---
 import Base from '../../layouts/Base.astro';
 import R from '../../data/readings.json';
-import { SIGNS, SIGN_GLYPH } from '../../lib/moon';
+import moon from '../../data/moon.json';
+import { SIGNS, SIGN_GLYPH, signAt, phaseAt, cycleAt, cap } from '../../lib/moon';
+const now = Date.now();
+const cur = signAt(moon as any, now);
+const ph = phaseAt(moon as any, now);
+const sg = (R.signs as any)[cur.sign];
+const pr = (R.phases as any)[ph.kind];
+// on a new or full moon the sign has its own words; otherwise the phase speaks, toned by the sign
+const text = ph.kind === 'new_moon' ? sg.new : ph.kind === 'full_moon' ? sg.full : `${pr.reading}, with ${sg.tone}`;
 ---
 <Base title="The moon in each sign" description="Where the moon is tonight, and what each of the twelve signs brings to the night.">
   <section class="wrap">
     <div class="sec-head"><p class="label">Moon in your sign</p><h1 class="h-sec">Twelve signs, twelve kinds of night</h1>
       <p class="lead">The moon spends about two and a half days in each sign. Here is what each one brings, and when it comes next.</p></div>
+    <a class="feat glass" href={`/moon/${cur.sign}`} data-feat>
+      <div class="fglow" aria-hidden="true"></div>
+      <div class="flight"><canvas data-light="moon" data-size="300" data-phase={cycleAt(moon as any, now).toFixed(3)} data-f="moon" aria-label="Tonight's moon, drawn in points of light"></canvas></div>
+      <div class="fcopy">
+        <p class="label"><span class="dot"></span>Tonight · <span data-f="until"></span></p>
+        <h2 class="h-sec"><span data-f="phase">{pr.name}</span> in <span data-f="sign">{cap(cur.sign)}</span></h2>
+        <p class="ftone"><span class="glyph" data-f="glyph">{SIGN_GLYPH[cur.sign]}</span><span data-f="tone">{sg.tone}</span></p>
+        <p class="lead" data-f="text">{text}</p>
+        <span class="more"><span data-f="more">What the moon in {cap(cur.sign)} brings</span><span aria-hidden="true">→</span></span>
+      </div>
+    </a>
+    <p class="label gl">Every sign the moon visits</p>
     <div class="grid">
       {SIGNS.map((s) => (
         <a class="glass card" href={`/moon/${s}`} data-sign={s}>
@@ -27,12 +47,45 @@ import { SIGNS, SIGN_GLYPH } from '../../lib/moon';
   .glyph { font: var(--text-title); color: var(--muted-foreground); }
   .now { position: absolute; top: 20px; right: 20px; color: #fff; }
   .now[hidden] { display: none; }
-  @media (max-width: 820px) { .grid { grid-template-columns: 1fr 1fr; } }
+  .card.is-now { border-color: rgb(232 201 140 / .45); }
+  .feat { position: relative; overflow: hidden; display: grid; grid-template-columns: 340px 1fr; gap: 40px; align-items: center; padding: 32px 48px 32px 24px; margin-bottom: 64px; text-decoration: none; color: inherit; }
+  .fglow { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(420px 320px at 170px 50%, rgb(179 166 242 / .22), transparent 70%), radial-gradient(520px 360px at 85% 0%, rgb(232 201 140 / .10), transparent 70%); }
+  .feat > :not(.fglow) { position: relative; }
+  .flight { display: grid; place-items: center; }
+  .flight canvas { width: 300px; height: 300px; }
+  .fcopy { display: grid; gap: 14px; justify-items: start; }
+  .fcopy p { margin: 0; }
+  .fcopy .label { display: inline-flex; align-items: center; gap: 8px; color: #fff; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: #E8C98C; box-shadow: 0 0 8px #E8C98C; display: inline-block; }
+  .ftone { display: flex; gap: 10px; align-items: baseline; color: var(--muted-foreground); font: var(--text-body); }
+  .ftone .glyph { font-size: 20px; color: #fff; }
+  .feat .lead { max-width: 560px; }
+  .more { display: inline-flex; gap: 8px; font: var(--text-body); color: var(--foreground); border-bottom: 1px solid rgb(255 255 255 / .24); padding-bottom: 2px; }
+  .feat:hover .more { border-color: #fff; }
+  .gl { margin: 0 0 16px; color: var(--muted-foreground); }
+  @media (max-width: 820px) {
+    .grid { grid-template-columns: 1fr 1fr; }
+    .feat { grid-template-columns: 1fr; gap: 8px; padding: 8px 20px 28px; justify-items: center; text-align: center; margin-bottom: 48px; }
+    .fcopy { justify-items: center; }
+    .flight canvas { width: min(280px, 72vw); height: min(280px, 72vw); }
+  }
 </style>
 <script>
   import moon from '../../data/moon.json';
   import { signAt } from '../../lib/moon';
-  const s = signAt(moon as any).sign;
+  import R from '../../data/readings.json';
+  import { phaseAt, cycleAt, SIGN_GLYPH } from '../../lib/moon';
+  const now = Date.now();
+  const cur = signAt(moon as any, now), s = cur.sign, ph = phaseAt(moon as any, now);
+  const sg = (R.signs as any)[s], pr = (R.phases as any)[ph.kind];
+  const f = (k: string) => document.querySelector(`[data-f="${k}"]`) as HTMLElement | null;
+  const C = s.charAt(0).toUpperCase() + s.slice(1);
+  f('phase')!.textContent = pr.name; f('sign')!.textContent = C; f('more')!.textContent = `What the moon in ${C} brings`;
+  f('glyph')!.textContent = SIGN_GLYPH[s]; f('tone')!.textContent = sg.tone;
+  f('text')!.textContent = ph.kind === 'new_moon' ? sg.new : ph.kind === 'full_moon' ? sg.full : `${pr.reading}, with ${sg.tone}`;
+  f('until')!.textContent = cur.until ? 'in ' + C + ' until ' + new Date(cur.until).toLocaleDateString('en-US', { weekday: 'short', hour: 'numeric' }) : '';
+  f('moon')!.dataset.phase = cycleAt(moon as any, now).toFixed(3);
+  (document.querySelector('[data-feat]') as HTMLAnchorElement).href = `/moon/${s}`;
   const c = document.querySelector(`[data-sign="${s}"]`);
   c?.classList.add('is-now'); (c?.querySelector('.now') as HTMLElement | null)?.removeAttribute('hidden');
 </script>
