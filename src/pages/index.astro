@@ -64,10 +64,16 @@ const schema = [
       </div>
       <div class="wgrid">
         <div class="glass wcell"><canvas data-light="vortex" data-size="96" data-sparkle data-live data-color="179 166 242" aria-hidden="true"></canvas><h3 class="h-card">The moon gives the moment</h3><p class="muted">The new moon to begin, the full moon to give thanks and let go. Each phase is a moment, and you choose what to bring to it.</p></div>
-        <div class="glass wcell"><canvas data-light="flame" data-size="96" data-sparkle data-live data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Traditions give the gesture</h3><p class="muted">Lighting a candle, pouring water, tying a knot. People around the world have done these for centuries, and Lune tells you where each one comes from.</p></div>
+        <div class="glass wcell"><canvas data-light="flame" data-size="96" data-sparkle data-live data-color="143 184 242" aria-hidden="true"></canvas><h3 class="h-card">Traditions give the gesture</h3><p class="muted">Tying a knot, leaving salt at the door, burning resin, writing a wish to float away. People around the world have kept these gestures for centuries, and Lune tells you where each one comes from.</p></div>
         <div class="glass wcell"><canvas data-light="salt" data-size="96" data-sparkle data-live data-color="158 220 164" aria-hidden="true"></canvas><h3 class="h-card">Science shows what it does</h3><p class="muted">Studies on breath, ritual and attention show how a simple gesture can calm the body and focus the mind. Every one is cited.</p></div>
         <div class="glass wcell"><canvas data-light="steam" data-size="96" data-sparkle data-live data-color="240 169 124" aria-hidden="true"></canvas><h3 class="h-card">You choose how deep</h3><p class="muted">Live it as a prayer, as a pause or simply as something to try. Every way is welcome.</p></div>
       </div>
+      <ul class="nums" aria-label="Inside Lune">
+        <li><b data-count="55">55</b><span>practices, each one for a moon and an intention</span></li>
+        <li><b data-count="163">163</b><span>objects for your altar, from a pinch of salt to a figure of your faith</span></li>
+        <li><b data-count="33">33</b><span>rituals kept by named traditions, from Shinto shrines to Scottish wells</span></li>
+        <li><b data-count="78">78</b><span>studies cited, so you know what each gesture can do</span></li>
+      </ul>
     </div>
   </section>
 
@@ -211,6 +217,20 @@ const schema = [
 </Base>
 
 <script>
+  // Inside Lune numbers count up once when they come into view
+  const nums = document.querySelectorAll<HTMLElement>('.nums b[data-count]');
+  if (nums.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const run = (el: HTMLElement) => {
+      const end = Number(el.dataset.count); const t0 = performance.now();
+      const tick = (t: number) => { const k = Math.min(1, (t - t0) / 1600); el.textContent = String(Math.round(end * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(tick); };
+      requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { io.unobserve(e.target); run(e.target as HTMLElement); } }), { threshold: 0.6 });
+    nums.forEach((n) => { n.textContent = '0'; io.observe(n); });
+  }
+</script>
+
+<script>
   // The practice on the phone plays its five steps; each step has its own big light from the Motion library (built like the globe).
   const STEPS = [
     ['Open', 'Light the blue candle. Say, in your own words, what you came here to let go.', 'twin'],
@@ -316,6 +336,11 @@ const schema = [
   .pbtn { grid-row: 5; height: 40px; border-radius: 12px; background: #fff; color: #000; display: grid; place-items: center; font: var(--text-label); text-transform: uppercase; letter-spacing: .12em; font-size: 11px; }
   .why .lead { max-width: 640px; }
   .why .label { color: var(--foreground); }
+  .nums { list-style: none; margin: 48px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .nums li { display: grid; gap: 8px; align-content: start; padding-top: 16px; border-top: 1px solid rgb(255 255 255 / 0.12); }
+  .nums b { font: 400 48px/1 var(--font-serif); letter-spacing: -0.02em; color: var(--foreground); font-variant-numeric: tabular-nums; }
+  .nums span { font-size: 15px; line-height: 1.5; color: var(--muted-foreground); }
+  @media (max-width: 720px) { .nums { grid-template-columns: 1fr 1fr; gap: 24px 16px; margin-top: 40px; } .nums b { font-size: 40px; } .nums span { font-size: 14px; } }
   .wgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .wcell { padding: 24px; display: grid; gap: 16px; align-content: start; }
   .wcell p { margin: 0; }
