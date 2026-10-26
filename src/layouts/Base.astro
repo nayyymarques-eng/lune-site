@@ -61,6 +61,8 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
     <div class="wrap small muted copy">© {new Date().getFullYear()} Lune. Not medical, psychological or financial advice. In crisis in the US, call or text 988.</div>
   </footer>
   <script is:inline src="/lights.js"></script>
+  <script is:inline src="/lune-light.js"></script>
+  <script is:inline src="/site-lights.js"></script>
   <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
   <script is:inline>
     (() => { const b = document.querySelector('.sticky-cta'), f = document.querySelectorAll('form, .hcol, .stores:not(.sm)'); if (!b || !('IntersectionObserver' in window) || !f.length) return;

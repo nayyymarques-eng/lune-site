@@ -86,15 +86,13 @@ FORM.moon=function(t,cv){const ph=cv&&cv.dataset.phase!=null&&cv.dataset.phase!=
 const FIELD=[...Array(240)].map((_,i)=>[(rnd(i,1)-.5)*2.5,(rnd(i,2)-.5)*2.5,(rnd(i,3)-.5)*.6,.15+.85*Math.pow(rnd(i,4),3),.5+.5*rnd(i,5)]);
 FORM.field=function(t){return FIELD.map(p=>[p[0],p[1],p[2],p[3]*(.7+.3*Math.sin(t*.9+p[0]*7)),p[4]])};
 window.LUME={FORM,haloCst};
-/* Website copy: lights move (slow, ~0.6x, per motion-spec), stay still for reduced motion, and only visible canvases redraw. */
-const live=new Map();const reduce=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
-const seen=new WeakMap(),io='IntersectionObserver' in window?new IntersectionObserver(es=>es.forEach(e=>seen.set(e.target,e.isIntersecting))):null;
+const live=new Map();const reduce=true;/* static on the canvas: motion is refined in code (motion-spec.md) */
 function scan(){document.querySelectorAll('canvas[data-light]').forEach(cv=>{if(live.has(cv))return;
  const css=+cv.dataset.size||cv.clientWidth||120,dpr=cv.dataset.light==='moon'?Math.min(2,devicePixelRatio||1):Math.min(3,Math.max(2,devicePixelRatio||1));/* stardust lights render at 2-3x for crisp points */cv.width=cv.height=Math.round(css*dpr);
- if(io)io.observe(cv);live.set(cv,{ctx:cv.getContext('2d'),S:cv.width,f:cv.dataset.light,rgb:(cv.dataset.color||'255 250 240').split(' ').map(Number),t0:performance.now()/1000,dpr,dot:cv.dataset.light==='moon'?1/22:1/9.5})})}
-let last=0;function frame(ms){ms=ms||performance.now();if(!reduce&&ms-last<33){requestAnimationFrame(frame);return}last=ms;const t=reduce?8:8+ms/1000*.6;scan();live.forEach((it,cv)=>{if(!cv.isConnected){live.delete(cv);return}if(cv.width!==it.S||cv.height!==it.S){cv.width=cv.height=it.S;it.drawn=0}const F=FORM[it.f];if(!F)return;if(reduce&&it.drawn)return;if(!reduce&&it.drawn&&io&&!seen.get(cv))return;it.drawn=1;
- it.ctx.clearRect(0,0,it.S,it.S);if(it.f!=='moon'&&window.Stardust){it.ctx.drawImage(Stardust.render(it.S,it.f,reduce?3.3:t,it.rgb,{dpr:it.dpr,pts:F(reduce?2:t*.6,cv),r:cv.dataset.r?+cv.dataset.r:undefined,rounds:cv.dataset.rounds!=null?+cv.dataset.rounds:undefined,tilt:cv.dataset.tilt!=='false',alpha:cv.dataset.alpha?+cv.dataset.alpha:undefined}),0,0)}else haloCst(it.ctx,it.S,F(reduce?2:t*.6,cv),it.rgb,t,{arrive:1,dot:it.dot,full:1})});reduce?setTimeout(frame,700):requestAnimationFrame(frame)}
-requestAnimationFrame(frame);
+ live.set(cv,{ctx:cv.getContext('2d'),S:cv.width,f:cv.dataset.light,rgb:(cv.dataset.color||'255 250 240').split(' ').map(Number),t0:performance.now()/1000,dpr,dot:cv.dataset.light==='moon'?1/22:1/9.5})})}
+function frame(ms){const t=8;scan();live.forEach((it,cv)=>{if(!cv.isConnected){live.delete(cv);return}if(cv.width!==it.S||cv.height!==it.S){cv.width=cv.height=it.S;it.drawn=0}const F=FORM[it.f];if(!F||it.drawn)return;it.drawn=1;
+ it.ctx.clearRect(0,0,it.S,it.S);if(it.f!=='moon'&&window.Stardust){it.ctx.drawImage(Stardust.render(it.S,it.f,reduce?3.3:t,it.rgb,{dpr:it.dpr,pts:F(reduce?2:t*.6,cv),r:cv.dataset.r?+cv.dataset.r:undefined,rounds:cv.dataset.rounds!=null?+cv.dataset.rounds:undefined,tilt:cv.dataset.tilt!=='false',alpha:cv.dataset.alpha?+cv.dataset.alpha:undefined}),0,0)}else haloCst(it.ctx,it.S,F(reduce?2:t*.6,cv),it.rgb,t,{arrive:reduce?1:(t-it.t0)/6,dot:it.dot,full:1})});setTimeout(frame,700)}
+/* the site paints the lights itself with lune-light.js (site-lights.js) */
 })();
 
 /* Lune light renderer · "Fine stardust" (chosen by Nayara 26 Oct 2026 12:37).

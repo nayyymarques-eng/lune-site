@@ -15,7 +15,11 @@ const { source = 'site', note = 'Free to start. 15 days of Premium on us at laun
     <input class="hp" type="text" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" />
     <button class="btn primary" type="submit">{CTA}</button>
     <p class="err small" hidden>That didn't go through. Check the email and try again.</p>
-    <p class="ok" hidden>You're on the list. We'll write when the next moon opens the door.</p>
+    <div class="ok" role="status" hidden>
+      <span class="okmark" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      <div><p class="oktitle">You're on the list</p>
+      <p class="oktext">We'll write when the next moon opens the door. Until then, <a href="/tonight">see tonight's moon</a>.</p></div>
+    </div>
   </form>
 )}
 <p class="small muted signote">{note}</p>
@@ -26,7 +30,15 @@ const { source = 'site', note = 'Free to start. 15 days of Premium on us at laun
     color: #fff; font: var(--text-body); outline: none; }
   .signup input:focus { box-shadow: var(--focus-ring); }
   .signup input::placeholder { color: var(--muted-foreground); }
-  .ok { flex-basis: 100%; margin: 4px 0 0; font-family: var(--font-sans); font-size: 16px; color: var(--foreground); }
+  .ok { flex-basis: 100%; display: flex; gap: 16px; align-items: flex-start; text-align: left; padding: 16px 20px; border-radius: 16px;
+    background: var(--glass-fill); border: 1px solid var(--glass-edge); box-shadow: var(--glass-highlight); animation: okin .6s both cubic-bezier(.22,1,.36,1); }
+  .signup [hidden] { display: none !important; }
+  .okmark { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: #fff;
+    background: radial-gradient(circle, rgb(179 166 242 / .45), rgb(179 166 242 / .08) 70%); box-shadow: 0 0 24px rgb(179 166 242 / .45); }
+  .oktitle { margin: 0 0 4px; font-family: var(--font-serif); font-size: 20px; line-height: 1.2; color: var(--foreground); }
+  .oktext { margin: 0; font: var(--text-small); color: var(--muted-foreground); }
+  .oktext a { color: var(--foreground); }
+  @keyframes okin { from { opacity: 0; transform: translateY(8px); } }
   .stores { display: flex; gap: 8px; flex-wrap: wrap; }
   .signote { margin: 8px 0 0; font: var(--text-small); }
   .hp { position: absolute; left: -9999px; }
@@ -49,7 +61,10 @@ const { source = 'site', note = 'Free to start. 15 days of Premium on us at laun
       } catch { err.hidden = false; return; }
       (window as any).posthog?.capture?.('waitlist_joined', { source: f.dataset.source, sign });
       f.querySelectorAll('input,button').forEach((el) => ((el as HTMLElement).hidden = true));
+      (f.querySelector('.err') as HTMLElement).hidden = true;
       (f.querySelector('.ok') as HTMLElement).hidden = false;
+      const note = f.nextElementSibling as HTMLElement | null;
+      if (note?.classList.contains('signote')) note.hidden = true;
     });
   });
 </script>

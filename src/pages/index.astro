@@ -37,17 +37,19 @@ const schema = [
   <section class="hero">
     <Sky />
     <div class="wrap hcol" id="start"><span id="waitlist" aria-hidden="true"></span>
-      <Ring w={620} h={360} rx={0.46} ry={0.14} tilt={-12} n={560}>
-        <canvas class="hmoon" data-light="moon" data-size="300" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
+      <div class="hmoonw">
+        <canvas class="hmoon" data-light="moon" data-size="300" data-arrive="3.2" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
         <script is:inline>document.currentScript.previousElementSibling.dataset.phase = (((Date.now() - 947182440000) / 2551442877) % 1).toFixed(3);</script>
-      </Ring>
+      </div>
+      <Ring w={1040} h={560} rx={0.48} ry={0.15} tilt={-7} n={1800} speed={0.03}>
       <div class="glass hcard">
-        <h1 class="h-hero">A ritual for every moon</h1>
+        <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
         <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
         <div class="hform"><Signup source="hero" /></div>
         <Stores where="hero" />
         <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
       </div>
+      </Ring>
       <ul class="proof">
         <li><span class="spark"></span>Practices timed to every moon through 2030</li>
         <li><span class="spark"></span>Gestures kept by traditions across the world</li>
@@ -76,7 +78,10 @@ const schema = [
     <div class="bg l2" style="--bgc: 179 166 242" aria-hidden="true"></div>
     <div class="wrap agrid">
       <Ring w={620} h={760} rx={0.47} ry={0.2} tilt={-16} n={560} speed={0.035}>
-        <div class="phone"><img src="/brand/app-h1-today.webp" alt="The Lune app: tonight's full moon and its practice" width="430" height="932" loading="lazy" /></div>
+        <div class="phones">
+          <div class="phone back"><img src="/brand/app-h1-today.webp" alt="The Lune app: tonight's moon, read for you" width="430" height="932" loading="lazy" /></div>
+          <div class="phone front"><img src="/brand/app-p1-practice.webp" alt="A Lune practice: fifteen minutes, open, a few gestures, close" width="430" height="932" loading="lazy" /></div>
+        </div>
       </Ring>
       <div class="acopy">
         <p class="label">Tonight, in the app</p>
@@ -120,7 +125,7 @@ const schema = [
   <section class="pillars">
     <div class="bg l2" style="--bgc: 232 140 221" aria-hidden="true"></div>
     <div class="wrap pgrid">
-      <div class="plight"><canvas data-light="galaxy" data-size="430" data-r="0.62" data-color="232 140 221" aria-hidden="true"></canvas></div>
+      <div class="plight"><canvas data-light="galaxy" data-size="430" data-r="0.46" data-color="232 140 221" aria-hidden="true"></canvas></div>
       <div class="pcopy">
         <p class="label">Every practice, three ways to see it</p>
         <h2 class="h-sec">Every gesture, explained</h2>
@@ -168,9 +173,8 @@ const schema = [
           <p class="price">$0</p>
           <p class="muted">Always free, no card.</p>
           <ul class="feats">
-            <li>Tonight's moon, read for your sky</li>
-            <li>This month's moons</li>
-            <li>A few practices to try</li>
+            <li>The next four moons, with their dates</li>
+            <li>A first look at tonight, behind a lock</li>
           </ul>
           <a class="btn secondary" href="#start" data-cta="pricing-free">{CTA}</a>
         </div>
@@ -184,6 +188,7 @@ const schema = [
           <p class="price"><span data-v="year">{PRICE.year}</span><span data-v="month" hidden>{PRICE.month}</span><span class="per"><span data-v="year"> / year</span><span data-v="month" hidden> / month</span></span></p>
           <p class="muted"><span data-v="year">{PRICE.yearPerMonth} a month, half the monthly price. </span>{PRICE.trialDays} days free, cancel any time.</p>
           <ul class="feats">
+            <li>Tonight's moon, read for your sky</li>
             <li>Every practice, every night</li>
             <li>The full calendar, eclipses and supermoons</li>
             <li>Your altar: 163 items with history and science</li>
@@ -226,7 +231,7 @@ const schema = [
   .hcol { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: center; text-align: center; gap: 24px; }
   .hlogo { width: 112px; height: auto; opacity: .9; }
   .hmoon { width: 300px; height: 300px; display: block; }
-  .hcard { box-sizing: border-box; max-width: 100%; min-width: 0; display: grid; justify-items: center; gap: 20px; width: min(640px, 100%); margin-top: -72px; padding: 40px 40px 32px; border-radius: 16px; position: relative; z-index: 2; }
+  .hcard { box-sizing: border-box; max-width: 100%; min-width: 0; display: grid; justify-items: center; gap: 20px; width: min(640px, 100%); margin: -24px auto 0; padding: 40px 40px 32px; border-radius: 16px; position: relative; z-index: 2; }
   .hcol .h-hero { margin: 0; }
   .hcol .lead { max-width: 520px; }
   .more { display: inline-flex; gap: 8px; margin-top: 24px; font: var(--text-body); color: var(--foreground); text-decoration: none; border-bottom: 1px solid rgb(255 255 255 / .24); padding-bottom: 2px; }
@@ -247,6 +252,10 @@ const schema = [
   .phone { width: 300px; aspect-ratio: 430 / 932; border-radius: 44px; padding: 8px; background: #0b0b0b; border: 1px solid var(--glass-edge);
     box-shadow: var(--glass-highlight), 0 40px 120px rgba(0,0,0,.8); }
   .phone img { width: 100%; height: 100%; object-fit: cover; border-radius: 36px; }
+  .phones { position: relative; width: 420px; max-width: 100%; aspect-ratio: 420 / 600; }
+  .phones .phone { position: absolute; width: 260px; }
+  .phones .back { left: 0; top: 0; transform: rotate(-4deg); opacity: .7; }
+  .phones .front { right: 0; bottom: 0; transform: rotate(3deg); box-shadow: var(--glass-highlight), 0 40px 120px rgba(0,0,0,.9); }
   .acopy { display: grid; gap: 24px; justify-items: start; }
   .why .lead { max-width: 640px; }
   .wgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
@@ -302,6 +311,8 @@ const schema = [
     .pgrid, .agrid { grid-template-columns: 1fr; }
     .wgrid { grid-template-columns: 1fr 1fr; }
     .phone { width: 240px; }
+    .phones { width: 340px; }
+    .phones .phone { width: 200px; border-radius: 32px; }
     .hlogo { width: 96px; }
     .hmoon { width: 220px; height: 220px; }
     .hcard { padding: 32px 16px 24px; margin-top: -48px; }
@@ -310,6 +321,17 @@ const schema = [
     .plan.sel { order: -1; }
   }
   @media (max-width: 560px) { .cgrid, .wgrid { grid-template-columns: 1fr; } }
+  /* Entrance, after the app opening: the moon gathers from far back, the ring and card follow, words come out of blur */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero :global(.ring) { animation: in-fade 2.4s 1.2s both cubic-bezier(.2,.8,.2,1); }
+    .hcard { animation: in-rise 1.4s 1.4s both cubic-bezier(.22,1,.36,1); }
+    .hcard .w { display: inline-block; animation: in-blur 1.2s both cubic-bezier(.2,.8,.2,1); animation-delay: calc(1.6s + var(--i) * .12s); }
+    .hcard > :not(h1) { animation: in-fade 1.2s 2.2s both ease-out; }
+    .proof { animation: in-fade 1.4s 2.6s both ease-out; }
+  }
+  @keyframes in-fade { from { opacity: 0; } }
+  @keyframes in-rise { from { opacity: 0; transform: translateY(24px); filter: blur(6px); } }
+  @keyframes in-blur { from { opacity: 0; filter: blur(12px); transform: translateY(6px); } }
 </style>
 <script>
   document.querySelectorAll<HTMLElement>('[data-plan]').forEach((card) => {

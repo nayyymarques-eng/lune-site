@@ -65,7 +65,6 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
     <h2>Where it comes from</h2>
     <p class="muted origin">{R.origin.text.replace(/[¹²³]/g, '')}.</p>
     <p class="small muted">{R.tone.split('.')[0]}.</p>
-    <nav class="others">{SIGNS.filter((g) => g !== sign).map((g) => <a class="chip" href={`/moon/${g}`}>{SIGN_GLYPH[g]} {cap(g)}</a>)}</nav>
   </article>
 </Base>
 <style>
@@ -87,8 +86,6 @@ const desc = `When the moon is in ${S.name}, the night carries ${S.tone}. Next d
   .cta { padding: 24px; display: grid; gap: 16px; margin-top: 32px; }
   .cta h2 { margin: 0; }
   .origin { font-family: var(--font-sans); font-size: 16px; line-height: 1.5; }
-  .others { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 32px; }
-  .others .chip { display: inline-flex; align-items: center; text-decoration: none; }
   @media (max-width: 640px) { .houses { grid-template-columns: repeat(3, 1fr); } }
 </style>
 <script>
