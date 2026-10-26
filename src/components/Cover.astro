@@ -3,7 +3,7 @@
 const { post, size = 'card' } = Astro.props;
 const d = post.data;
 const t = (d.title + ' ' + (d.phase || '')).toLowerCase();
-const [form, color, phase] = t.includes('full') ? ['moon', '255 246 232', '0.5'] : t.includes('new moon') ? ['bloom', '179 166 242', ''] : t.includes('sign') ? ['galaxy', '143 184 242', ''] : ['flame', '240 169 124', ''];
+const [form, color, phase] = t.includes('full') ? ['moon', '255 246 232', '0.5'] : t.includes('new moon') ? ['build', '179 166 242', ''] : t.includes('sign') ? ['galaxy', '143 184 242', ''] : ['steam', '240 169 124', ''];
 const px = size === 'hero' ? 320 : 200;
 ---
 <div class={`cover ${size}`} style={`--c: ${color}`}>
