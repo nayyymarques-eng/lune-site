@@ -3,21 +3,29 @@ import Base from '../layouts/Base.astro';
 import Tonight from '../components/Tonight.astro';
 import Signup from '../components/Signup.astro';
 ---
-<Base title="Tonight's moon" description="Where the moon is tonight, and where it falls in your sky. Pick your sign.">
+<Base title="Moon compass: where tonight's moon falls in your birth chart" description="Enter your birth date, time and place to see which house of your chart tonight's moon lights, and the ritual it asks for. Free, private, nothing stored.">
   <section class="tpage">
     <div class="narrow head">
-      <p class="label">Tonight</p>
-      <h1 class="h-sec">Tonight's moon, and what to do with it</h1>
+      <p class="label">Moon compass</p>
+      <h1 class="h-sec">Where tonight's moon falls in your chart</h1>
+      <p class="lead">The moon moves through your sky every two and a half days. Tell us when and where you were born, and see the part of your life it lights tonight.</p>
     </div>
     <Tonight />
     <div class="narrow cta">
-      <p class="lead">In the app, tonight's moon comes with a practice to live it: how to do it, where it comes from and why it matters.</p>
+      <p class="lead">In the app, tonight's moon comes with your ritual for it: what to do, where the gesture was born and why it matters.</p>
       <Signup source="tonight-page" />
+    </div>
+    <div class="narrow about">
+      <h2 class="h-card">How the moon compass works</h2>
+      <p class="muted">Your birth time and place give your rising sign, the sign that was on the eastern horizon as you were born. It opens your first house, and each sign after it opens the next, twelve houses in all. Tonight's moon sits in one sign, and so it lights one of your houses: an area of life it invites you to look at, tend or let go.</p>
+      <p class="muted">Without a birth time, the houses are counted from your Sun sign, an older and gentler way to read them. The moon decides nothing. It is a moment, and you bring the meaning.</p>
     </div>
   </section>
 </Base>
 <style>
   .tpage { display: grid; gap: 48px; padding-top: 64px; }
+  .about { display: grid; gap: 12px; max-width: 640px; margin-inline: auto; }
+  .about p { margin: 0; }
   .head, .cta { display: grid; gap: 16px; justify-items: center; text-align: center; }
   .cta :global(form) { justify-content: center; margin-inline: auto; }
 </style>

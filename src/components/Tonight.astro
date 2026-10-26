@@ -1,10 +1,9 @@
 ---
-// "Tonight" card: the live moon (sign + phase) and, once a sign is picked, where it lands in that sky.
-// Rendered at build time, then refreshed in the browser from the same calendar.
+// "Tonight" card, the moon compass: the live moon (sign + phase) and, from a birth date, time and place,
+// the house of her chart it falls in tonight. Rendered at build time, then refreshed in the browser.
 import moon from '../data/moon.json';
 import R from '../data/readings.json';
-import { SIGNS, SIGN_GLYPH, signAt, phaseAt, cycleAt, cap } from '../lib/moon';
-import Stores from './Stores.astro';
+import { signAt, phaseAt, cycleAt, cap } from '../lib/moon';
 const now = Date.now();
 const s = signAt(moon as any, now);
 const p = phaseAt(moon as any, now);
@@ -20,11 +19,22 @@ const cyc = cycleAt(moon as any, now);
   <div class="tmoon"><canvas data-light="moon" data-size="340" data-phase={cyc.toFixed(3)} data-t="moon" aria-label="Tonight's moon, drawn in points of light"></canvas></div>
   <h2 class="ttitle"><span data-t="phase">{reading.name}</span> in <span data-t="sign">{cap(s.sign)}</span></h2>
   <p class="tline" data-t="line">{reading.reading}, with {(R.signs as any)[s.sign].tone}</p>
-  <div class="pick">
-    <p class="label">What's your sign?</p>
-    <div class="chips">
-      {SIGNS.map((g) => <button class="schip" type="button" data-sign={g} aria-pressed="false">{cap(g)}</button>)}
+  <form class="pick" data-t="form" autocomplete="off" novalidate>
+    <p class="label">Where does it fall in your chart?</p>
+    <p class="small muted intro">Your birth date, time and place set your rising sign, and from it your twelve houses. Tonight's moon lands in one of them.</p>
+    <div class="fields">
+      <label class="field"><span class="label">Birth date</span><input type="date" required data-t="bdate" min="1920-01-01" max="2026-12-31" /></label>
+      <label class="field"><span class="label">Birth time</span><input type="time" data-t="btime" /></label>
+      <label class="nt"><input type="checkbox" data-t="notime" /> <span class="small">I don't know my birth time</span></label>
+      <div class="field place">
+        <label class="label" for="bplace">Birth place</label>
+        <input id="bplace" type="text" required placeholder="Start typing a city" data-t="bplace" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="bplace-list" />
+        <ul class="sugg" id="bplace-list" role="listbox" data-t="sugg" hidden></ul>
+      </div>
     </div>
+    <p class="err small" data-t="err" role="alert" hidden></p>
+    <button class="btn primary" type="submit" data-t="go">Find my moon</button>
+    <p class="small muted priv">Your birth details stay in this browser and are never stored. Only the city name you type is sent to Open-Meteo to find its coordinates.</p>
     <div class="yours" data-t="yours" hidden>
       <div class="ycard glass">
         <div class="wheel" aria-hidden="true">
@@ -37,22 +47,26 @@ const cyc = cycleAt(moon as any, now);
           <div><span class="label">Touches</span><b data-t="farea"></b></div>
         </div>
       </div>
+      <div class="chart">
+        <div><span class="label">Your rising</span><b data-t="rising"></b></div>
+        <div><span class="label">Your sun</span><b data-t="sun"></b></div>
+        <div><span class="label">Your moon</span><b data-t="nmoon"></b></div>
+      </div>
       <p class="ytext" data-t="house"></p>
-      <p class="small muted">Counted from your Sun sign. In the app, your birth time places it in your own houses.</p>
+      <p class="small muted" data-t="how"></p>
       <div class="ptease glass">
         <canvas data-light="build" data-size="56" data-color="240 169 124" aria-hidden="true"></canvas>
-        <div><span class="label">Tonight's practice for you</span><b data-t="pname"></b><span class="small muted">A candle and a pen, step by step</span></div>
+        <div><span class="label">Your ritual for tonight</span><b data-t="pname"></b><span class="small muted">Step by step, with where it comes from and why it matters</span></div>
         <svg class="lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
       </div>
-      <p class="label center">Open it in the app</p>
-      <Stores where="tonight" />
+      <p class="small muted center">It opens in the app. Join the list and be the first to receive it.</p>
     </div>
-  </div>
+  </form>
 </div>
 <script type="application/json" id="lune-readings" set:html={JSON.stringify({ phases: R.phases, signs: R.signs, houses: R.houses })} />
 
 <style>
-  .tonight { --c: 179 166 242; position: relative; overflow: hidden; padding: 24px; display: grid; gap: 16px; max-width: 440px; width: 100%; margin-inline: auto; }
+  .tonight { --c: 179 166 242; position: relative; overflow: hidden; padding: 24px; display: grid; gap: 16px; max-width: 480px; width: 100%; margin-inline: auto; }
   .wash { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(110% 60% at 50% 30%, rgb(var(--c) / .30), rgb(var(--c) / .10) 50%, transparent 85%); }
   .tonight > :not(.wash) { position: relative; min-width: 0; }
   .row { display: flex; justify-content: space-between; }
@@ -63,11 +77,29 @@ const cyc = cycleAt(moon as any, now);
   .tline { margin: 0; text-align: center; font: var(--text-body); color: var(--muted-foreground); }
   .pick { border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 16px; }
   .pick .label { margin: 0; }
-  .chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
-  .schip { min-height: 38px; padding: 0 8px; border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge); box-shadow: var(--glass-highlight);
-    color: var(--foreground); font: var(--text-label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
-  .schip:hover { background: var(--glass-selected); }
-  .schip[aria-pressed="true"] { background: var(--foreground); color: var(--background); border-color: var(--foreground); }
+  .intro { margin: -8px 0 0 !important; }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .field { display: grid; gap: 6px; min-width: 0; }
+  .field .label { margin: 0; }
+  .field input { height: 48px; padding: 0 14px; border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge);
+    color: var(--foreground); font: var(--text-body); color-scheme: dark; min-width: 0; width: 100%; box-sizing: border-box; }
+  .field input:focus { outline: 2px solid rgb(179 166 242 / .7); outline-offset: 1px; }
+  .field input:disabled { opacity: .4; }
+  .nt { grid-column: 1 / -1; display: flex; gap: 8px; align-items: center; color: var(--muted-foreground); cursor: pointer; margin-top: -4px; }
+  .nt input { accent-color: #fff; }
+  .place { grid-column: 1 / -1; position: relative; }
+  .sugg { position: absolute; z-index: 5; top: 100%; left: 0; right: 0; margin: 6px 0 0; padding: 6px; list-style: none; border-radius: 12px; background: #141418; border: 1px solid var(--glass-edge); box-shadow: 0 16px 40px rgb(0 0 0 / .6); display: grid; gap: 2px; }
+  .sugg[hidden] { display: none; }
+  .sugg :global(li) { padding: 10px 12px; border-radius: 8px; cursor: pointer; font: var(--text-body); color: var(--foreground); }
+  .sugg :global(li small) { color: var(--muted-foreground); margin-left: 6px; }
+  .sugg :global(li[aria-selected="true"]), .sugg :global(li:hover) { background: var(--glass-selected); }
+  .pick .btn { width: 100%; }
+  .err { margin: 0 !important; color: var(--destructive); }
+  .err[hidden] { display: none; }
+  .priv { margin: 0 !important; text-align: center; }
+  .chart { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .chart div { display: grid; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--glass-fill); border: 1px solid var(--glass-edge); min-width: 0; }
+  .chart b { font: var(--text-title); font-size: 16px; font-weight: 400; color: var(--foreground); }
   .yours { display: grid; gap: 12px; }
   .ycard { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: center; padding: 16px; border-radius: 16px; }
   .wheel { position: relative; width: 132px; aspect-ratio: 1; }
@@ -90,11 +122,12 @@ const cyc = cycleAt(moon as any, now);
 </style>
 
 <script>
+  import * as A from 'astronomy-engine';
   import moon from '../data/moon.json';
-  import { signAt, phaseAt, houseFrom, cycleAt, cap } from '../lib/moon';
+  import { signAt, phaseAt, cycleAt, cap, SIGNS } from '../lib/moon';
   const R = JSON.parse(document.getElementById('lune-readings')!.textContent!);
   const root = document.querySelector('[data-tonight]') as HTMLElement;
-  const $ = (k: string) => root.querySelector(`[data-t="${k}"]`) as HTMLElement;
+  const $ = (k: string) => root.querySelector(`[data-t="${k}"]`) as any;
   const s = signAt(moon as any);
   const p = phaseAt(moon as any);
   $('phase').textContent = R.phases[p.kind].name;
@@ -102,7 +135,32 @@ const cyc = cycleAt(moon as any, now);
   $('line').textContent = `${R.phases[p.kind].reading}, with ${R.signs[s.sign].tone}`;
   $('moon').dataset.phase = cycleAt(moon as any).toFixed(3);
   if (s.until) $('until').textContent = 'until ' + new Date(s.until).toLocaleDateString('en-US', { weekday: 'short', hour: 'numeric' });
+
+  // Same chart maths as the app (src/astro/chart.ts): whole-sign houses from the rising sign,
+  // or from the Sun sign when the birth time is unknown.
+  const norm = (d: number) => ((d % 360) + 360) % 360;
+  const signOf = (lon: number) => SIGNS[Math.floor(norm(lon) / 30)];
+  const moonLon = (d: Date) => A.EclipticGeoMoon(d).lon;
+  function ascendant(date: Date, lat: number, lon: number) {
+    const eps = (A.e_tilt(A.MakeTime(date)).tobl * Math.PI) / 180;
+    const ramc = (norm(A.SiderealTime(date) * 15 + lon) * Math.PI) / 180;
+    const phi = (lat * Math.PI) / 180;
+    return norm((Math.atan2(Math.cos(ramc), -(Math.sin(ramc) * Math.cos(eps) + Math.tan(phi) * Math.sin(eps))) * 180) / Math.PI);
+  }
+  function offsetMin(date: Date, tz: string) {
+    const parts = new Intl.DateTimeFormat('en-US', { timeZone: tz, hourCycle: 'h23', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }).formatToParts(date);
+    const g = (t: string) => Number(parts.find((x) => x.type === t)!.value);
+    return Math.round((Date.UTC(g('year'), g('month') - 1, g('day'), g('hour'), g('minute')) - date.getTime()) / 60000);
+  }
+  function zonedToUtc(dateISO: string, time: string, tz: string) {
+    const [y, m, d] = dateISO.split('-').map(Number), [hh, mm] = time.split(':').map(Number);
+    const guess = Date.UTC(y, m - 1, d, hh, mm);
+    const first = guess - offsetMin(new Date(guess), tz) * 60000;
+    return new Date(guess - offsetMin(new Date(first), tz) * 60000);
+  }
+
   const AREA = ['self', 'values', 'words', 'roots', 'joy', 'days', 'bonds', 'change', 'meaning', 'work', 'people', 'rest'];
+  const ord = (n: number) => n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
   function drawWheel(h: number) {
     const svg = $('wheel'); const NS = 'http://www.w3.org/2000/svg'; svg.innerHTML = '';
     const defs = document.createElementNS(NS, 'defs');
@@ -124,20 +182,72 @@ const cyc = cycleAt(moon as any, now);
     const ring = document.createElementNS(NS, 'circle'); ring.setAttribute('cx', '80'); ring.setAttribute('cy', '80'); ring.setAttribute('r', '54');
     ring.setAttribute('fill', 'none'); ring.setAttribute('stroke', 'rgb(255 255 255 / .1)'); svg.appendChild(ring);
   }
-  const ord = (n: number) => n + (n === 1 ? 'st' : n === 2 ? 'nd' : n === 3 ? 'rd' : 'th');
-  function pick(sign: string) {
-    root.querySelectorAll('.schip').forEach((c) => c.setAttribute('aria-pressed', String((c as HTMLElement).dataset.sign === sign)));
-    const h = houseFrom(s.sign, sign);
-    const lead = h === 1 ? `Tonight the moon is in your sign, ${cap(sign)}. ` : '';
-    $('house').textContent = lead + R.houses[String(h)].replace(/^In your \d+\w\w house/, `In your ${ord(h)} house`);
-    const area = AREA[h - 1];
-    $('hnum').textContent = ord(h); $('fhouse').textContent = ord(h); $('fsign').textContent = cap(s.sign); $('farea').textContent = cap(area);
+
+  // City search (Open-Meteo geocoding, no key): only the typed city name leaves the browser.
+  type Place = { name: string; admin1?: string; country?: string; latitude: number; longitude: number; timezone: string };
+  let place: Place | null = null, results: Place[] = [], active = -1, timer = 0, seq = 0;
+  const input = $('bplace') as HTMLInputElement, list = $('sugg') as HTMLUListElement;
+  const label = (x: Place) => [x.name, x.admin1, x.country].filter(Boolean).join(', ');
+  const close = () => { list.hidden = true; input.setAttribute('aria-expanded', 'false'); active = -1; };
+  function show() {
+    list.innerHTML = '';
+    results.forEach((x, i) => {
+      const li = document.createElement('li'); li.id = `bplace-${i}`; li.setAttribute('role', 'option'); li.setAttribute('aria-selected', String(i === active));
+      li.textContent = x.name; const sm = document.createElement('small'); sm.textContent = [x.admin1, x.country].filter(Boolean).join(', '); li.appendChild(sm);
+      li.addEventListener('mousedown', (e) => { e.preventDefault(); choose(i); });
+      list.appendChild(li);
+    });
+    list.hidden = !results.length; input.setAttribute('aria-expanded', String(!!results.length));
+    if (active >= 0) input.setAttribute('aria-activedescendant', `bplace-${active}`); else input.removeAttribute('aria-activedescendant');
+  }
+  function choose(i: number) { place = results[i]; input.value = label(place); close(); $('err').hidden = true; }
+  input.addEventListener('input', () => {
+    place = null; $('err').hidden = true; clearTimeout(timer);
+    const q = input.value.trim(); if (q.length < 2) { results = []; show(); return; }
+    timer = window.setTimeout(async () => {
+      const my = ++seq;
+      try {
+        const r = await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=6&language=en&format=json&name=${encodeURIComponent(q)}`);
+        const j = await r.json(); if (my !== seq) return;
+        results = (j.results || []).filter((x: Place) => x.timezone); active = -1; show();
+      } catch { if (my === seq) { results = []; show(); } }
+    }, 250);
+  });
+  input.addEventListener('keydown', (e) => {
+    if (list.hidden) return;
+    if (e.key === 'ArrowDown') { active = Math.min(results.length - 1, active + 1); show(); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { active = Math.max(0, active - 1); show(); e.preventDefault(); }
+    else if (e.key === 'Enter' && active >= 0) { choose(active); e.preventDefault(); }
+    else if (e.key === 'Escape') close();
+  });
+  input.addEventListener('blur', () => setTimeout(close, 120));
+  const notime = $('notime') as HTMLInputElement, btime = $('btime') as HTMLInputElement;
+  notime.addEventListener('change', () => { btime.disabled = notime.checked; });
+
+  function fail(msg: string) { const e = $('err'); e.textContent = msg; e.hidden = false; }
+  ($('form') as HTMLFormElement).addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const d = ($('bdate') as HTMLInputElement).value, t = btime.value, known = !notime.checked && !!t;
+    if (!d) return fail('Add your birth date.');
+    if (!notime.checked && !t) return fail('Add your birth time, or tick "I don\'t know my birth time".');
+    if (!place) return fail('Pick your birth place from the list, so we know exactly where it is.');
+    $('err').hidden = true;
+    const birth = zonedToUtc(d, known ? t : '12:00', place.timezone);
+    const sunSign = signOf(A.SunPosition(birth).elon), natalMoon = signOf(moonLon(birth));
+    const first = known ? signOf(ascendant(birth, place.latitude, place.longitude)) : sunSign;
+    const now = signOf(moonLon(new Date()));
+    const h = ((SIGNS.indexOf(now) - SIGNS.indexOf(first) + 12) % 12) + 1, area = AREA[h - 1];
+    $('hnum').textContent = ord(h); $('fhouse').textContent = ord(h); $('fsign').textContent = cap(now); $('farea').textContent = cap(area);
+    $('rising').textContent = known ? cap(first) : 'Needs your time'; $('sun').textContent = cap(sunSign); $('nmoon').textContent = cap(natalMoon);
+    const lead = now === natalMoon ? `Tonight the moon returns to the sign it held when you were born, ${cap(now)}. ` : '';
+    $('house').textContent = lead + R.houses[String(h)];
+    $('how').textContent = known
+      ? `Counted from your rising sign, ${cap(first)}, born in ${place.name}.`
+      : `Without a birth time, your houses are counted from your Sun sign. Add your time for your own houses.`;
     $('pname').textContent = `${R.phases[p.kind].name}, for ${area}`;
     drawWheel(h);
     $('yours').hidden = false;
-    try { localStorage.setItem('lune-sign', sign); } catch {}
-    (window as any).posthog?.capture?.('sign_picked', { sign, moon_sign: s.sign, house: h });
-  }
-  root.querySelectorAll('.schip').forEach((c) => c.addEventListener('click', () => pick((c as HTMLElement).dataset.sign!)));
-  try { const saved = localStorage.getItem('lune-sign'); if (saved) pick(saved); } catch {}
+    $('yours').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    (window as any).posthog?.capture?.('compass_done', { moon_sign: now, house: h, timed: known });
+  });
 </script>
