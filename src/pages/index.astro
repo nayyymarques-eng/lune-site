@@ -20,9 +20,9 @@ const big = (moon as any).phases.filter((p: any) => (p.kind === 'new_moon' || p.
 });
 
 const faq = [
-  ['Do I need to believe in astrology?', 'No. Lune holds belief at many depths. Some people feel the moon as something sacred, some use it as the oldest clock we have, some come only for the quiet fifteen minutes. The practice is the same for all of them: a phase is a moment, a sign a tone, a house an area of life. The moon decides nothing. You bring the meaning.'],
+  ['Do I need to believe in astrology?', 'No. Lune holds belief at many depths. Some people feel the moon as something sacred, some use it as the oldest clock we have, some come for the pause it asks of them. The practice is the same for all of them: a phase is a moment, a sign a tone, a house an area of life. The moon decides nothing. You bring the meaning.'],
   ['Is Lune religious?', 'Lune is spiritual, not religious. Each gesture shows the people who kept it and its kin in other cultures, side by side, never ranked. Take what speaks to you and believe what you choose.'],
-  ['What do I need for a practice?', 'What you already have at home: a candle, a glass of water, paper and a pen. Tell Lune what you have and practices start from it. Fifteen minutes, often less.'],
+  ['What do I need for a practice?', 'What you already have at home: a candle, a glass of water, paper and a pen. Tell Lune what you have and practices start from it. Each one walks you through the gestures, step by step, and tells you why they matter. Take as long as the moment asks.'],
   ['Do I need my birth time?', 'No. Without it, Lune counts your houses from your Sun sign. Add it whenever you like to see the moon in your own houses.'],
   ['Is the science real?', 'Every "What science says" cites published research, mostly neuroscience and psychology on breath, ritual and attention: who was studied, for how long, and where the evidence is still thin. Where no study exists, we say so, and let the tradition speak for itself.'],
 ];
@@ -31,7 +31,7 @@ const schema = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
 ];
 ---
-<Base glow={false} description="A 15-minute ritual for every moon, with a candle, a glass of water or a pen. Lune gives you tonight's practice, timed to the moon. Be the first to download it." schema={schema}>
+<Base glow={false} description="A guide for the spirituality you are growing into: a ritual for every moon, how to do it, where it comes from and why it matters. Be the first to download Lune." schema={schema}>
   <section class="hero">
     <Sky />
     <div class="hleft">
@@ -43,14 +43,14 @@ const schema = [
     </div>
     <div class="glass hcard hcol" id="start" data-solid><span id="waitlist" aria-hidden="true"></span>
       <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
-      <p class="lead">Fifteen minutes with a candle, a glass of water or a pen. Each night Lune gives you one practice timed to the moon above you, made from what you already have at home.</p>
+      <p class="lead">For the spirituality you are growing into. Each moon, Lune gives your wishes, prayers and meditations a ritual: how to do it, where the gesture was born, and why it can matter, honouring every tradition that kept it.</p>
       <div class="hform"><Signup source="hero" /></div>
       <Stores where="hero" />
       <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
       <ul class="proof">
-        <li><span class="spark"></span>Practices timed to every moon through 2030</li>
-        <li><span class="spark"></span>Gestures kept by traditions across the world</li>
-        <li><span class="spark"></span>Every word with its source</li>
+        <li><span class="spark"></span>A ritual for every moon through 2030</li>
+        <li><span class="spark"></span>Gestures honoured with their roots and their kin</li>
+        <li><span class="spark"></span>What science says, with its sources</li>
       </ul>
     </div>
   </section>
@@ -83,7 +83,7 @@ const schema = [
       <div class="acopy">
         <p class="label">Tonight, in the app</p>
         <h2 class="h-sec">Tonight's practice, waiting for you</h2>
-        <p class="lead">Each evening Lune opens on the moon above you and one practice made for it: you arrive, you make a few small gestures, you close. When you want to go deeper, why tonight, where the gesture was born and what the studies say are one tap away. When you don't, the practice is enough.</p>
+        <p class="lead">Each evening Lune opens on the moon above you and a practice made for it. You arrive, you set your intention, you make the gestures with care, you close. Beside every step: why tonight, where the gesture was born and what the studies say, so you know what you are honouring and what it can do in you.</p>
         <a class="btn secondary" href="/tonight" data-cta="app-tonight">See tonight's moon</a>
       </div>
     </div>
@@ -105,8 +105,8 @@ const schema = [
         <li class="tint" style="--c: 240 169 124">
           <canvas class="slight" data-light="burst" data-size="220" data-r="0.42" data-sparkle data-color="240 169 124" aria-hidden="true"></canvas>
           <span class="label">02 · A practice to live it</span>
-          <h3 class="h-card">Fifteen minutes, with what you have</h3>
-          <p class="muted">A candle, water, paper, your breath. Open, a few gestures, close, around what matters to you now: love, work, health, prosperity, energy, gratitude, new paths or the divine.</p>
+          <h3 class="h-card">A gesture, done with meaning</h3>
+          <p class="muted">A candle, water, paper, your breath. Lune shows you how, step by step, around what matters to you now: love, work, health, prosperity, gratitude, new paths or the divine. Every way of doing it is welcome.</p>
         </li>
         <li class="tint" style="--c: 143 184 242">
           <canvas class="slight" data-light="jar" data-size="220" data-r="0.42" data-sparkle data-color="143 184 242" aria-hidden="true"></canvas>
@@ -116,6 +116,33 @@ const schema = [
         </li>
       </ol>
       <a class="more" href="#waitlist" data-cta="how-more">Get early access <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="sci" aria-labelledby="sci-title">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="label">What science says</p>
+        <h2 class="h-sec" id="sci-title">Why rituals still matter</h2>
+        <p class="lead">Every culture has kept rituals, and science is beginning to see why. A gesture repeated with intention steadies the breath, quiets the alarm of the mind, and gives a feeling somewhere to go. These are the studies behind Lune, with their limits.</p>
+      </div>
+      <ol class="stats" aria-label="Six findings, swipe to see more">
+        <li class="glass stat"><p class="num">79%<span> of studies</span></p><p class="muted">In a large review of research on spirituality and mental health, most studies linked a living spiritual life with more well-being, and many with less depression and anxiety.<sup>1</sup></p><p class="lim">Associations, not proof.</p></li>
+        <li class="glass stat"><p class="num">6<span> breaths a minute</span></p><p class="muted">Praying the rosary and reciting a yoga mantra both slowed breathing to the same calm rhythm, and heart and breath fell into step. Two traditions, one rhythm.<sup>2</sup></p><p class="lim">23 adults, measured during the practice.</p></li>
+        <li class="glass stat"><p class="num">13,512<span> people</span></p><p class="muted">In 49 studies, faith lived as support, meaning and trust went with coping better under stress. Faith lived as fear went with more suffering. Lune only offers the gentle kind.<sup>3</sup></p><p class="lim">Meta-analysis.</p></li>
+        <li class="glass stat"><p class="num">Calmer<span> before a hard task</span></p><p class="muted">A short ritual lowered anxiety and heart rate and improved performance, but only when people did the gestures as a ritual, not as random moves.<sup>4</sup></p><p class="lim">Laboratory tasks.</p></li>
+        <li class="glass stat"><p class="num">Lighter<span> after a loss</span></p><p class="muted">People who made a ritual after losing someone or something grieved less, because it gave them back a sense of control, even those who said they did not believe in rituals.<sup>5</sup></p><p class="lim">Moderate effect.</p></li>
+        <li class="glass stat"><p class="num">¼<span> the risk</span></p><p class="muted">Over ten years, adults who said spirituality mattered deeply to them had about a quarter of the risk of depression. Going to services made no difference; personal meaning did.<sup>6</sup></p><p class="lim">114 adults, one small study.</p></li>
+      </ol>
+      <ol class="refs">
+        <li><a href="https://doi.org/10.1192/bja.2019.81" rel="noopener" target="_blank">Koenig, Al-Zaben &amp; VanderWeele (2020), BJPsych Advances</a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/11751348/" rel="noopener" target="_blank">Bernardi et al. (2001), BMJ</a></li>
+        <li><a href="https://doi.org/10.1002/jclp.20049" rel="noopener" target="_blank">Ano &amp; Vasconcelles (2005), Journal of Clinical Psychology</a></li>
+        <li><a href="https://doi.org/10.1016/j.obhdp.2016.07.004" rel="noopener" target="_blank">Brooks et al. (2016), Organizational Behavior and Human Decision Processes</a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/23398180/" rel="noopener" target="_blank">Norton &amp; Gino (2014), Journal of Experimental Psychology: General</a></li>
+        <li><a href="https://psychophysiology.cpmc.columbia.edu/publications/miller2012a" rel="noopener" target="_blank">Miller et al. (2012), American Journal of Psychiatry</a></li>
+      </ol>
+      <p class="note">A practice is a moment of attention, never a treatment. Lune never promises results.</p>
     </div>
   </section>
 
@@ -264,6 +291,23 @@ const schema = [
   .fmoon { width: 140px; height: 140px; margin: 0 auto; }
   .fform { display: grid; justify-items: center; text-align: center; }
   .fform :global(.signup) { justify-content: center; margin-inline: auto; }
+  /* What science says about rituals (Nayara 26 Oct): six findings, sources small at the end. Grid on desktop, swipe on mobile. */
+  .stats { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .stat { padding: 24px; display: grid; grid-template-rows: auto 1fr auto; gap: 12px; }
+  .stat p { margin: 0; }
+  .stat .num { font: 400 40px/1.05 var(--font-serif); letter-spacing: -0.02em; color: var(--foreground); }
+  .stat .num span { display: block; font-size: 17px; letter-spacing: 0; margin-top: 4px; color: var(--muted-foreground); }
+  .stat sup { font-size: 10px; margin-left: 2px; }
+  .stat .lim { font: var(--text-label); letter-spacing: .08em; text-transform: uppercase; color: var(--muted-foreground); opacity: .75; }
+  .refs { margin: 32px 0 0; padding-left: 18px; display: grid; gap: 4px; font-size: 12px; color: var(--muted-foreground); }
+  .refs a { color: inherit; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgb(255 255 255 / .25); }
+  .sci .note { margin: 16px 0 0; font-size: 12px; color: var(--muted-foreground); }
+  @media (max-width: 900px) {
+    .stats { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: min(320px, 78vw); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      margin-inline: -16px; padding: 0 16px 8px; scroll-padding-inline: 16px; }
+    .stats::-webkit-scrollbar { display: none; }
+    .stat { scroll-snap-align: start; }
+  }
   @media (max-width: 900px) {
     .pgrid, .agrid { grid-template-columns: 1fr; }
     .wgrid { grid-template-columns: 1fr 1fr; }
