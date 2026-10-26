@@ -1,9 +1,8 @@
 # Lune website
 
-The public site and journal for Lune: Moon Rituals. Static, built with [Astro](https://astro.build), so every page is plain HTML that loads fast and ranks well. Lives next to the app in this repo; it can move to its own repo later without changes.
+The public site and journal for Lune: Moon Rituals. Static, built with [Astro](https://astro.build), so every page is plain HTML that loads fast and ranks well. Its own repo, separate from the app (nayyymarques-eng/Lune). Moved out of the app repo's `website/` folder on 26 Oct 2026 with full history.
 
 ```bash
-cd website
 npm install
 npm run data     # copy the moon calendar, readings and legal texts from /mnt/project-files (only when they change)
 npm run dev      # http://localhost:4321
@@ -55,7 +54,7 @@ Link each post to its sign page (`/moon/aries`). Rules: English, never promise r
 | `PUBLIC_POSTHOG_KEY` | Turns on PostHog. Events: `cta_clicked`, `sign_picked`, `waitlist_joined` |
 | `SITE_URL` | The real domain (canonical links, sitemap, RSS) |
 
-Deploy: any static host (Vercel, Netlify, Cloudflare Pages). Root `website/`, build `npm run build`, output `dist/`.
+Deploy: Cloudflare Workers Builds, project `lune-site`, auto-deploys on every push to `main`. Repo root, build `npm run build`, deploy `npx wrangler deploy` (wrangler.jsonc serves `dist/` and runs worker/index.js for `/api/waitlist`). Domain lunerituals.app. Secret `RESEND_API_KEY` lives only in the Cloudflare dashboard.
 
 ## Why it is built this way (what converts in this category)
 

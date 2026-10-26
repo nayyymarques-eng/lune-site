@@ -1,4 +1,4 @@
-// Cloudflare Workers Builds: root directory "website", build command "npm run build", deploy "npx wrangler deploy".
+// Cloudflare Workers Builds: repo root, build command "npm run build", deploy "npx wrangler deploy", branch main.
 // Secrets (dashboard, never here): RESEND_API_KEY. Vars below are filled when the domain exists.
 {
   "name": "lune-site",
