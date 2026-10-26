@@ -69,14 +69,18 @@ const { fade = 'bottom' } = Astro.props;
   }
 
   // Glass cards in this section frost what is behind them. Done here because backdrop-filter does not reach these canvases.
+  // A large panel marked data-solid skips the blur (too costly every frame): it is tinted in CSS and simply hides the stars behind it.
   function frostRects() {
     const cr = cv.getBoundingClientRect();
-    return [...cv.parentElement.querySelectorAll('.glass')].map((e) => e.getBoundingClientRect())
-      .filter((r) => r.width > 200 && r.height > 120).map((r) => ({ x: r.left - cr.left, y: r.top - cr.top, w: r.width, h: r.height }));
+    return [...cv.parentElement.querySelectorAll('.glass')].map((e) => [e.getBoundingClientRect(), e.hasAttribute('data-solid')])
+      .filter(([r]) => r.width > 200 && r.height > 120).map(([r, solid]) => ({ x: r.left - cr.left, y: r.top - cr.top, w: r.width, h: r.height, solid }));
   }
-  const inside = (fr, x, y) => fr.some((r) => x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h);
+  const hit = (r, x, y) => x > r.x && x < r.x + r.w && y > r.y && y < r.y + r.h;
+  const inside = (fr, x, y) => fr.some((r) => !r.solid && hit(r, x, y));
+  const hidden = (fr, x, y) => fr.some((r) => r.solid && hit(r, x, y));
   let tmp = null;
-  function frost(fr) {
+  function frost(all) {
+    const fr = all.filter((r) => !r.solid);
     if (!fr.length || !('filter' in ctx)) return;
     tmp = tmp || document.createElement('canvas');
     tmp.width = cv.width; tmp.height = cv.height; tmp.getContext('2d').drawImage(cv, 0, 0);
@@ -96,26 +100,31 @@ const { fade = 'bottom' } = Astro.props;
     const c = Math.cos(rot), sn = Math.sin(rot), ox = W / 2, oy = H * .35, h = D / 2;
     const at = (x, y) => [ox + c * (x - h) - sn * (y - h), oy + sn * (x - h) + c * (y - h)];
     GL.begin();
-    for (const s of stars) { const [x, y] = at(s.x, s.y); if (x < -4 || y < -4 || x > W + 4 || y > H + 4) continue; if (inside(fr, x, y)) { if (s.r > .6) GL.dot(x, y, 2.4 + s.r * 2, s.c, s.a * .12); continue; } GL.dot(x, y, .35 + s.r * .55, s.c, s.a); }
-    for (const s of bright) { const [x, y] = at(s.x, s.y); if (x < -9 || y < -9 || x > W + 9 || y > H + 9) continue;
+    for (const s of stars) { const [x, y] = at(s.x, s.y); if (x < -4 || y < -4 || x > W + 4 || y > H + 4 || hidden(fr, x, y)) continue; if (inside(fr, x, y)) { if (s.r > .6) GL.dot(x, y, 2.4 + s.r * 2, s.c, s.a * .12); continue; } GL.dot(x, y, .35 + s.r * .55, s.c, s.a); }
+    for (const s of bright) { const [x, y] = at(s.x, s.y); if (x < -9 || y < -9 || x > W + 9 || y > H + 9 || hidden(fr, x, y)) continue;
       const tw = reduce ? .85 : .55 + .45 * Math.sin(ms / 1000 * s.f + s.p) * Math.sin(ms / 1700 * s.f + s.p * 2);
       if (inside(fr, x, y)) { GL.dot(x, y, 3 + s.r * 3, s.rgb, .12 * tw); continue; }
       GL.dot(x, y, s.r * .9, s.rgb, Math.max(.15, tw)); }
     GL.end();
   }
 
+  // The Milky Way turns about 1 degree every 8 seconds, so the heavy 2D layer is only repainted twice a second
+  // (or every frame while a shooting star crosses); the twinkling points on the WebGL layer run every frame.
+  let lastRot = -1, wasShoot = false;
   function frame(ms) {
-    const rot = reduce ? 0 : ms / 1000 * 0.0022; // about 1 degree every 8 seconds
+    const rot = reduce ? 0 : Math.floor(ms / 500) * 0.5 * 0.0022;
+    const fr = frostRects();
+    if (rot === lastRot && !shoot && !wasShoot && ms > 0) { points(ms, rot, fr); return; }
+    lastRot = rot; wasShoot = !!shoot;
     ctx.clearRect(0, 0, W, H);
     ctx.save(); ctx.translate(W / 2, H * .35); ctx.rotate(rot); ctx.translate(-D / 2, -D / 2);
     ctx.drawImage(layer, 0, 0, D, D);
     for (const s of bright) {
-      const tw = reduce ? .85 : .55 + .45 * Math.sin(ms / 1000 * s.f + s.p) * Math.sin(ms / 1700 * s.f + s.p * 2);
+      const tw = .8;
       if (s.r > 1.5) { const L = s.r * 7 * tw; ctx.strokeStyle = `rgb(${s.c} / ${tw * .45})`; ctx.lineWidth = .6;
         ctx.beginPath(); ctx.moveTo(s.x - L, s.y); ctx.lineTo(s.x + L, s.y); ctx.moveTo(s.x, s.y - L); ctx.lineTo(s.x, s.y + L); ctx.stroke(); }
     }
     ctx.restore();
-    const fr = frostRects();
     frost(fr);
     points(ms, rot, fr);
     if (!reduce) {
@@ -132,9 +141,9 @@ const { fade = 'bottom' } = Astro.props;
 
   let last = 0;
   function loop(ms) { if (vis && ms - last > 32) { frame(ms); last = ms; } requestAnimationFrame(loop); }
-  build(); frame(0); addEventListener('DOMContentLoaded', () => frame(performance.now()));
+  build(); frame(0); addEventListener('DOMContentLoaded', () => { lastRot = -1; frame(performance.now()); });
   let rt = 0;
-  const rebuild = () => { clearTimeout(rt); rt = setTimeout(() => { if (Math.abs(cv.clientHeight - H) > 2 || Math.abs(cv.clientWidth - W) > 2) { build(); frame(performance.now()); } }, 120); };
+  const rebuild = () => { clearTimeout(rt); rt = setTimeout(() => { if (Math.abs(cv.clientHeight - H) > 2 || Math.abs(cv.clientWidth - W) > 2) { build(); lastRot = -1; frame(performance.now()); } }, 120); };
   if ('ResizeObserver' in window) new ResizeObserver(rebuild).observe(cv); else addEventListener('resize', rebuild);
   if ('IntersectionObserver' in window) new IntersectionObserver(e => { vis = e[0].isIntersecting; }).observe(cv);
   if (!reduce) requestAnimationFrame(loop);
