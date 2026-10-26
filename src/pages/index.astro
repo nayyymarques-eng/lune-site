@@ -9,7 +9,7 @@ import moon from '../data/moon.json';
 import R from '../data/readings.json';
 import PhaseIcon from '../components/PhaseIcon.astro';
 import { cap, fmtDate, utcOf, cycleAt } from '../lib/moon';
-import { PRICE, CTA } from '../config';
+import { CTA } from '../config';
 
 const now = Date.now();
 const big = (moon as any).phases.filter((p: any) => (p.kind === 'new_moon' || p.kind === 'full_moon') && utcOf(p.utc) > now).slice(0, 4).map((p: any) => {
@@ -25,15 +25,13 @@ const faq = [
   ['What do I need for a practice?', 'What you already have at home: a candle, a glass of water, paper and a pen. Tell Lune what you have and practices start from it. Fifteen minutes, often less.'],
   ['Do I need my birth time?', 'No. Without it, Lune counts your houses from your Sun sign. Add it whenever you like to see the moon in your own houses.'],
   ['Is the science real?', 'Every "What science says" cites published research, mostly neuroscience and psychology on breath, ritual and attention: who was studied, for how long, and where the evidence is still thin. Where no study exists, we say so, and let the tradition speak for itself.'],
-  ['How does the trial work?', `Premium is free for ${PRICE.trialDays} days. After that it is ${PRICE.month} a month or ${PRICE.year} a year, and you can cancel any time in your store settings. The free tier stays free.`],
 ];
 const schema = [
-  { '@context': 'https://schema.org', '@type': 'MobileApplication', name: 'Lune: Moon Rituals', operatingSystem: 'iOS, Android', applicationCategory: 'LifestyleApplication',
-    offers: [{ '@type': 'Offer', price: '9.99', priceCurrency: 'USD' }, { '@type': 'Offer', price: '59.99', priceCurrency: 'USD' }] },
+  { '@context': 'https://schema.org', '@type': 'MobileApplication', name: 'Lune: Moon Rituals', operatingSystem: 'iOS, Android', applicationCategory: 'LifestyleApplication' },
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
 ];
 ---
-<Base glow={false} description="A 15-minute ritual for every moon, with a candle, a glass of water or a pen. Lune gives you tonight's practice, timed to the moon. Free to start." schema={schema}>
+<Base glow={false} description="A 15-minute ritual for every moon, with a candle, a glass of water or a pen. Lune gives you tonight's practice, timed to the moon. Be the first to download it." schema={schema}>
   <section class="hero">
     <Sky />
     <div class="hleft">
@@ -159,45 +157,6 @@ const schema = [
   </section>
 
 
-  <section id="pricing" class="pricing">
-    <div class="bg l1" aria-hidden="true"></div>
-    <div class="wrap">
-      <div class="sec-head center">
-        <p class="label">Pricing</p>
-        <h2 class="h-sec">Free to start, Premium for every moon</h2>
-      </div>
-      <div class="prgrid">
-        <div class="plan glass">
-          <p class="label">Free</p>
-          <p class="price">$0</p>
-          <p class="muted">Always free, no card.</p>
-          <ul class="feats">
-            <li>The next four moons, with their dates</li>
-            <li>A first look at tonight, behind a lock</li>
-          </ul>
-          <a class="btn secondary" href="#start" data-cta="pricing-free">{CTA}</a>
-        </div>
-        <div class="plan glass sel" data-plan>
-          <div class="row"><p class="label">Premium</p>
-            <div class="seg" role="tablist" aria-label="Billing">
-              <button type="button" role="tab" data-p="month" aria-selected="false">Monthly</button>
-              <button type="button" role="tab" data-p="year" class="on" aria-selected="true">Yearly</button>
-            </div>
-          </div>
-          <p class="price"><span data-v="year">{PRICE.year}</span><span data-v="month" hidden>{PRICE.month}</span><span class="per"><span data-v="year"> / year</span><span data-v="month" hidden> / month</span></span></p>
-          <p class="muted"><span data-v="year">{PRICE.yearPerMonth} a month, half the monthly price. </span>{PRICE.trialDays} days free, cancel any time.</p>
-          <ul class="feats">
-            <li>Tonight's moon, read for your sky</li>
-            <li>Every practice, every night</li>
-            <li>The full calendar, eclipses and supermoons</li>
-            <li>Your altar: 163 items with history and science</li>
-          </ul>
-          <a class="btn primary" href="#start" data-cta="pricing-premium">{CTA}</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section id="faq" class="faq">
     <div class="narrow">
       <div class="sec-head"><p class="label">Questions</p><h2 class="h-sec">Before you begin</h2></div>
@@ -289,19 +248,6 @@ const schema = [
   .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
   .badge { font: var(--text-label); text-transform: uppercase; letter-spacing: .08em; padding: 4px 8px; border-radius: 999px; border: 1px solid var(--glass-edge); background: var(--glass-fill); color: var(--foreground); }
   .center { text-align: center; margin-inline: auto; justify-items: center; }
-  .prgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 840px; margin: 0 auto; }
-  .plan { padding: 24px; display: grid; gap: 16px; align-content: start; }
-  .plan p { margin: 0; }
-  .plan.sel { background: var(--glass-selected); border-color: rgba(255,255,255,.24); }
-  .plan .btn { margin-top: 8px; }
-  .seg { display: grid; grid-template-columns: 1fr 1fr; padding: var(--space-xs); border-radius: var(--radius-button); background: var(--glass-fill); border: 1px solid var(--glass-edge); }
-  .seg button { min-height: 32px; padding: 0 16px; border: 0; border-radius: 8px; background: none; color: var(--muted-foreground); font: var(--text-label); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
-  .seg button.on { background: var(--glass-selected); color: var(--foreground); }
-  .price { font-family: var(--font-serif); font-size: 28px; letter-spacing: -0.035em; line-height: 1.04; color: var(--foreground); }
-  .per { font: var(--text-body); letter-spacing: 0; color: var(--muted-foreground); }
-  .feats { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
-  .feats li { padding-left: 16px; position: relative; color: var(--foreground); }
-  .feats li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
   details { border-top: 1px solid var(--line); padding: 16px 0; }
   details:last-child { border-bottom: 1px solid var(--line); }
   summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; font: var(--text-body); font-size: 15px; color: var(--foreground); }
@@ -313,7 +259,8 @@ const schema = [
   .final::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(ellipse 40% 45% at 50% 55%, rgb(0 0 0 / .55), rgb(0 0 0 / 0)); }
   .final .narrow { position: relative; z-index: 1; display: grid; gap: 24px; }
   .fmoon { width: 140px; height: 140px; margin: 0 auto; }
-  .fform { display: grid; justify-items: center; }
+  .fform { display: grid; justify-items: center; text-align: center; }
+  .fform :global(.signup) { justify-content: center; margin-inline: auto; }
   @media (max-width: 900px) {
     .pgrid, .agrid { grid-template-columns: 1fr; }
     .wgrid { grid-template-columns: 1fr 1fr; }
@@ -327,9 +274,8 @@ const schema = [
     .hmark :global(img) { height: 56px !important; }
     .hcard { width: min(640px, 100% - 32px); margin: -110px auto 0; padding: 32px 20px 24px; border: 1px solid var(--glass-edge); border-radius: 16px; background: rgb(20 20 26 / .86); box-shadow: var(--glass-highlight); }
     .hcard::before { display: none; }
-    .steps, .prgrid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
     .cgrid { grid-template-columns: 1fr 1fr; }
-    .plan.sel { order: -1; }
   }
   @media (max-width: 560px) { .cgrid, .wgrid { grid-template-columns: 1fr; } }
   /* Entrance, after the app opening: the moon gathers from far back, the ring and card follow, words come out of blur */
@@ -348,12 +294,3 @@ const schema = [
   @keyframes in-word { from { opacity: 0; transform: translateX(16px); } }
   @keyframes shimmer { 0% { transform: translateX(-120%) skewX(-14deg); } 40%, 100% { transform: translateX(320%) skewX(-14deg); } }
 </style>
-<script>
-  document.querySelectorAll<HTMLElement>('[data-plan]').forEach((card) => {
-    card.querySelectorAll<HTMLButtonElement>('.seg button').forEach((b) => b.addEventListener('click', () => {
-      const p = b.dataset.p!;
-      card.querySelectorAll('.seg button').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', String(x === b)); });
-      card.querySelectorAll<HTMLElement>('[data-v]').forEach((el) => (el.hidden = el.dataset.v !== p));
-    }));
-  });
-</script>

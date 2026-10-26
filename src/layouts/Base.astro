@@ -25,7 +25,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
   <link rel="alternate" type="application/rss+xml" title="Lune Journal" href="/rss.xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono&family=Tinos:wght@400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Geist+Mono:wght@400;500&family=Tinos:wght@400&display=swap" rel="stylesheet" />
   {LIVE && <meta name="apple-itunes-app" content={`app-id=${APP_STORE_URL.match(/id(\d+)/)?.[1] ?? ''}`} />}
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   {POSTHOG_KEY && <script is:inline define:vars={{ POSTHOG_KEY }}>
@@ -42,7 +42,6 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
         <a href="/#how">How it works</a>
         <a href="/moon">Moon in your sign</a>
         <a href="/journal">Journal</a>
-        <a href="/#pricing">Pricing</a>
       </nav>
       <Stores size="sm" where="header" />
     </div>
@@ -54,7 +53,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A small ritual 
         <Wordmark height={28} />
         <p class="muted small" style="max-width:300px;margin-top:16px">A small ritual for every moon, fifteen minutes with what you have at home. The moon is a cue, never a prediction.</p>
       </div>
-      <div class="fcol"><span class="label">Lune</span><a href="/#how">How it works</a><a href="/#pricing">Pricing</a><a href="/#faq">Questions</a></div>
+      <div class="fcol"><span class="label">Lune</span><a href="/#how">How it works</a><a href="/#faq">Questions</a></div>
       <div class="fcol"><span class="label">Read</span><a href="/moon">The moon in each sign</a><a href="/journal">Journal</a><a href="/rss.xml">RSS</a></div>
       <div class="fcol"><span class="label">Care</span><a href="/care">Before you begin</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/support">Support</a><a href="/delete-account">Delete account</a></div>
     </div>
