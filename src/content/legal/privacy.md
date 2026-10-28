@@ -1,5 +1,6 @@
 ---
 title: "Privacy policy"
+description: "What Lune keeps, why it keeps it, and what you can do about it. Your birth data stays yours."
 ---
 
 Last updated: [date]

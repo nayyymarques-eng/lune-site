@@ -1,5 +1,6 @@
 ---
 title: "Terms of use"
+description: "The terms for using Lune: what the app is, what it is not, and how subscriptions and your account work."
 ---
 
 Last updated: [date]

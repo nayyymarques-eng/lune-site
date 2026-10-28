@@ -1,5 +1,6 @@
 ---
 title: "Support"
+description: "How to reach Lune: write to hello@lunerituals.app for help with the app, your account or your subscription."
 ---
 
 We read every message. Write to **hello@lunerituals.app** and we'll answer within two working days.

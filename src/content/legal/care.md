@@ -1,5 +1,6 @@
 ---
 title: "Before you begin"
+description: "How Lune's practices sit beside care: moments of attention, never treatment, and where to find a person when things feel heavy."
 ---
 
 Lune offers light practices drawn from old traditions and from what studies suggest. They are moments of attention, not treatment. They don't replace a doctor, a therapist or medicine, and they never ask you to stop any of them.
