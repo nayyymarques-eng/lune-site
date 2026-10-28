@@ -1,5 +1,6 @@
 ---
 title: "Full moon ritual for beginners: a complete guide, step by step"
+seoTitle: "Full moon ritual for beginners: step by step"
 slug: full-moon-ritual-for-beginners
 date: 2026-10-26
 description: "How to do a full moon ritual: when to do it, what to have at hand, each gesture step by step, where it comes from, and what research says about why it helps."

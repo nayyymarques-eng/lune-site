@@ -7,6 +7,7 @@ const journal = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/journal' }),
   schema: z.object({
     title: z.string(),
+    seoTitle: z.string().optional(), // shorter <title> for search (about 50 characters); the page h1 keeps title
     description: z.string(), // meta description and card text, about 150 characters
     date: z.coerce.date(),
     sign: z.enum(['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']).optional(),
@@ -19,5 +20,5 @@ const journal = defineCollection({
     faq: z.array(z.object({ q: z.string(), a: z.string() })).default([]),
   }),
 });
-const legal = defineCollection({ loader: glob({ pattern: '*.md', base: './src/content/legal' }), schema: z.object({ title: z.string() }) });
+const legal = defineCollection({ loader: glob({ pattern: '*.md', base: './src/content/legal' }), schema: z.object({ title: z.string(), description: z.string() }) });
 export const collections = { journal, legal };

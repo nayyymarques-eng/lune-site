@@ -17,7 +17,7 @@ const schema = [
   ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
 ];
 ---
-<Base title={p.data.title} description={p.data.description} type="article" image={p.data.cover} schema={schema}>
+<Base title={p.data.seoTitle ?? p.data.title} description={p.data.description} type="article" image={p.data.cover} schema={schema}>
   <article class="narrow art">
     <p class="label"><a href="/journal">Journal</a> · {p.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</p>
     <h1 class="h-sec">{p.data.title}</h1>

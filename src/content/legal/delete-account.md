@@ -1,5 +1,6 @@
 ---
 title: "Delete your account"
+description: "How to delete your Lune account and its data, in the app or by email, and what is removed."
 ---
 
 You can delete your Lune account and its data at any time.

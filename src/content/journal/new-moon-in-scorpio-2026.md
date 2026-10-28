@@ -1,5 +1,6 @@
 ---
 title: "New moon in Scorpio, 9 November 2026: meaning and a ritual for honest beginnings"
+seoTitle: "New moon in Scorpio 2026: meaning and ritual"
 slug: new-moon-in-scorpio-2026
 date: 2026-11-04
 description: "The new moon in Scorpio is exact on 9 November 2026. What Scorpio means, where the sign comes from in the sky, and a new moon ritual for beginning with honesty."
