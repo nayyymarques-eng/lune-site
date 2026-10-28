@@ -7,7 +7,7 @@ The public site and journal for Lune: Moon Rituals, live at https://lunerituals.
 - Astro 5, TypeScript strict, static output. Plain CSS with the design-system tokens in `src/styles/tokens.css`. Node 22.
 - `worker/index.js` (Cloudflare Worker) answers only `/api/waitlist` and saves emails to Workers KV `lune-site-waitlist`. No database.
 - Install `npm ci` · dev `npm run dev` · moon data `npm run data` · build `npm run build`.
-- Checks: `npm run build && npm run check:links && npm test` (Playwright in `tests/`; one file: `npx playwright test tests/site.spec.ts`; one test: `-g "moon compass"`). No ESLint or Prettier.
+- Checks: `npm run build && npm run check:links && npm test` (Playwright in `tests/`; one file: `npm test -- tests/site.spec.ts`; one test: `-g "moon compass"`). No ESLint or Prettier.
 - Deploy: Cloudflare Workers Builds on every merge to `main`. The "Workers Builds" check always fails on branches; that is expected.
 
 ## Done means

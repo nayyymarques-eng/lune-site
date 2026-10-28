@@ -49,8 +49,8 @@ jobs:
       - run: npm ci --ignore-scripts --no-audit --no-fund
       - run: npm run build
       - run: npm run check:links
-      - run: npx playwright install --with-deps chromium
-      - run: npx playwright test
+      - run: npm run test:browser
+      - run: npm test
       - name: Keep the pictures and the report
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

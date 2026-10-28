@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 
 // Every page Google sees: read from the built sitemap, so new pages are checked without editing the tests.
-export const PAGES = [...fs.readFileSync('dist/sitemap-0.xml', 'utf8').matchAll(/<loc>https?:\/\/[^/]+([^<]*)<\/loc>/g)].map((m) => m[1] || '/');
+export const PAGES = [...fs.readFileSync('dist/sitemap-0.xml', 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => new URL(m[1]).pathname);
 
 // Legal texts are the lawyer's words, so the copy rules below apply only to the marketing pages.
 export const LEGAL = ['/care', '/delete-account', '/privacy', '/support', '/terms'];

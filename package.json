@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:links": "node scripts/check-links.mjs",
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:browser": "playwright install --with-deps chromium"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.12",

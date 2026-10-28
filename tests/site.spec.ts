@@ -61,7 +61,8 @@ test('moon compass: a known chart', async ({ page }) => {
 // Full-page pictures of the main pages, kept with each CI run so a change can be looked at without opening the site.
 for (const path of ['/', '/moon', '/tonight', '/journal']) {
   test(`picture ${path}`, async ({ page }, info) => {
-    await page.goto(path);
+    const res = await page.goto(path);
+    expect(res?.status(), 'page answers').toBe(200);
     await page.waitForTimeout(1500);
     const name = `${info.project.name}${path === '/' ? '-home' : path.replace(/\//g, '-')}.png`;
     await page.screenshot({ path: `test-results/pictures/${name}`, fullPage: true });
