@@ -1,9 +1,9 @@
 ---
-title: "Moon water: what it is, where it comes from and how to make it with care"
-seoTitle: "Moon water: what it is and how to make it"
+title: "Moon water: what it is good for, how to make it and 6 ways to use it"
+seoTitle: "How to make moon water (and 6 ways to use it)"
 slug: moon-water
 date: 2026-10-28
-description: "How to make moon water step by step: which moon to choose, how to keep it clean, the old customs behind it and the gentle ways to use it once it is ready."
+description: "What moon water is good for, how to make it step by step under the full or new moon, 6 ways to use it and how to keep it safe to drink."
 phase: full_moon
 tags: [full-moon, practice, guide]
 keywords: [moon water, how to make moon water, moon water ritual, full moon water, new moon water, can you drink moon water, what is moon water, moon water uses]
@@ -24,7 +24,15 @@ faq:
 
 Moon water is one of the simplest things you can make by hand: a jar of water left out under the moon for one night, then kept for something that matters to you. It costs nothing. It asks for a clean jar, a window or a patch of sky, and a reason.
 
-This guide covers what moon water is, the older customs it grew from, how to make it safely step by step, and the gentle ways people use it once it is ready.
+This guide covers what moon water is good for, the older customs it grew from, how to make it safely step by step, and six ways to use it once it is ready.
+
+## What moon water is good for
+
+- **Carrying an intention through the month.** The jar holds the line you wrote, and every time you use it you come back to it.
+- **Marking a beginning or an ending.** New moon water for something you start, full moon water for something you finish or give thanks for.
+- **Slowing down at the edges of the day.** A morning sip or an evening wash becomes a small threshold instead of a rush.
+- **Tending your altar and your plants.** A bowl that is refreshed every moon keeps the altar alive; the rest goes to the soil.
+- **Keeping the moon without going outside.** A window sill is enough, even on a cloudy night.
 
 ## What moon water is
 
@@ -89,7 +97,7 @@ Place the jar where the moon's light can reach it, or where the sky is, if it is
 
 In the morning, bring the jar in before the full sun is on it. Wipe the outside, label it with the date and, if you like, a word from your line. Drinking water goes in the fridge; water for plants or washing goes somewhere cool and dark.
 
-## How to use moon water
+## 6 ways to use moon water
 
 The use is the second half of the practice. Each time you reach for the jar, you come back to the line you wrote.
 
