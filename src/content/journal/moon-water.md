@@ -39,8 +39,8 @@ That is the honest heart of moon water. It is a reminder you can hold.
 The name "moon water" is modern. It spread through contemporary earth-based practice and then online over the last two decades. The gesture underneath it is much older: leaving something out under the moon so that the night touches it.
 
 - **In parts of India**, on Sharad Purnima, the full moon of autumn, families leave a bowl of kheer, a sweet rice pudding, under the moonlight overnight and share it in the morning. The night is held to be the brightest of the year.
-- **In Japan**, at tsukimi, the autumn moon viewing, people set out offerings to the moon on a veranda or by a window: round rice dumplings and stems of pampas grass. The same gesture lives in China's Mid-Autumn Festival, where families share round mooncakes under the same full moon.
-- **In Brazil**, a *banho de lua*, a moon bath, means time spent sitting or lying in the moonlight, and many people pair the full moon with a bath of water and herbs such as rosemary.
+- **In Japan**, at tsukimi, the autumn moon viewing, people set out offerings to the moon on a veranda or by a window: round rice dumplings and stems of silver grass (susuki). The same gesture lives in China's Mid-Autumn Festival, where families share round mooncakes under the same full moon.
+- **In Brazil**, a *banho de lua*, a moon bath, means time spent sitting or lying in the moonlight, a custom Celly Campello sang about in 1960, and many people pair the full moon with a bath of water and herbs such as rosemary.
 
 Across all of them the shape is the same: something you prepare, something you leave in the moon's light, something you take back in the morning. Moon water is that shape in its simplest form.
 
@@ -59,7 +59,7 @@ Any phase can be the night, as long as you choose it. If you want to know where 
 - **A place where the jar can stand all night**: a window sill facing the sky, a balcony, a garden table. Indoors behind glass is fine.
 - **A page and a pen**, to name what the water is for.
 - **One or two things for the altar beside the jar**, if you like: a stone you keep, a sprig of rosemary or lavender, a photograph, a shell, something that belongs to the reason. They sit next to the jar, not inside it.
-- A candle or lamp for the setting-out, on a steady plate, never left burning when you go to bed.
+- A candle or lamp indoors for the setting-out, on a steady plate, never left burning when you go to bed.
 
 ## How to make moon water, step by step
 
@@ -97,7 +97,7 @@ The use is the second half of the practice. Each time you reach for the jar, you
 - **Water a plant.** Give it to a plant you are tending, one that grew this year or one you are trying to bring back. It is one of the oldest ways to say "keep growing".
 - **Wash your hands or face.** Before you write, before a conversation you have been circling, before sleep. A small wash marks a threshold.
 - **A bowl on the altar.** Keep a small bowl of it beside your other altar things through the month, and refresh it at the next moon.
-- **A few drops in a bath.** Add it to a warm bath with herbs you love, rosemary, lavender or chamomile, as a way to close the day.
+- **A few drops in a bath.** Add it to a warm bath with herbs you love, rosemary, lavender or chamomile, or pour a bowl of it slowly from the neck down at the end of a shower, as a way to close the day.
 - **Give it back.** At the next moon, pour what is left into the soil and make new water. Nothing is wasted; it simply returns.
 
 ## Keeping it safe
@@ -115,7 +115,7 @@ Moon water is gentle, and a few plain rules keep it that way.
 Moon water does not change the water. What research does suggest is that the gestures around it can change how a moment feels.
 
 - **Rituals calm the body before something that matters.** People who did a short sequence of deliberate gestures before a stressful task felt less anxious and performed better than people who did not, across several experiments (Brooks et al., 2016). The gestures themselves were simple; what mattered was doing them as a ritual.
-- **A ritual gives a moment a beginning and an end.** Reviews of ritual research suggest that repeated, deliberate actions help people regulate their feelings and mark a change from one state to another (Hobson et al., 2018).
+- **A ritual gives a moment a beginning and an end.** A review of ritual research suggests that repeated, deliberate actions help people regulate their feelings and mark a change from one state to another (Hobson et al., 2018).
 - **Looking up at something vast.** Older adults who took weekly walks paying attention to the wonder around them reported more joy and more connection than those on ordinary walks (Sturm et al., 2022). Standing at a window to set a jar under the moon is a small, nightly version of that attention.
 
 Studies suggest; they do not promise. The value of moon water is the night you keep and the line you carry into the morning.
