@@ -35,7 +35,7 @@ jobs:
         run: npm audit --audit-level=high || echo "::warning::npm audit found high or critical advisories"
 
   site:
-    name: Site checks
+    name: site checks
     # Every page loads with no script errors and no sideways scroll, the copy rules hold, the waitlist form and the
     # moon compass work, no internal link is broken. Full-page pictures of the main pages are kept with each run.
     runs-on: ubuntu-24.04

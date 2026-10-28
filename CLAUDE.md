@@ -14,7 +14,7 @@ The public site and journal for Lune: Moon Rituals, live at https://lunerituals.
 
 1. `npm run build`, `npm run check:links` and `npm test` pass.
 2. You looked at full-page screenshots at 1440 and 390 of every page you changed.
-3. Branch + PR, merged only with "Build and secrets" and "Site checks" green. Never push to `main`, never `--no-verify`, never skip or weaken a test to get green.
+3. Branch + PR, merged only with "Build and secrets" and "site checks" green (the names the main ruleset requires). Never push to `main`, never `--no-verify`, never skip or weaken a test to get green.
 
 ## Rules
 

@@ -59,7 +59,7 @@ draft: false
 GitHub Actions runs two checks, both must be green before a merge:
 
 - **Build and secrets:** gitleaks, `npm ci`, the worker parses, `npm run build`, `npm audit` (shown).
-- **Site checks:** `npm run check:links` (no broken internal link) and `npm test` (Playwright, Chromium, desktop 1440 and phone 390). Every page in the sitemap answers, has one `h1` and a footer, has no script error and no sideways scroll, and keeps the copy rules (no price, no "15 minutes", no "candle and water", no measuring belief, no religion; legal pages excepted). The waitlist form and the moon compass are run end to end with the network mocked. Full-page pictures of the home, /moon, /tonight and /journal are kept as the `site-pictures` artifact of each run (screenshots of any failure too).
+- **site checks:** `npm run check:links` (no broken internal link) and `npm test` (Playwright, Chromium, desktop 1440 and phone 390). Every page in the sitemap answers, has one `h1` and a footer, has no script error and no sideways scroll, and keeps the copy rules (no price, no "15 minutes", no "candle and water", no measuring belief, no religion; legal pages excepted). The waitlist form and the moon compass are run end to end with the network mocked. Full-page pictures of the home, /moon, /tonight and /journal are kept as the `site-pictures` artifact of each run (screenshots of any failure too).
 
 Locally: `npm run build && npm run check:links && npm test`. A new page is checked automatically once it is in the sitemap. A new copy rule goes in `tests/pages.ts`.
 
