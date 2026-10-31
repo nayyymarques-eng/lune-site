@@ -14,7 +14,12 @@ async function resend(env, path, body) {
     body: JSON.stringify(body),
   });
   // 409 = the contact already exists, which is fine.
-  if (!res.ok && res.status !== 409) throw new Error(`resend ${res.status}`);
+  if (res.ok || res.status === 409) return;
+  // Log only the route, status and Resend's error name and message, never the visitor's email (Workers Observability).
+  let err = '';
+  try { const b = await res.json(); err = `${b.name || ''} ${b.message || ''}`.replace(/\S+@\S+/g, '[email]').slice(0, 200); } catch {}
+  console.error(`resend ${path} ${res.status} ${err}`);
+  throw new Error(`resend ${res.status}`);
 }
 
 async function waitlist(request, env) {
@@ -49,15 +54,23 @@ async function waitlist(request, env) {
     } catch {}
   }
   if (env.RESEND_API_KEY) {
-    try {
-      if (env.RESEND_SEGMENT_ID) await resend(env, '/contacts', { email, unsubscribed: false, segments: [{ id: env.RESEND_SEGMENT_ID }] });
-      if (env.WAITLIST_TO) await resend(env, '/emails', {
-        from: env.EMAIL_FROM || 'Lune <onboarding@resend.dev>', to: env.WAITLIST_TO, subject: 'New Lune waitlist sign-up',
-        text: `Email: ${email}\nSign: ${sign || '-'}\nFrom: ${source || '-'} ${page}`,
-      });
-      saved = true;
-    } catch {}
-  }
+    // Independent calls: a failed contact still sends the note, and the other way round.
+    if (env.RESEND_SEGMENT_ID) {
+      try {
+        await resend(env, '/contacts', { email, unsubscribed: false, segments: [{ id: env.RESEND_SEGMENT_ID }] });
+        saved = true;
+      } catch {}
+    }
+    if (env.WAITLIST_TO) {
+      try {
+        await resend(env, '/emails', {
+          from: env.EMAIL_FROM || 'Lune <onboarding@resend.dev>', to: [env.WAITLIST_TO], subject: 'New Lune waitlist sign-up',
+          text: `Email: ${email}\nSign: ${sign || '-'}\nFrom: ${source || '-'} ${page}`,
+        });
+        saved = true;
+      } catch {}
+    }
+  } else console.error('resend skipped: RESEND_API_KEY not set');
   if (!saved) return json(503, { ok: false });
   return json(200, { ok: true });
 }
