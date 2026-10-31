@@ -1,6 +1,6 @@
 // Lune site Worker (Cloudflare Workers, same setup as mesa-juridica): serves dist/ and one form route.
 // POST /api/waitlist {email, sign, source, page, site}: always stores the email in KV (WAITLIST, key = email),
-// then, when RESEND_API_KEY is set, adds it to a Resend audience (RESEND_AUDIENCE_ID) and sends a note to WAITLIST_TO.
+// then, when RESEND_API_KEY is set, creates a Resend contact in the segment RESEND_SEGMENT_ID and sends a note to WAITLIST_TO.
 // Resend is best effort: once the email is in KV the visitor sees success.
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,190}\.[^\s@]{2,}$/;
 const MAX_BODY = 2048;
@@ -13,7 +13,7 @@ async function resend(env, path, body) {
     headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
     body: JSON.stringify(body),
   });
-  // 409 = already in the audience, which is fine.
+  // 409 = the contact already exists, which is fine.
   if (!res.ok && res.status !== 409) throw new Error(`resend ${res.status}`);
 }
 
@@ -50,7 +50,7 @@ async function waitlist(request, env) {
   }
   if (env.RESEND_API_KEY) {
     try {
-      if (env.RESEND_AUDIENCE_ID) await resend(env, `/audiences/${env.RESEND_AUDIENCE_ID}/contacts`, { email, unsubscribed: false });
+      if (env.RESEND_SEGMENT_ID) await resend(env, '/contacts', { email, unsubscribed: false, segments: [{ id: env.RESEND_SEGMENT_ID }] });
       if (env.WAITLIST_TO) await resend(env, '/emails', {
         from: env.EMAIL_FROM || 'Lune <onboarding@resend.dev>', to: env.WAITLIST_TO, subject: 'New Lune waitlist sign-up',
         text: `Email: ${email}\nSign: ${sign || '-'}\nFrom: ${source || '-'} ${page}`,
