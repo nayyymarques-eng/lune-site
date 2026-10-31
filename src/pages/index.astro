@@ -8,7 +8,7 @@ import Signup from '../components/Signup.astro';
 import moon from '../data/moon.json';
 import R from '../data/readings.json';
 import PhaseIcon from '../components/PhaseIcon.astro';
-import { cap, fmtDate, utcOf, cycleAt } from '../lib/moon';
+import { cap, fmtDate, utcOf } from '../lib/moon';
 import { CTA } from '../config';
 
 const now = Date.now();
@@ -32,13 +32,9 @@ const schema = [
 ---
 <Base glow={false} description="A guide for the spirituality you are growing into: a ritual for every moon, how to do it, where it comes from and why it matters. Be the first to download Lune." schema={schema}>
   <section class="hero">
-    <Sky />
+    <Sky float />
     <div class="hleft">
-      <div class="hmoonw">
-        <canvas class="hmoon" data-light="moon" data-size="380" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
-        <script is:inline>document.currentScript.previousElementSibling.dataset.phase = (((Date.now() - 947182440000) / 2551442877) % 1).toFixed(3);</script>
-        <div class="hmark"><Wordmark height={40} /></div>
-      </div>
+      <div class="hmark" data-float-center><Wordmark variant="full" height={300} /></div>
     </div>
     <div class="glass hcard hcol" id="start" data-solid><span id="waitlist" aria-hidden="true"></span>
       <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
@@ -278,13 +274,12 @@ const schema = [
 
 <style>
   section { position: relative; }
-  /* Hero (Nayara 26 Oct): desktop = moon and logo on the sky at left, full-height glass panel at right;
-     mobile = moon with the logo inside it, the card rising over its lower half. */
+  /* Hero (Nayara 26 Oct, logo 31 Oct): desktop = the full logo floating in the moving sky at left, full-height glass panel at right;
+     mobile = the logo above, the card rising just under it. */
   .hero { position: relative; min-height: min(100svh - 65px, 920px); display: grid; grid-template-columns: 1fr minmax(460px, 44%); align-items: stretch; padding: 0; overflow: hidden; }
   .hleft { position: relative; z-index: 1; display: grid; place-items: center; padding: 64px 24px; }
-  .hmoonw { position: relative; display: grid; justify-items: center; gap: 24px; }
-  .hmoon { width: 380px; height: 380px; display: block; }
   .hmark { display: grid; justify-items: center; }
+  .hmark :global(img) { filter: drop-shadow(0 0 28px rgb(232 222 255 / .28)); }
   .hcard { position: relative; z-index: 2; box-sizing: border-box; min-width: 0; display: grid; gap: 20px; align-content: center; justify-items: start; padding: 72px clamp(32px, 5vw, 72px); border: 0; border-radius: 0; overflow: hidden;
     /* Tinted sheet that melts into the next section at the bottom; a hairline on its left edge fades the same way. */
     background: linear-gradient(to bottom, rgb(22 22 28 / .9), rgb(16 16 20 / .9) 72%, rgb(0 0 0 / 0)); box-shadow: none;
@@ -429,10 +424,9 @@ const schema = [
     .pbtn { height: 32px; font-size: 9px; }
     .hero { grid-template-columns: 1fr; min-height: 0; padding: 32px 0 64px; }
     .hleft { padding: 0; }
-    .hmoon { width: min(380px, 100vw - 16px); height: min(380px, 100vw - 16px); }
-    .hmark { position: absolute; inset: 0; place-items: center; align-content: center; }
-    .hmark :global(img) { height: 30px !important; }
-    .hcard { width: min(640px, 100% - 32px); margin: -110px auto 0; padding: 32px 20px 24px; border: 1px solid var(--glass-edge); border-radius: 16px; background: rgb(20 20 26 / .86); box-shadow: var(--glass-highlight); }
+    .hmark { padding: 24px 0 40px; }
+    .hmark :global(img) { height: 200px !important; }
+    .hcard { width: min(640px, 100% - 32px); margin: 0 auto; padding: 32px 20px 24px; border: 1px solid var(--glass-edge); border-radius: 16px; background: rgb(20 20 26 / .86); box-shadow: var(--glass-highlight); }
     .hcard::before { display: none; }
     .hcard { justify-items: center; text-align: center; }
     .hcard .hform { width: 100%; }
