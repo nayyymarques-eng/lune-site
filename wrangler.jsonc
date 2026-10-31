@@ -1,5 +1,5 @@
 // Cloudflare Workers Builds: repo root, build command "npm run build", deploy "npx wrangler deploy", branch main.
-// Secrets (dashboard, never here): RESEND_API_KEY. Waitlist emails are always kept in KV "lune-site-waitlist". Vars below are filled when the domain exists.
+// Secrets (dashboard, never here): RESEND_API_KEY. Waitlist emails are always kept in KV "lune-site-waitlist". Vars below are not secret: segment of the waitlist, sender and where sign-up notes go.
 {
   "name": "lune-site",
   "compatibility_date": "2026-10-08",
@@ -16,8 +16,8 @@
   "kv_namespaces": [{ "binding": "WAITLIST", "id": "4a2cade43f054a8e84d3766c92b388d4" }],
   "ratelimits": [{ "name": "WAITLIST_RATE_LIMIT", "namespace_id": "1001", "simple": { "limit": 5, "period": 60 } }],
   "vars": {
-    "RESEND_SEGMENT_ID": "",
-    "WAITLIST_TO": "",
-    "EMAIL_FROM": ""
+    "RESEND_SEGMENT_ID": "a9aeb82d-7d6c-473d-8aef-c362888c3198",
+    "WAITLIST_TO": "hello@nayaramarques.com",
+    "EMAIL_FROM": "Lune <hello@mail.lunerituals.app>"
   }
 }
