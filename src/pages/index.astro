@@ -171,9 +171,6 @@ const schema = [
         <p class="label">Coming up</p>
         <h2 class="h-sec">Plan two moons ahead</h2>
       </div>
-      <div class="mstrip glass" data-strip data-keys={JSON.stringify(big.map((m: any) => ({ t: utcOf(m.utc), k: m.kind })))} aria-label="The moon, night by night, for the next eight weeks">
-        <div class="mdays"></div>
-      </div>
       <div class="cgrid">
         <div class="corbs" aria-hidden="true"><i></i><i></i><i></i></div>
         {big.map((m: any, i: number) => (
@@ -248,29 +245,6 @@ const schema = [
     show();
     if (reduce) return;
     setInterval(() => { step.classList.add('out'); setTimeout(() => { i = (i + 1) % STEPS.length; show(); }, 600); }, 5000);
-  });
-</script>
-
-<script>
-  // Moon strip: one phase per night for eight weeks, drawn in the browser so it is always today's (same paths as PhaseIcon).
-  const SYN = 2551442877, NEW0 = 947182440000, DAY = 864e5;
-  const icon = (p: number, r = 9) => {
-    const c = 10, rx = Math.abs(Math.cos(2 * Math.PI * p)) * r, wax = p < 0.5, far = wax ? p > 0.25 : p < 0.75;
-    if (p < 0.02 || p > 0.98) return `<circle cx="10" cy="10" r="${r}" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1"/>`;
-    if (Math.abs(p - 0.5) < 0.02) return `<circle cx="10" cy="10" r="${r}" fill="rgba(255,255,255,.9)"/>`;
-    return `<circle cx="10" cy="10" r="${r}" fill="rgba(255,255,255,.14)"/><path d="M${c} ${c - r}A${r} ${r} 0 0 ${wax ? 1 : 0} ${c} ${c + r}A${rx.toFixed(2)} ${r} 0 0 ${wax === far ? 1 : 0} ${c} ${c - r}Z" fill="rgba(255,255,255,.9)"/>`;
-  };
-  document.querySelectorAll<HTMLElement>('[data-strip]').forEach((el) => {
-    const keys: { t: number; k: string }[] = JSON.parse(el.dataset.keys || '[]');
-    const start = new Date(); start.setHours(12, 0, 0, 0);
-    let html = '';
-    for (let i = 0; i < 56; i++) {
-      const d = new Date(start.getTime() + i * DAY), p = (((d.getTime() - NEW0) / SYN) % 1 + 1) % 1;
-      const key = keys.find((x) => new Date(x.t).toDateString() === d.toDateString());
-      const tag = i === 0 ? 'Today' : key ? (key.k === 'new_moon' ? 'New' : 'Full') : d.getDate() === 1 ? d.toLocaleDateString('en-US', { month: 'short' }) : '';
-      html += `<div class="mday${key ? ' key' : ''}${i === 0 ? ' today' : ''}${d.getDate() === 1 && i ? ' mon' : ''}" title="${d.toDateString()}"><i>${tag}</i><svg width="22" height="22" viewBox="0 0 20 20" aria-hidden="true">${icon(key ? (key.k === 'new_moon' ? 0 : 0.5) : p)}</svg><b>${d.getDate()}</b></div>`;
-    }
-    el.querySelector('.mdays')!.innerHTML = html;
   });
 </script>
 
@@ -370,18 +344,6 @@ const schema = [
   .corbs i:nth-child(2) { left: 40%; top: 30%; background: rgb(232 201 140 / .35); }
   .corbs i:nth-child(3) { right: 0; top: 0; background: rgb(143 184 242 / .45); }
   .mcard { position: relative; z-index: 1; }
-  /* the next eight weeks, one moon per night, like the app calendar */
-  .mstrip { position: relative; margin-bottom: 16px; padding: 16px 0; overflow: hidden; }
-  .mdays { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 0 24px; scroll-snap-type: x proximity;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 20px, #000 calc(100% - 20px), transparent); mask-image: linear-gradient(90deg, transparent, #000 20px, #000 calc(100% - 20px), transparent); }
-  .mdays::-webkit-scrollbar { display: none; }
-  .mdays :global(.mday) { flex: none; width: 42px; display: grid; justify-items: center; gap: 6px; padding: 8px 0; border-radius: 12px; scroll-snap-align: start; }
-  .mdays :global(.mday b) { font: var(--text-label); font-size: 10px; font-weight: 400; color: var(--muted-foreground); }
-  .mdays :global(.mday svg) { display: block; }
-  .mdays :global(.mday.key) { background: var(--glass-selected); box-shadow: inset 0 0 0 1px var(--glass-edge); }
-  .mdays :global(.mday.key b), .mdays :global(.mday.today b) { color: var(--foreground); }
-  .mdays :global(.mday.mon) { margin-left: 10px; }
-  .mdays :global(.mday i) { font: var(--text-label); font-size: 8px; font-style: normal; letter-spacing: .04em; white-space: nowrap; text-transform: uppercase; color: var(--muted-foreground); height: 10px; }
   .mcard { padding: 24px; display: grid; gap: 16px; text-decoration: none; align-content: start; }
   .mcard p { margin: 0; font: var(--text-body); }
   .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
