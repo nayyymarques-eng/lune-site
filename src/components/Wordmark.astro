@@ -1,4 +1,6 @@
 ---
-const { height = 22 } = Astro.props;
+// Nayara's logo (31 Oct): "full" = mark above LUNE; "letters" = LUNE only, where horizontal space is tight; "mark" = the moon alone.
+const { height = 16, variant = 'letters' } = Astro.props;
+const src = { full: '/brand/lune-logo.svg', letters: '/brand/lune-letters.svg', mark: '/brand/lune-mark.svg' }[variant];
 ---
-<img src="/brand/lune-white.svg" alt="Lune" height={height} style={`height:${height}px;width:auto`} />
+<img src={src} alt="Lune" height={height} style={`height:${height}px;width:auto`} />
