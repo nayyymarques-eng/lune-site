@@ -37,7 +37,7 @@ const schema = [
       <div class="hmoonw">
         <canvas class="hmoon" data-light="moon" data-size="380" data-phase={cycleAt(moon as any).toFixed(3)} aria-hidden="true"></canvas>
         <script is:inline>document.currentScript.previousElementSibling.dataset.phase = (((Date.now() - 947182440000) / 2551442877) % 1).toFixed(3);</script>
-        <div class="hmark"><Wordmark height={72} /></div>
+        <div class="hmark"><Wordmark height={40} /></div>
       </div>
     </div>
     <div class="glass hcard hcol" id="start" data-solid><span id="waitlist" aria-hidden="true"></span>
@@ -431,7 +431,7 @@ const schema = [
     .hleft { padding: 0; }
     .hmoon { width: min(380px, 100vw - 16px); height: min(380px, 100vw - 16px); }
     .hmark { position: absolute; inset: 0; place-items: center; align-content: center; }
-    .hmark :global(img) { height: 56px !important; }
+    .hmark :global(img) { height: 30px !important; }
     .hcard { width: min(640px, 100% - 32px); margin: -110px auto 0; padding: 32px 20px 24px; border: 1px solid var(--glass-edge); border-radius: 16px; background: rgb(20 20 26 / .86); box-shadow: var(--glass-highlight); }
     .hcard::before { display: none; }
     .hcard { justify-items: center; text-align: center; }
