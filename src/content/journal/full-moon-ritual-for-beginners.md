@@ -60,7 +60,7 @@ Nothing you need to buy. Choose a few things that already mean something to you.
 - **A light**: a candle, an oil lamp or a small lamp you only use for this. Keep any flame on a steady plate, away from fabric, and never leave it alone.
 - **Something that holds**: a stone you picked up somewhere, a cord or a ribbon you can tie, a sprig of rosemary or bay from the kitchen.
 - **Something that clears**: a small bowl of water, or a pinch of salt on a saucer. Salt and water have been used to mark a clean start in many homes and many faiths.
-- **Something that is yours**: a photo, a figure of your faith, a shell, a letter. This is what turns a table into an altar.
+- **Something that is yours**: a photo of someone you love, a shell, a letter. This is what turns a table into an altar.
 
 None of this is required. A window and a page are enough. The objects are there because the hand remembers what it has touched.
 
