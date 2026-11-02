@@ -31,7 +31,7 @@ const schema = [
   { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
 ];
 ---
-<Base glow={false} description="A guide to your first spiritual moments: a ritual for every moon, step by step, with what the moon means and what science sees in each gesture. Be the first to download Lune." schema={schema}>
+<Base glow={false} description="A way to connect with something bigger: a ritual for every moon, many ways to believe, step by step, with what the moon means and what science sees in each gesture. Be the first to download Lune." schema={schema}>
   <section class="hero">
     <Sky float />
     <div class="hleft">
@@ -42,13 +42,13 @@ const schema = [
     </div>
     <div class="glass hcard hcol" id="start" data-solid><span id="waitlist" aria-hidden="true"></span>
       <h1 class="h-hero">{"A ritual for every moon".split(" ").map((w, i) => <><span class="w" style={`--i:${i}`}>{w}</span>{" "}</>)}</h1>
-      <p class="lead">There is something bigger than us, beyond what we can explain. Lune guides you to meet it with a ritual for every moon, step by step, even if you have never had a practice.</p>
+      <p class="lead">There is something bigger than us, beyond what we can explain. Lune guides you to meet it with a ritual for every moon. There are many ways to believe, and each one is whole here.</p>
       <div class="hform"><Signup source="hero" /></div>
       <Stores where="hero" />
       <a class="more" href="/tonight" data-cta="hero-tonight">Or see tonight's moon first <span aria-hidden="true">→</span></a>
       <ul class="proof">
         <li><span class="spark"></span>A ritual for every moon through 2030</li>
-        <li><span class="spark"></span>Guided step by step, from your very first</li>
+        <li><span class="spark"></span>Many ways to believe, each one whole</li>
         <li><span class="spark"></span>What science says, with its sources</li>
       </ul>
     </div>
