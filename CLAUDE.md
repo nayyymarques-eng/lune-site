@@ -21,7 +21,7 @@ The public site and journal for Lune: Moon Rituals, live at https://lunerituals.
 - The hero layout is final: do not touch it.
 - Style only from the app (glass, lights, colours), always dark. Lights come from the single renderer (`public/lune-light.js`, `canvas[data-light]`). Astro CSS is scoped: elements made by JS need `:global()`.
 - The site sells only the download (email waitlist). No prices anywhere.
-- Copy (English): practice first, astrology as reflection. Never "15 minutes" or "quick". Many ways to believe, each one full; never measure belief. Never mention religion. Never reduce the altar to "candle and water". Never promise results. Kinship rule for traditions; no Jewish traditions; sources for every study.
+- Copy (English): astrology is the base of the reading; traditions and science are the tools that build the ritual; the moon gives it strength. Never "15 minutes" or "quick". Many ways to believe, each one full; never measure belief. Never mention religion. Never reduce the altar to "candle and water". Never promise results. Kinship rule for traditions; no Jewish traditions; sources for every study.
 - Journal: full articles on search-validated topics; never one line per sign. See README, "Writing a journal post".
 - Secrets only in the Cloudflare dashboard (e.g. `RESEND_API_KEY`). Non-secret vars go in `wrangler.jsonc` (deploy overwrites dashboard vars).
 - Privacy: moon compass birth data stays in the browser; only the city name goes to Open-Meteo; analytics never gets birth data.
