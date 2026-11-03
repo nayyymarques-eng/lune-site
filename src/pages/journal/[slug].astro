@@ -17,7 +17,7 @@ const schema = [
   ...(faq.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
 ];
 ---
-<Base title={p.data.seoTitle ?? p.data.title} description={p.data.description} type="article" image={p.data.cover} schema={schema}>
+<Base ctaHref="#join" title={p.data.seoTitle ?? p.data.title} description={p.data.description} type="article" image={p.data.cover} schema={schema}>
   <article class="narrow art">
     <p class="label"><a href="/journal">Journal</a> · {p.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</p>
     <h1 class="h-sec">{p.data.title}</h1>
@@ -30,6 +30,16 @@ const schema = [
       </nav>
     )}
     <div class="prose"><Content /></div>
+    <!-- Mid-article invitation (Nayara 3 Nov): moved by the script below to just before the middle section of the guide; without JS it stays here, after the article. -->
+    <aside class="cta glass mid" id="mid-cta" aria-label="Get early access">
+      <h2 class="h-card">A ritual for every moon, step by step</h2>
+      <p class="muted">Lune guides you through each one, with what the moon means and what science sees in each gesture.</p>
+      <Signup source={`post-mid-${p.id}`} />
+    </aside>
+    <script is:inline>
+      (() => { const c = document.getElementById('mid-cta'), h = [...document.querySelectorAll('.art > div.prose > h2')];
+        if (c && h.length >= 3) h[Math.floor(h.length / 2)].before(c); })();
+    </script>
     {p.data.phase && (
       <a class="chart glass" href="/tonight">
         <span class="label">Where it falls for you</span>
@@ -43,7 +53,7 @@ const schema = [
         {faq.map((f) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
       </section>
     )}
-    <div class="cta glass">
+    <div class="cta glass" id="join">
       <h2 class="h-card">{p.data.sign ? `Is ${cap(p.data.sign)} your sign? Tonight's practice is waiting` : 'Tonight\'s practice is waiting'}</h2>
       <Signup source={`post-${p.id}`} />
     </div>
@@ -55,6 +65,9 @@ const schema = [
   .lead { margin: 0; }
   .cover { border-radius: var(--radius-card); }
   .cta { padding: 24px; display: grid; gap: 16px; margin-top: 40px; }
+  .cta.mid { margin: 24px 0 32px; }
+  .cta.mid p { margin: 0; }
+  .prose .cta.mid h2 { margin: 0; }
   .toc { padding: 20px 24px; display: grid; gap: 8px; }
   .toc ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
   .toc a { color: var(--muted-foreground); text-decoration: none; }

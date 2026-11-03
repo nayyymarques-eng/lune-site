@@ -3,7 +3,7 @@ import '../styles/site.css';
 import Wordmark from '../components/Wordmark.astro';
 import Stores from '../components/Stores.astro';
 import { CTA, POSTHOG_KEY, LIVE, APP_STORE_URL } from '../config';
-const { glow = true, title, description = 'A ritual for every moon: how to do it, where it comes from and why it matters.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
+const { glow = true, title, description = 'A ritual for every moon: how to do it, where it comes from and why it matters.', image = '/brand/og.jpg', type = 'website', schema, ctaHref = '/#start' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for every moon';
 ---
@@ -88,7 +88,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for ev
       const upd = () => t.classList.toggle('moon', h.getBoundingClientRect().bottom > innerHeight * 0.35);
       upd(); addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); })();
   </script>
-  <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
+  <a class="btn primary sticky-cta" href={ctaHref} data-cta="sticky">{CTA}</a>
   <script is:inline>
     (() => { const b = document.querySelector('.sticky-cta'), f = document.querySelectorAll('form, .hcol, .stores:not(.sm)'); if (!b || !('IntersectionObserver' in window) || !f.length) return;
       const seen = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); b.classList.toggle('hide', seen.size > 0); });
