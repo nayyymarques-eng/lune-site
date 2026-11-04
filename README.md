@@ -70,7 +70,7 @@ Locally: `npm run build && npm run check:links && npm test`. A new page is check
 | `PUBLIC_APP_STORE_URL` | When set, every CTA becomes "Start your 15-day free trial" and goes to the App Store. Until then CTAs collect emails for early access |
 | `PUBLIC_PLAY_STORE_URL` | Adds the Google Play button |
 | `PUBLIC_WAITLIST_ENDPOINT` | Where the email form POSTs `{email, sign, source, page}` (a Supabase edge function or a newsletter tool). **Not set yet: emails are not stored until it is** |
-| `PUBLIC_POSTHOG_KEY` | Turns on PostHog. Events: `cta_clicked`, `sign_picked`, `waitlist_joined` |
+| `PUBLIC_POSTHOG_KEY` | PostHog project key. Defaults to the Lune project (323551, EU) in `src/config.ts`; set it to an empty string to turn PostHog off. Pageviews plus `cta_clicked`, `waitlist_joined`, `compass_done`. No session recording, so moon compass birth data never leaves the browser |
 | `SITE_URL` | The real domain (canonical links, sitemap, RSS) |
 
 Deploy: Cloudflare Workers Builds, project `lune-site`, auto-deploys on every push to `main`. Repo root, build `npm run build`, deploy `npx wrangler deploy` (wrangler.jsonc serves `dist/` and runs worker/index.js for `/api/waitlist`). Domain lunerituals.app. Secret `RESEND_API_KEY` lives only in the Cloudflare dashboard.
