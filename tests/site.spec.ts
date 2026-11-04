@@ -69,6 +69,14 @@ for (const path of ['/', '/moon', '/tonight', '/journal']) {
   });
 }
 
+test('journal: no post shows a date in the future (Nayara 4 Nov)', async ({ page }) => {
+  await page.goto('/journal');
+  const labels = await page.locator('main .label').allTextContents();
+  const dates = labels.map((t) => Date.parse(`${t.trim()} UTC`)).filter((d) => !Number.isNaN(d));
+  expect(dates.length).toBeGreaterThan(0);
+  for (const d of dates) expect(d).toBeLessThanOrEqual(Date.now());
+});
+
 test('journal post: email invitation in the middle and at the end', async ({ page }) => {
   await page.route('**/api/waitlist', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
   await page.goto('/journal/moon-water');
