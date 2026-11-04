@@ -2,7 +2,7 @@
 title: "Full moon in Gemini, 24 November 2026: the Beaver supermoon, its meaning and a ritual"
 seoTitle: "Full moon in Gemini 2026: the Beaver supermoon"
 slug: full-supermoon-in-gemini-2026
-date: 2026-11-16
+date: 2026-11-04
 description: "The 24 November 2026 full moon in Gemini is a supermoon and the Beaver Moon: what Gemini means, why it looks bigger, and a full moon ritual."
 sign: gemini
 phase: full_moon

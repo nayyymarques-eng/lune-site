@@ -33,7 +33,7 @@ Add one markdown file to `src/content/journal/`, kebab-case name = URL:
 ---
 title: "Full moon in Gemini, 24 November 2026: meaning and a ritual"
 description: "About 150 characters for Google and the post card."
-date: 2026-11-16
+date: 2026-11-04     # the day it goes live: never a future date (the build fails)
 sign: gemini         # optional; the closing CTA then speaks to that sign
 phase: full_moon     # optional; adds the "find it in your chart" link to the moon compass
 tags: [full-moon]
@@ -52,6 +52,7 @@ draft: false
 - **Depth over breadth.** A guide runs about 1,500 words: what it means, where it comes from (traditions, the sky), when, what you need, the ritual step by step, why it helps (sourced studies), and a FAQ. Four or more sections get a contents list automatically.
 - **Never one line per sign.** A generalist post does not split into twelve short sign sections; nobody reads a whole post for one line about their sign. Cover the topic for everyone, and send people to their own reading: the moon compass (`/tonight`) for their house, `/moon/[sign]` for their sign. A sign gets its own post only when it is the whole topic (for example "new moon in Scorpio").
 - **Astrology is the base of the reading; traditions and science are the tools that build the ritual; the moon gives it strength** (Nayara, 3 Nov 2026). The ritual uses many altar items, never only a candle and water. Meaning over speed: never sell minutes or "quick". Many ways to believe, each one full; never measure belief, never mention religion.
+- **Never a date in the future** (Nayara, 4 Nov 2026). `date` is the day the post goes live. Set it on the day of the merge; a post about a coming moon is still dated today. The build refuses a future date.
 - English, never promise results, kinship rule for traditions, no Jewish traditions, safety notes for any flame, sources for every study.
 
 ## Checks (every pull request)
