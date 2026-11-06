@@ -2,7 +2,7 @@
 title: "Cord cutting ritual: what it is, when to do it and how, step by step"
 seoTitle: "Cord cutting ritual: meaning and how to do it"
 slug: cord-cutting-ritual
-date: 2026-11-04
+date: 2026-11-06
 description: "What a cord cutting ritual is, when it helps, what you need and a gentle waning moon practice to let go of what you carry, step by step."
 phase: waning_crescent
 tags: [waning-moon, practice, guide]
