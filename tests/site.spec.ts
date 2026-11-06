@@ -68,3 +68,22 @@ for (const path of ['/', '/moon', '/tonight', '/journal']) {
     await page.screenshot({ path: `test-results/pictures/${name}`, fullPage: true });
   });
 }
+
+test('journal: no post shows a date in the future (Nayara 4 Nov)', async ({ page }) => {
+  await page.goto('/journal');
+  const labels = await page.locator('main .label').allTextContents();
+  const dates = labels.map((t) => Date.parse(`${t.trim()} UTC`)).filter((d) => !Number.isNaN(d));
+  expect(dates.length).toBeGreaterThan(0);
+  for (const d of dates) expect(d).toBeLessThanOrEqual(Date.now());
+});
+
+test('journal post: email invitation in the middle and at the end', async ({ page }) => {
+  await page.route('**/api/waitlist', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
+  await page.goto('/journal/moon-water');
+  const mid = page.locator('.prose > #mid-cta');
+  await expect(mid, 'mid invitation sits inside the article').toHaveCount(1);
+  await expect(page.locator('#join form.signup'), 'invitation at the end').toHaveCount(1);
+  await mid.locator('input[type=email]').fill('test@example.com');
+  await mid.locator('button[type=submit]').click();
+  await expect(mid.locator('.ok')).toBeVisible();
+});
