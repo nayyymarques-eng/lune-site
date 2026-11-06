@@ -2,7 +2,7 @@
 title: "Citrine meaning: symbolism, history and how to use it in a ritual"
 seoTitle: "Citrine meaning: symbolism, history and how to use it"
 slug: citrine-meaning
-date: 2026-11-02
+date: 2026-11-06
 description: "What citrine means, where the yellow quartz comes from, why most of it began as amethyst, and a new moon ritual with citrine, step by step."
 phase: new_moon
 tags: [altar, crystals, guide]
