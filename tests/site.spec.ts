@@ -77,6 +77,13 @@ test('journal: no post shows a date in the future (Nayara 4 Nov)', async ({ page
   for (const d of dates) expect(d).toBeLessThanOrEqual(Date.now());
 });
 
+test('journal: each post has its own day (Nayara 6 Nov)', async ({ page }) => {
+  await page.goto('/journal');
+  const labels = (await page.locator('main .label').allTextContents()).map((t) => t.trim()).filter((t) => !Number.isNaN(Date.parse(`${t} UTC`)));
+  expect(labels.length).toBeGreaterThan(0);
+  expect(new Set(labels).size, `dates repeat: ${labels.join(', ')}`).toBe(labels.length);
+});
+
 test('journal post: email invitation in the middle and at the end', async ({ page }) => {
   await page.route('**/api/waitlist', (r) => r.fulfill({ status: 200, contentType: 'application/json', body: '{"ok":true}' }));
   await page.goto('/journal/moon-water');

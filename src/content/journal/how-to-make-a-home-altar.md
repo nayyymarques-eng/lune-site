@@ -2,7 +2,7 @@
 title: "How to make a home altar: meaning, what to put on it and a ritual to begin"
 seoTitle: "How to make an altar at home: meaning and what to put on it"
 slug: how-to-make-a-home-altar
-date: 2026-11-06
+date: 2026-11-05
 description: "What an altar means, where to place one at home, what to put on it, how to set it up step by step and how to tend it through the moon's cycle."
 phase: new_moon
 tags: [altar, practice, guide]

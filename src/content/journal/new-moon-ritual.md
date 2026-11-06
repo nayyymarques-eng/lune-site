@@ -1,7 +1,7 @@
 ---
 title: "New moon ritual: how to begin something, step by step"
 slug: new-moon-ritual
-date: 2026-10-26
+date: 2026-10-27
 description: "How to do a new moon ritual: what the new moon means, when to keep it, what to have at hand, each gesture step by step, and why naming one small step works."
 phase: new_moon
 tags: [new-moon, guide]
