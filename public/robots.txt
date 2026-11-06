@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://lune.app/sitemap-index.xml
+Sitemap: https://lunerituals.app/sitemap-index.xml
