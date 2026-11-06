@@ -9,7 +9,8 @@ const journal = defineCollection({
     title: z.string(),
     seoTitle: z.string().optional(), // shorter <title> for search (about 50 characters); the page h1 keeps title
     description: z.string(), // meta description and card text, about 150 characters
-    date: z.coerce.date(),
+    // Never a date in the future (Nayara 4 Nov): a post shows the day it went live. The build fails otherwise.
+    date: z.coerce.date().refine((d) => d.getTime() <= Date.now(), { message: 'date is in the future: a post can only carry today or an earlier date' }),
     sign: z.enum(['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']).optional(),
     phase: z.string().optional(), // new_moon, full_moon, ...
     tags: z.array(z.string()).default([]),

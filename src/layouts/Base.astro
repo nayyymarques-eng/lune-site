@@ -3,7 +3,7 @@ import '../styles/site.css';
 import Wordmark from '../components/Wordmark.astro';
 import Stores from '../components/Stores.astro';
 import { CTA, POSTHOG_KEY, LIVE, APP_STORE_URL } from '../config';
-const { glow = true, title, description = 'A ritual for every moon: how to do it, where it comes from and why it matters.', image = '/brand/og.jpg', type = 'website', schema } = Astro.props;
+const { glow = true, title, description = 'A ritual for every moon: how to do it, where it comes from and why it matters.', image = '/brand/og.jpg', type = 'website', schema, ctaHref = '/#start' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for every moon';
 ---
@@ -36,8 +36,11 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for ev
   {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   {/* EU host like the app; memory persistence = no cookie or storage, so no consent banner is needed */}
   {POSTHOG_KEY && <script is:inline define:vars={{ POSTHOG_KEY }}>
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-    posthog.init(POSTHOG_KEY,{api_host:'https://eu.i.posthog.com',person_profiles:'identified_only',persistence:'memory'});
+    // Only the real site sends events: previews, local runs and CI stay out of the numbers.
+    if (/(^|\.)lunerituals\.app$/.test(location.hostname)) {
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init(POSTHOG_KEY,{api_host:'https://eu.i.posthog.com',capture_pageview:true,capture_pageleave:true,person_profiles:'identified_only',persistence:'memory',disable_session_recording:true});
+    }
   </script>}
 </head>
 <body>
@@ -88,7 +91,7 @@ const full = title ? `${title} · Lune` : 'Lune: Moon Rituals · A ritual for ev
       const upd = () => t.classList.toggle('moon', h.getBoundingClientRect().bottom > innerHeight * 0.35);
       upd(); addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); })();
   </script>
-  <a class="btn primary sticky-cta" href="/#start" data-cta="sticky">{CTA}</a>
+  <a class="btn primary sticky-cta" href={ctaHref} data-cta="sticky">{CTA}</a>
   <script is:inline>
     (() => { const b = document.querySelector('.sticky-cta'), f = document.querySelectorAll('form, .hcol, .stores:not(.sm)'); if (!b || !('IntersectionObserver' in window) || !f.length) return;
       const seen = new Set(); const io = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target)); b.classList.toggle('hide', seen.size > 0); });

@@ -33,7 +33,7 @@ Add one markdown file to `src/content/journal/`, kebab-case name = URL:
 ---
 title: "Full moon in Gemini, 24 November 2026: meaning and a ritual"
 description: "About 150 characters for Google and the post card."
-date: 2026-11-16
+date: 2026-11-04     # the day it goes live: never a future date (the build fails)
 sign: gemini         # optional; the closing CTA then speaks to that sign
 phase: full_moon     # optional; adds the "find it in your chart" link to the moon compass
 tags: [full-moon]
@@ -51,7 +51,8 @@ draft: false
 - **Topics come from search data.** Pick a query with measured volume (Keyword Planner CSVs in `/mnt/project-files/keyword-research/`) or real Google autocomplete, and use the questions people ask as headings and FAQ.
 - **Depth over breadth.** A guide runs about 1,500 words: what it means, where it comes from (traditions, the sky), when, what you need, the ritual step by step, why it helps (sourced studies), and a FAQ. Four or more sections get a contents list automatically.
 - **Never one line per sign.** A generalist post does not split into twelve short sign sections; nobody reads a whole post for one line about their sign. Cover the topic for everyone, and send people to their own reading: the moon compass (`/tonight`) for their house, `/moon/[sign]` for their sign. A sign gets its own post only when it is the whole topic (for example "new moon in Scorpio").
-- **Practice first, astrology as reflection.** The ritual uses many altar items, never only a candle and water. Meaning over speed: never sell minutes or "quick". Many ways to believe, each one full; never measure belief, never mention religion.
+- **Astrology is the base of the reading; traditions and science are the tools that build the ritual; the moon gives it strength** (Nayara, 3 Nov 2026). The ritual uses many altar items, never only a candle and water. Meaning over speed: never sell minutes or "quick". Many ways to believe, each one full; never measure belief, never mention religion.
+- **Never a date in the future** (Nayara, 4 Nov 2026). `date` is the day the post goes live. Set it on the day of the merge; a post about a coming moon is still dated today. The build refuses a future date.
 - English, never promise results, kinship rule for traditions, no Jewish traditions, safety notes for any flame, sources for every study.
 
 ## Checks (every pull request)
@@ -70,7 +71,7 @@ Locally: `npm run build && npm run check:links && npm test`. A new page is check
 | `PUBLIC_APP_STORE_URL` | When set, every CTA becomes "Start your 15-day free trial" and goes to the App Store. Until then CTAs collect emails for early access |
 | `PUBLIC_PLAY_STORE_URL` | Adds the Google Play button |
 | `PUBLIC_WAITLIST_ENDPOINT` | Where the email form POSTs `{email, sign, source, page}` (a Supabase edge function or a newsletter tool). **Not set yet: emails are not stored until it is** |
-| `PUBLIC_POSTHOG_KEY` | Turns on PostHog. Events: `cta_clicked`, `sign_picked`, `waitlist_joined` |
+| `PUBLIC_POSTHOG_KEY` | PostHog project key. Defaults to the Lune project (323551, EU) in `src/config.ts`; set it to an empty string to turn PostHog off. Pageviews plus `cta_clicked`, `waitlist_joined`, `compass_done`. No session recording, so moon compass birth data never leaves the browser |
 | `SITE_URL` | The real domain (canonical links, sitemap, RSS) |
 
 Deploy: Cloudflare Workers Builds, project `lune-site`, auto-deploys on every push to `main`. Repo root, build `npm run build`, deploy `npx wrangler deploy` (wrangler.jsonc serves `dist/` and runs worker/index.js for `/api/waitlist`). Domain lunerituals.app. Secret `RESEND_API_KEY` lives only in the Cloudflare dashboard.
