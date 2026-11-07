@@ -49,7 +49,7 @@ Today the best known source of natural citrine is the Anahí mine in Bolivia, de
 
 ## Natural or heated: what kind is yours
 
-Natural citrine is rare. Most citrine sold today began as amethyst, mostly from Brazil, and was heated until the purple turned to yellow or orange. This is a long accepted practice in the gem trade, and it does not make the stone fake. It is still quartz.
+Natural citrine is rare. Most citrine sold today began as [amethyst](/journal/amethyst-meaning), mostly from Brazil, and was heated until the purple turned to yellow or orange. This is a long accepted practice in the gem trade, and it does not make the stone fake. It is still quartz.
 
 A few signs help you tell them apart:
 
